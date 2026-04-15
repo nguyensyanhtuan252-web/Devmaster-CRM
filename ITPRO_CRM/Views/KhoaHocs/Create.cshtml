@@ -1,0 +1,62 @@
+﻿@model ITPRO_CRM.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Tạo mới Khóa học";
+}
+
+<h1>Tạo mới Khóa học</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TenKhoaHoc" class="control-label fw-bold"></label>
+                <input asp-for="TenKhoaHoc" class="form-control" />
+                <span asp-validation-for="TenKhoaHoc" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="HocPhi" class="control-label fw-bold"></label>
+                <input asp-for="HocPhi" class="form-control" type="number" />
+                <span asp-validation-for="HocPhi" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SoBuoi" class="control-label fw-bold"></label>
+                <input asp-for="SoBuoi" class="form-control" />
+                <span asp-validation-for="SoBuoi" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label fw-bold">Ảnh minh họa</label>
+                <input type="file" name="imageFile" class="form-control" accept="image/*" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MoTa" class="control-label fw-bold"></label>
+                <textarea asp-for="MoTa" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check mb-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Tạo khóa học" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

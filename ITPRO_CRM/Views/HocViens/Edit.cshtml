@@ -1,0 +1,109 @@
+﻿@model ITPRO_CRM.Models.HocVien
+@{
+    ViewData["Title"] = "Cập nhật hồ sơ";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-warning bg-gradient text-dark p-4">
+                    <h5 class="mb-0 fw-bold"><i class="fa-solid fa-user-pen me-2"></i>Cập nhật: @Model.HoTen</h5>
+                </div>
+                <div class="card-body p-4 p-md-5 bg-light bg-opacity-25">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="Id" /><input type="hidden" asp-for="NgayTao" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="HoTen" class="form-label fw-bold small">Họ tên</label>
+                                <input asp-for="HoTen" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SoDienThoai" class="form-label fw-bold small">Số điện thoại</label>
+                                <input asp-for="SoDienThoai" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="NgaySinh" class="form-label fw-bold small">Ngày sinh</label>
+                                <input asp-for="NgaySinh" class="form-control" type="date" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="GioiTinh" class="form-label fw-bold small">Giới tính</label>
+                                <select asp-for="GioiTinh" class="form-select">
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="DiaChi" class="form-label fw-bold small">Địa chỉ</label>
+                                <input asp-for="DiaChi" class="form-control" />
+                            </div>
+                        </div>
+
+                        <h6 class="text-muted fw-bold text-uppercase small border-bottom pb-2 mb-3 mt-4">Thông tin mở rộng</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="TruongHoc" class="form-label small">Trường học</label>
+                                <input asp-for="TruongHoc" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="NganhHoc" class="form-label small">Chuyên ngành</label>
+                                <input asp-for="NganhHoc" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="CongViecHienTai" class="form-label small">Nơi làm việc</label>
+                                <input asp-for="CongViecHienTai" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FacebookLink" class="form-label small fw-bold">Facebook</label>
+                                <input asp-for="FacebookLink" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ZaloLink" class="form-label small fw-bold">Zalo</label>
+                                <input asp-for="ZaloLink" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MucTieuHocTap" class="form-label fw-bold small">Mục tiêu học tập</label>
+                            <textarea asp-for="MucTieuHocTap" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="LopHocId" class="form-label fw-bold small">Lớp học</label>
+                                <select asp-for="LopHocId" class="form-select" asp-items="ViewBag.LopHocId">
+                                    <option value="">-- Chưa xếp lớp --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="TrangThai" class="form-label fw-bold small">Trạng thái</label>
+                                <select asp-for="TrangThai" class="form-select text-primary fw-bold">
+                                    <option value="0">⭐ Tiềm năng</option>
+                                    <option value="1">📞 Đang tư vấn</option>
+                                    <option value="2">✅ Đã nhập học</option>
+                                    <option value="3">⛔ Dừng/Hủy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                            <a asp-action="Index" class="btn btn-secondary px-4">Hủy</a>
+                            <button type="submit" class="btn btn-warning px-4 fw-bold shadow-sm">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

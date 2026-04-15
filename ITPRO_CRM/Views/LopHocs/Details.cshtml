@@ -1,0 +1,126 @@
+﻿@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Quản lý Lớp học: " + Model.TenLop;
+    var percent = (Model.SiSoHienTai * 100) / (Model.SiSoToiDa > 0 ? Model.SiSoToiDa : 1);
+    string statusColor = Model.TrangThai == 1 ? "success" : (Model.TrangThai == 0 ? "warning" : "secondary");
+    string statusText = Model.TrangThai == 1 ? "Đang học" : (Model.TrangThai == 0 ? "Sắp mở" : "Đã kết thúc");
+}
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-0"><i class="fa-solid fa-chalkboard-user"></i> @Model.TenLop</h3>
+            <span class="badge bg-@statusColor">@statusText</span>
+            <span class="text-muted ms-2"><i class="fa-solid fa-clock"></i> @Model.LichHoc</span>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa-solid fa-pen"></i> Sửa lớp</a>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white fw-bold">Thông tin chung</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Khai giảng:</span><strong>@Model.NgayKhaiGiang.ToString("dd/MM/yyyy")</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Kết thúc:</span><strong>@(Model.NgayKetThuc?.ToString("dd/MM/yyyy") ?? "---")</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Học phí:</span><strong class="text-success">@Model.HocPhi.ToString("#,##0") đ</strong>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Sĩ số:</span><strong>@Model.SiSoHienTai / @Model.SiSoToiDa</strong>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-@statusColor" style="width: @percent%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white"><h6 class="m-0 fw-bold text-primary">Danh sách Học viên</h6></div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light"><tr><th>Họ tên</th><th>Ngày sinh</th><th>SĐT</th><th>Thao tác</th></tr></thead>
+                        <tbody>
+                            @if (Model.HocViens != null && Model.HocViens.Any())
+                            {
+                                foreach (var hv in Model.HocViens)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-primary">@hv.HoTen</td>
+                                        <td>@hv.NgaySinh.ToString("dd/MM/yyyy")</td>
+                                        <td>@hv.SoDienThoai</td>
+                                        <td><a asp-controller="HocViens" asp-action="Details" asp-route-id="@hv.Id" class="btn btn-sm btn-light"><i class="fa-solid fa-eye"></i></a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="4" class="text-center py-4 text-muted">Lớp này chưa có học viên nào.</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                            <h6 class="m-0 fw-bold text-success"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử Điểm danh</h6>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.DiemDanhs != null && Model.DiemDanhs.Any())
+                            {
+                                // Gom nhóm dữ liệu theo ngày để hiển thị tổng hợp
+                                var lichSu = Model.DiemDanhs
+                                .GroupBy(d => d.NgayDiemDanh.Date)
+                                .OrderByDescending(g => g.Key)
+                                .ToList();
+
+                                <div class="list-group list-group-flush">
+                                    @foreach (var ngay in lichSu)
+                                    {
+                                        var coMat = ngay.Count(x => x.TrangThai == 1);
+                                        var muon = ngay.Count(x => x.TrangThai == 2);
+                                        var vang = ngay.Count(x => x.TrangThai == 0);
+
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong class="text-dark"><i class="fa-regular fa-calendar"></i> @ngay.Key.ToString("dd/MM/yyyy")</strong>
+                                                <div class="small text-muted mt-1">
+                                                    <span class="text-success me-2"><i class="fa-solid fa-check"></i> @coMat Có mặt</span>
+                                                    <span class="text-warning me-2"><i class="fa-solid fa-person-walking"></i> @muon Muộn</span>
+                                                    <span class="text-danger"><i class="fa-solid fa-xmark"></i> @vang Vắng</span>
+                                                </div>
+                                            </div>
+                                            <a asp-controller="DiemDanhs" asp-action="Index" asp-route-lopId="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted text-center my-3">Chưa có dữ liệu điểm danh nào.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@model dynamic
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg rounded-4 text-center p-4">
+                <div class="mb-3">
+                    <i class="fa-solid fa-circle-exclamation text-danger" style="font-size: 5rem; opacity: 0.2;"></i>
+                </div>
+                <h3 class="fw-bold text-dark">Xác nhận xóa dữ liệu?</h3>
+                <p class="text-muted mb-4">
+                    Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa mục này ra khỏi hệ thống vĩnh viễn không?
+                </p>
+
+                <div class="bg-light p-3 rounded-3 mb-4 text-start border-start border-danger border-4">
+                    <div class="small text-muted text-uppercase fw-bold">Thông tin mục chọn xóa:</div>
+                    <div class="fw-bold fs-5 text-dark">@(Model.HoTen ?? Model.TenChienDich ?? Model.MaPhieu)</div>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" onclick="window.history.back()" class="btn btn-light rounded-pill px-4 fw-bold border">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Không, quay lại
+                        </button>>
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                            Vẫn xóa dữ liệu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

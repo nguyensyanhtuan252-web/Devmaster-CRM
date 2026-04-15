@@ -1,0 +1,41 @@
+﻿@model ITPRO_CRM.Models.EmailMarketing
+@{
+    ViewData["Title"] = "Soạn Email";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-paper-plane me-2"></i> Gửi chiến dịch mới</h5>
+            </div>
+            <div class="card-body p-4">
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["Error"]</div>
+                }
+
+                <form asp-action="Create">
+                    <div class="mb-3">
+                        <label class="fw-bold mb-1">Tiêu đề Email</label>
+                        <input asp-for="TieuDe" class="form-control" placeholder="VD: Thông báo khai giảng khóa mới..." />
+                        <span asp-validation-for="TieuDe" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold mb-1">Nội dung</label>
+                        <textarea asp-for="NoiDung" class="form-control" rows="6" placeholder="Nhập nội dung gửi..."></textarea>
+                        <span asp-validation-for="NoiDung" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-light border">Hủy</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold" onclick="return confirm('Bạn có chắc muốn gửi email cho TẤT CẢ học viên không?');">
+                            <i class="fa-solid fa-paper-plane me-2"></i> Gửi ngay
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

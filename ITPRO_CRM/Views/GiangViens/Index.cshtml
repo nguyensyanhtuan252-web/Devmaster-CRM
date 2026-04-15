@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.GiangVien>
+@{
+    ViewData["Title"] = "Đội ngũ Giảng viên";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold text-dark">👨‍🏫 Đội ngũ Giảng viên</h4>
+    <a asp-action="Create" class="btn btn-primary fw-bold shadow-sm">
+        <i class="fa-solid fa-user-plus me-2"></i> Thêm Giảng viên
+    </a>
+</div>
+
+<div class="row g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            <div class="card h-100 border-0 shadow-sm text-center p-4" style="border-radius: 16px;">
+                <div class="mb-3 mx-auto position-relative">
+                    <img src="@(string.IsNullOrEmpty(item.AnhDaiDien) ? "https://ui-avatars.com/api/?name=" + item.HoTen : item.AnhDaiDien)"
+                         class="rounded-circle shadow-sm object-fit-cover"
+                         style="width: 100px; height: 100px; border: 3px solid #fff; outline: 2px solid #e2e8f0;"
+                         alt="@item.HoTen">
+
+                    @if (item.TrangThai == 1)
+                    {
+                        <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle p-2" title="Đang công tác"></span>
+                    }
+                    else
+                    {
+                        <span class="position-absolute bottom-0 end-0 bg-secondary border border-white rounded-circle p-2" title="Đã nghỉ"></span>
+                    }
+                </div>
+
+                <h5 class="fw-bold mb-1 text-dark">@item.HoTen</h5>
+                <p class="text-primary small fw-bold mb-2">@item.ChuyenMon</p>
+
+                <p class="badge bg-light text-dark mb-2">🎓 @(item.BangCap ?? "Chưa cập nhật")</p>
+
+                <div class="d-flex justify-content-center gap-2 mt-auto">
+                    <a href="#" class="btn btn-light btn-sm rounded-circle"><i class="fa-solid fa-envelope text-secondary"></i></a>
+                    <a href="#" class="btn btn-light btn-sm rounded-circle"><i class="fa-solid fa-phone text-secondary"></i></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-light btn-sm rounded-circle"><i class="fa-solid fa-pen text-primary"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

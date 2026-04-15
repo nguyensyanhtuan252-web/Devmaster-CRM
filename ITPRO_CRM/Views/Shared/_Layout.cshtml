@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Devmaster CRM</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --topbar-height: 75px;
+            --sidebar-bg: #0f172a;
+            --sidebar-text: #94a3b8;
+            --primary-color: #3b82f6;
+            --bg-body: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Inter', sans-serif;
+            overflow-y: scroll; /* Luôn hiện thanh cuộn để tránh giật layout */
+        }
+
+        /* --- HIỆU ỨNG CHUYỂN TRANG MƯỢT MÀ --- */
+        main {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.05);
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar-brand {
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        .sidebar-menu {
+            padding: 20px 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+            scrollbar-width: thin; /* Thanh cuộn mảnh cho đẹp */
+            scrollbar-color: #334155 transparent;
+        }
+
+        .menu-group-label {
+            padding: 20px 15px 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+        }
+
+        .nav-link {
+            color: var(--sidebar-text);
+            padding: 12px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+            .nav-link:hover {
+                background-color: rgba(255,255,255,0.08);
+                color: #fff;
+                transform: translateX(3px);
+            }
+
+            /* Active Menu Style */
+            .nav-link.active, .nav-link.active-js {
+                background-color: var(--primary-color) !important;
+                color: #fff !important;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+
+            .nav-link i {
+                width: 24px;
+                text-align: center;
+                margin-right: 12px;
+                font-size: 1.1em;
+            }
+
+        /* --- TOPBAR & WRAPPER --- */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-body);
+            transition: margin-left 0.3s;
+        }
+
+        .topbar {
+            height: var(--topbar-height);
+            background: #fff;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        /* Toggle Logic */
+        body.toggled .sidebar {
+            margin-left: calc(var(--sidebar-width) * -1);
+        }
+
+        body.toggled .main-wrapper {
+            margin-left: 0;
+        }
+
+        .user-profile:hover {
+            background-color: #f8fafc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-brand p-3">
+            <a asp-controller="Home" asp-action="Index" class="d-block w-100 text-center text-decoration-none">
+                <img src="@Url.Content("~/images/logo.png")" alt="Devmaster"
+                     class="bg-white rounded p-1 shadow-sm"
+                     style="height: 50px; width: auto; max-width: 100%; object-fit: contain;">
+            </a>
+        </div>
+
+        <div class="sidebar-menu" id="sidebarMenu">
+            <a asp-controller="Home" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+                <i class="fa-solid fa-chart-pie"></i> Tổng quan
+            </a>
+
+            <div class="menu-group-label">Kinh doanh</div>
+            <a asp-controller="HocViens" asp-action="Leads" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Leads" ? "active" : "")">
+                <i class="fa-solid fa-filter"></i> Tiềm năng 
+            </a>
+            <a asp-controller="HocViens" asp-action="Pipeline" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Pipeline" ? "active" : "")">
+                <i class="fa-solid fa-bullseye"></i> Cơ hội 
+            </a>
+            <a asp-controller="HocViens" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" && ViewContext.RouteData.Values["Controller"]?.ToString() == "HocViens" ? "active" : "")">
+                <i class="fa-solid fa-users"></i> Học viên
+            </a>
+            <a asp-controller="PhieuThus" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "PhieuThus" ? "active" : "")">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Báo giá & HĐ
+            </a>
+
+            <div class="menu-group-label">Marketing</div>
+            <a asp-controller="ChienDichs" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "ChienDichs" ? "active" : "")">
+                <i class="fa-solid fa-bullhorn"></i> Chiến dịch
+            </a>
+            <a asp-controller="EmailMarketing" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "EmailMarketing" ? "active" : "")">
+                <i class="fa-solid fa-envelope"></i> Email Marketing
+            </a>
+
+            <div class="menu-group-label">Đào tạo</div>
+            <a asp-controller="LopHocs" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "LopHocs" ? "active" : "")">
+                <i class="fa-solid fa-chalkboard-user"></i> Lớp học
+            </a>
+            <a asp-controller="GiangViens" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "GiangViens" ? "active" : "")">
+                <i class="fa-solid fa-user-tie"></i> Giảng viên
+            </a>
+
+            <div class="menu-group-label">Hệ thống</div>
+            <a asp-controller="BaoCaos" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "BaoCaos" ? "active" : "")">
+                <i class="fa-solid fa-chart-line"></i> Báo cáo
+            </a>
+            <a asp-controller="CauHinhs" asp-action="Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "CauHinhs" ? "active" : "")">
+                <i class="fa-solid fa-gear"></i> Thiết lập
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-bars me-4 fs-5 text-secondary" id="sidebarToggle" style="cursor: pointer;"></i>
+                <h6 class="mb-0 fw-bold text-dark text-uppercase ls-1 d-none d-md-block">Viện Công nghệ & Đào tạo Devmaster</h6>
+            </div>
+
+            <div class="dropdown">
+                <div class="user-profile dropdown-toggle d-flex align-items-center p-2" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                    <div class="text-end d-none d-sm-block me-3">
+                        <div class="fw-bold text-dark small">Quản trị viên</div>
+                        <div class="text-muted" style="font-size: 11px;">admin@devmaster.edu.vn</div>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Dev+Master&background=0f172a&color=fff&size=128" class="rounded-circle" width="38" height="38">
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2 rounded-3">
+                    <li><h6 class="dropdown-header text-uppercase small">Tài khoản</h6></li>
+                    <li><a class="dropdown-item py-2" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-user me-2 text-muted"></i> Hồ sơ</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item py-2 text-danger" asp-controller="Access" asp-action="Logout"><i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="p-4">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- 1. XỬ LÝ THANH CUỘN MENU ĐỨNG YÊN (KHÔNG NHẢY) ---
+            const sidebarMenu = document.getElementById('sidebarMenu');
+
+            // Lấy vị trí cũ từ bộ nhớ
+            const scrollPos = sessionStorage.getItem('sidebarScrollPos');
+            if (scrollPos) {
+                sidebarMenu.scrollTop = scrollPos;
+            }
+
+            // Mỗi khi bấm vào link menu, lưu vị trí lại
+            const menuLinks = document.querySelectorAll('.sidebar-menu .nav-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('sidebarScrollPos', sidebarMenu.scrollTop);
+                });
+            });
+
+
+            // --- 2. LOGIC TOGGLE SIDEBAR ---
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if(sidebarToggle){
+                sidebarToggle.addEventListener('click', function () {
+                    document.body.classList.toggle('toggled');
+                });
+            }
+
+            // --- 3. TỰ ĐỘNG ACTIVE MENU NẾU URL TRÙNG KHỚP ---
+            var currentUrl = window.location.pathname.toLowerCase();
+            menuLinks.forEach(function(link) {
+                var href = link.getAttribute("href");
+                if (href && href.toLowerCase() === currentUrl) {
+                    link.classList.add("active-js");
+                }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

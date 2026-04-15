@@ -1,0 +1,257 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.ChienDich>
+
+@{
+    ViewData["Title"] = "Marketing Campaigns";
+
+    // Thống kê nhanh
+    var tongChienDich = Model.Count();
+    var dangChay = Model.Count(x => x.DangHoatDong == true);
+    // Lưu ý: Nếu báo lỗi ở Sum, hãy bỏ "?? 0" nếu biến không null (tương tự bài trước)
+    var tongNganSach = Model.Sum(x => x.    NganSachDuKien);
+}
+
+<style>
+    /* Style riêng cho Marketing Dashboard */
+    .marketing-stat-card {
+        border: none;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .marketing-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .marketing-stat-card::after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.1;
+        }
+
+    .table-campaign thead th {
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .camp-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        margin-right: 15px;
+    }
+
+    .progress-thin {
+        height: 6px;
+        border-radius: 3px;
+        background-color: #e2e8f0;
+        margin-top: 5px;
+    }
+
+    .date-badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+    }
+</style>
+
+<div class="container-fluid py-4 bg-light bg-opacity-50">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Chiến dịch Marketing</h3>
+            <p class="text-muted mb-0">Quản lý và theo dõi hiệu quả các hoạt động quảng bá</p>
+        </div>
+        <div>
+            <button class="btn btn-white border shadow-sm me-2 text-dark"><i class="fa-solid fa-file-export me-2 text-success"></i>Xuất Báo cáo</button>
+            <a asp-action="Create" class="btn btn-primary shadow-sm fw-bold"><i class="fa-solid fa-plus me-2"></i>Tạo Chiến dịch</a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card marketing-stat-card text-primary h-100 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Tổng Chiến dịch</p>
+                        <h2 class="fw-bold mb-0">@tongChienDich</h2>
+                    </div>
+                    <div class="icon-shape bg-primary bg-opacity-10 rounded-circle p-3 d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
+                        <i class="fa-solid fa-bullhorn fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-muted small">
+                    <span class="text-success fw-bold"><i class="fa-solid fa-arrow-trend-up"></i> +2</span> so với tháng trước
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card marketing-stat-card text-success h-100 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Đang hoạt động</p>
+                        <h2 class="fw-bold mb-0">@dangChay</h2>
+                    </div>
+                    <div class="icon-shape bg-success bg-opacity-10 rounded-circle p-3 d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
+                        <i class="fa-solid fa-rocket fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-3 text-muted small">
+                    Đang tiêu tốn ngân sách hiệu quả
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card marketing-stat-card text-warning h-100 p-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-bold mb-1">Tổng Ngân sách</p>
+                        <h2 class="fw-bold mb-0">@string.Format("{0:N0}", tongNganSach) đ</h2>
+                    </div>
+                    <div class="icon-shape bg-warning bg-opacity-10 rounded-circle p-3 d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
+                        <i class="fa-solid fa-coins fa-lg"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div class="progress progress-thin">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <small class="text-muted">Đã chi tiêu: 65%</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-list-check me-2 text-primary"></i>Danh sách Hoạt động</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-campaign align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Tên Chiến dịch</th>
+                        <th>Loại hình</th>
+                        <th>Thời gian</th>
+                        <th>Tài chính (Dự kiến)</th>
+                        <th>Trạng thái</th>
+                        <th class="text-end pe-4">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="camp-icon bg-light text-primary">
+                                        @if (item.LoaiChienDich != null && item.LoaiChienDich.Contains("Facebook"))
+                                        {
+                                            <i class="fa-brands fa-facebook"></i>
+                                        }
+                                        else if (item.LoaiChienDich != null && item.LoaiChienDich.Contains("Google"))
+                                        {
+                                            <i class="fa-brands fa-google"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa-solid fa-bullseye"></i>
+                                        }
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">@item.TenChienDich</div>
+                                        <div class="text-muted small text-truncate" style="max-width: 200px;">
+                                            @(item.MoTa ?? "Chưa có mô tả")
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-3">
+                                    @(item.LoaiChienDich ?? "Khác")
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="d-flex flex-column gap-1">
+                                    <span class="date-badge"><i class="fa-solid fa-play text-success me-1"></i> @item.NgayBatDau.ToString("dd/MM/yyyy")</span>
+                                    <span class="date-badge"><i class="fa-solid fa-flag-checkered text-danger me-1"></i> @item.NgayKetThuc.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <small class="text-muted mb-1">Ngân sách</small>
+                                    <span class="fw-bold text-dark">@string.Format("{0:N0}", item.NganSachDuKien) đ</span>
+                                    <small class="text-success mt-1"><i class="fa-solid fa-arrow-turn-up"></i> Kỳ vọng: @string.Format("{0:N0}", item.DoanhThuKyVong)</small>
+                                </div>
+                            </td>
+
+                            <td>
+                                @if (item.DangHoatDong == true)
+                                {
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                                        <span class="spinner-grow spinner-grow-sm me-1" style="width: 0.5rem; height: 0.5rem;"></span> Đang chạy
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary rounded-pill px-3 py-2">Đã dừng</span>
+                                }
+                            </td>
+
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-light text-primary" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-light text-info" title="Chi tiết"><i class="fa-solid fa-circle-info"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-light text-danger" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-0 py-3">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

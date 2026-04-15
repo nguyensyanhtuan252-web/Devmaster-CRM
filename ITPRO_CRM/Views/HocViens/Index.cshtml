@@ -1,0 +1,381 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.HocVien>
+
+@{
+    ViewData["Title"] = "Danh sách Học viên";
+    // Thống kê nhanh
+    var total = Model.Count();
+    var newLeads = Model.Count(x => x.TrangThai == 0);
+    var active = Model.Count(x => x.TrangThai == 2);
+}
+
+<style>
+    .crm-table thead th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .avatar-cell {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e9ecef;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-right: 12px;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* Hover effect cho từng dòng */
+    .crm-table tbody tr:hover {
+        background-color: #fdfdfd;
+    }
+
+        .crm-table tbody tr:hover td {
+            color: #000;
+        }
+
+    /* 👉 MỚI: Style cho thẻ Thống kê bấm được */
+    .card-filter {
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .card-filter:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row g-3 mb-4">
+
+        @* --- 1. NGỮ CẢNH: TRANG TIỀM NĂNG (Status = 0) --- *@
+        @if (ViewBag.CurrentStatus == 0)
+        {
+            <div class="col-md-3" onclick="filterTable('all')">
+                <div class="card border-0 shadow-sm border-start border-primary border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Tổng Tiềm Năng</div>
+                    <div class="fs-3 fw-bold text-primary">@Model.Count()</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('today')">
+                <div class="card border-0 shadow-sm border-start border-warning border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Mới hôm nay</div>
+                    <div class="fs-3 fw-bold text-warning">@Model.Count(x => x.NgayTao.Date == DateTime.Today)</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('no_interaction')">
+                <div class="card border-0 shadow-sm border-start border-danger border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Chưa có tương tác</div>
+                    <div class="fs-3 fw-bold text-danger">@Model.Count(x => x.LichSuTuVans == null || !x.LichSuTuVans.Any())</div>
+                </div>
+            </div>
+        }
+
+        @* --- 2. NGỮ CẢNH: TRANG CƠ HỘI (Status = 1) --- *@
+        else if (ViewBag.CurrentStatus == 1)
+        {
+            <div class="col-md-3" onclick="filterTable('all')">
+                <div class="card border-0 shadow-sm border-start border-info border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Đang chăm sóc</div>
+                    <div class="fs-3 fw-bold text-info">@Model.Count()</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('appt_today')">
+                <div class="card border-0 shadow-sm border-start border-warning border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Đến lịch hẹn gọi</div>
+                    <div class="fs-3 fw-bold text-warning">@Model.Count(x => x.NgayHen != null && x.NgayHen.Value.Date == DateTime.Today)</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('overdue')">
+                <div class="card border-0 shadow-sm border-start border-danger border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Quá hạn chưa gọi</div>
+                    <div class="fs-3 fw-bold text-danger">@Model.Count(x => x.NgayHen != null && x.NgayHen.Value.Date < DateTime.Today)</div>
+                </div>
+            </div>
+        }
+
+        @* --- 3. NGỮ CẢNH: TRANG HỌC VIÊN (Status = 2) --- *@
+        else
+        {
+            // TÍNH TOÁN LẠI LOGIC NỢ HỌC PHÍ CHUẨN XÁC
+            var tongHocVien = Model.Count();
+            var daXepLop = Model.Count(x => x.LopHocId != null);
+            var noHocPhi = Model.Count(x => (x.LopHoc?.HocPhi ?? 0) - (x.PhieuThus?.Sum(p => p.SoTien) ?? 0) > 0);
+
+            <div class="col-md-3" onclick="filterTable('all')">
+                <div class="card border-0 shadow-sm border-start border-success border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Tổng Học viên</div>
+                    <div class="fs-3 fw-bold text-success">@tongHocVien</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('classed')">
+                <div class="card border-0 shadow-sm border-start border-primary border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Đã xếp lớp</div>
+                    <div class="fs-3 fw-bold text-primary">@daXepLop</div>
+                </div>
+            </div>
+            <div class="col-md-3" onclick="filterTable('debt')">
+                <div class="card border-0 shadow-sm border-start border-danger border-4 h-100 p-3 card-filter">
+                    <div class="text-muted small fw-bold mb-1 text-uppercase">Nợ học phí</div>
+                    <div class="fs-3 fw-bold text-danger">@noHocPhi</div>
+                </div>
+            </div>
+        }
+
+        @* --- NÚT ACTION (ĐỔI TÊN THEO NGỮ CẢNH) --- *@
+        <div class="col-md-3">
+            @{
+                string btnText = "Thêm Học viên mới";
+                string btnColor = "btn-primary";
+                if (ViewBag.CurrentStatus == 0) { btnText = "Thêm Tiềm năng mới"; btnColor = "btn-primary"; }
+                if (ViewBag.CurrentStatus == 1) { btnText = "Thêm Cơ hội mới"; btnColor = "btn-info text-white"; }
+                if (ViewBag.CurrentStatus == 2) { btnText = "Nhập học viên mới"; btnColor = "btn-success"; }
+            }
+            <a asp-action="Create" class="btn @btnColor w-100 h-100 d-flex flex-column align-items-center justify-content-center shadow-sm rounded-3" style="min-height: 85px;">
+                <i class="fa-solid fa-circle-plus fs-4 mb-1"></i>
+                <span class="fw-bold">@btnText</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-users me-2 text-primary"></i>Danh sách Hồ sơ
+            </h5>
+
+            <div class="d-flex gap-2">
+                <input type="text" id="searchInput" class="form-control form-control-sm shadow-none" placeholder="Tìm kiếm tên, sđt..." style="width: 200px;" onkeyup="searchTable()">
+
+                <div class="dropdown">
+                    <button class="btn btn-outline-success btn-sm dropdown-toggle fw-bold shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-file-excel me-1"></i> Nhập / Xuất
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px;">
+                                <li>
+                                    <a class="dropdown-item py-2" href="#" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+                                        <i class="fa-solid fa-file-import text-primary me-2"></i> Nhập từ file Excel
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                            <a class="dropdown-item py-2" href="@Url.Action("ExportExcel", "HocViens", new { status = ViewBag.CurrentStatus })">
+                                <i class="fa-solid fa-file-export text-success me-2"></i> Xuất danh sách hiện tại
+                            </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table crm-table align-middle mb-0" id="mainTable">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Họ và Tên</th>
+                        <th>Liên hệ</th>
+                        <th>Lớp học / Nguồn</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th class="text-end pe-4">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        // 👉 MỚI: PHÂN LOẠI DÒNG ĐỂ LỌC DỮ LIỆU BẰNG JAVASCRIPT
+                        string filterTags = "row-item all";
+
+                        if (ViewBag.CurrentStatus == 0)
+                        {
+                            if (item.NgayTao.Date == DateTime.Today) filterTags += " today";
+                            if (item.LichSuTuVans == null || !item.LichSuTuVans.Any()) filterTags += " no_interaction";
+                        }
+                        else if (ViewBag.CurrentStatus == 1)
+                        {
+                            if (item.NgayHen?.Date == DateTime.Today) filterTags += " appt_today";
+                            if (item.NgayHen?.Date < DateTime.Today) filterTags += " overdue";
+                        }
+                        else
+                        {
+                            if (item.LopHocId != null) filterTags += " classed";
+                            var debt = (item.LopHoc?.HocPhi ?? 0) - (item.PhieuThus?.Sum(p => p.SoTien) ?? 0);
+                            if (debt > 0) filterTags += " debt";
+                        }
+
+                        <tr class="@filterTags">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-cell shadow-sm">
+                                        @(item.HoTen?.Substring(0, 1) ?? "U")
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark search-name">@item.HoTen</div>
+                                <div class="text-muted small mt-1">
+                                    @if (!string.IsNullOrEmpty(item.MaHocVien))
+                                    {
+                                        <span class="text-primary fw-bold" style="letter-spacing: 0.5px;">
+                                            <i class="fa-solid fa-qrcode me-1"></i> @item.MaHocVien
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="opacity-50 fst-italic"><i class="fa-solid fa-fingerprint me-1"></i> Chưa cấp mã</span>
+                                    }
+                                </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="text-dark fw-bold mb-1 search-phone"><i class="fa-solid fa-phone text-success me-1"></i> @item.SoDienThoai</span>
+                                    <span class="text-muted small search-email"><i class="fa-solid fa-envelope text-warning me-1"></i> @item.Email</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="badge bg-light text-dark border mb-1 text-start">
+                                        <i class="fa-solid fa-graduation-cap"></i> @(item.LopHoc?.TenLop ?? "Chưa xếp lớp")
+                                    </span>
+                                    <small class="text-muted fst-italic">
+                                        <i class="fa-solid fa-bullhorn"></i> @(item.ChienDich?.TenChienDich ?? "Tự nhiên")
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="small fw-bold">@item.NgayTao.ToString("dd/MM/yyyy")</div>
+                                <small class="text-muted">Sale: @(item.NhanVien?.HoTen ?? "Admin")</small>
+                            </td>
+                            <td>
+                                @if (item.TrangThai == 0)
+                                {
+                                    <span class="status-badge bg-warning bg-opacity-25 text-warning border border-warning">⭐ Tiềm năng</span>
+                                }
+                                else if (item.TrangThai == 1)
+                                {
+                                    <span class="status-badge bg-info bg-opacity-25 text-info border border-info">📞 Đang tư vấn</span>
+                                }
+                                else if (item.TrangThai == 2)
+                                {
+                                    <span class="status-badge bg-success bg-opacity-25 text-success border border-success">✅ Đã học</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge bg-secondary bg-opacity-25 text-secondary border border-secondary">⛔ Đã hủy</span>
+                                }
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-light text-primary" title="Sửa hồ sơ"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-light text-info" title="Xem chi tiết & Lịch sử"><i class="fa-solid fa-eye"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-light text-danger" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+            <small class="text-muted">Hiển thị @Model.Count() bản ghi</small>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Tiếp</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="importExcelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <form asp-controller="HocViens" asp-action="ImportExcel" method="post" enctype="multipart/form-data">
+                <div class="modal-header border-0 bg-success bg-opacity-10 rounded-top-4 pb-2">
+                    <h6 class="modal-title fw-bold text-success">
+                        <i class="fa-solid fa-file-excel me-2"></i>Nhập danh sách Tiềm năng
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark small">Chọn file Excel tải lên (.xlsx)</label>
+                        <input type="file" name="fileExcel" class="form-control" accept=".xlsx, .xls" required />
+                    </div>
+
+                    <div class="alert alert-info small mb-0 border-0 bg-primary bg-opacity-10 text-dark rounded-3">
+                        <i class="fa-solid fa-circle-info text-primary me-1"></i> <strong>Lưu ý:</strong> File Excel cần có cấu trúc chuẩn để hệ thống đọc được.
+                        <div class="mt-2 text-center">
+                            <a asp-controller="HocViens" asp-action="DownloadTemplate" class="btn btn-sm btn-outline-primary rounded-pill fw-bold">
+                                <i class="fa-solid fa-download me-1"></i> Tải file mẫu tại đây
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 bg-light rounded-bottom-4 pt-3 pb-3">
+                    <button type="button" class="btn btn-light fw-bold rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success fw-bold rounded-pill px-4 shadow-sm">
+                        <i class="fa-solid fa-cloud-arrow-up me-1"></i> Bắt đầu Nhập
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // 1. Hàm lọc danh sách bằng Thẻ Tag (Bấm vào các Card ở trên)
+    function filterTable(filterType) {
+        var rows = document.querySelectorAll('.row-item');
+
+        rows.forEach(function(row) {
+            if (row.classList.contains(filterType)) {
+                row.style.display = ''; // Hiện
+            } else {
+                row.style.display = 'none'; // Ẩn
+            }
+        });
+    }
+
+    // 2. Hàm tìm kiếm tức thì (Gõ vào ô Tên, SĐT ở thanh tìm kiếm)
+    function searchTable() {
+        var input = document.getElementById("searchInput").value.toLowerCase();
+        var rows = document.querySelectorAll('.row-item');
+
+        rows.forEach(function(row) {
+            // Lấy Tên, SĐT và Email của dòng đó
+            var name = row.querySelector('.search-name').innerText.toLowerCase();
+            var phone = row.querySelector('.search-phone').innerText.toLowerCase();
+            var email = row.querySelector('.search-email').innerText.toLowerCase();
+
+            // Nếu ô tìm kiếm khớp với bất kỳ thông tin nào -> Hiện, ngược lại -> Ẩn
+            if (name.includes(input) || phone.includes(input) || email.includes(input)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>

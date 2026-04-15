@@ -1,0 +1,99 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Chi tiết Phiếu thu";
+}
+
+<style>
+    @@media print {
+        /* Ẩn hết những thứ không cần thiết khi in */
+        .sidebar, header, footer, .btn, .breadcrumb, .no-print
+
+    {
+        display: none !important;
+    }
+    /* Căn chỉnh trang in */
+    body, .container-fluid {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    }
+
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        background-color: white;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3 no-print invoice-box border-0 shadow-none p-0">
+        <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
+        <button onclick="window.print()" class="btn btn-primary fw-bold"><i class="fa-solid fa-print"></i> IN PHIẾU THU</button>
+    </div>
+
+    <div class="invoice-box card">
+        <div class="row mb-4">
+            <div class="col-8">
+                <h2 class="fw-bold text-primary"><i class="fa-solid fa-graduation-cap"></i> ITPRO ACADEMY</h2>
+                <p class="mb-0">Địa chỉ: Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội</p>
+                <p class="mb-0">Hotline: 0988.888.888 - Email: contact@itpro.edu.vn</p>
+            </div>
+            <div class="col-4 text-end">
+                <h4 class="fw-bold text-danger">PHIẾU THU TIỀN</h4>
+                <p class="mb-0 text-muted">Số phiếu: <strong>@Model.MaPhieu</strong></p>
+                <p class="text-muted">Ngày: @Model.NgayThu.ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row mb-4">
+            <div class="col-sm-6">
+                <h6 class="fw-bold text-uppercase text-muted">Thông tin người nộp:</h6>
+                <h5 class="fw-bold">@Model.HocVien?.HoTen</h5>
+                <p class="mb-1">Lớp học: <strong>@(Model.LopHoc?.TenLop ?? "---")</strong></p>
+                <p>Mã học viên: HV@(Model.HocVienId.ToString("D4"))</p>
+            </div>
+            <div class="col-sm-6 text-end">
+                <h6 class="fw-bold text-uppercase text-muted">Thông tin thanh toán:</h6>
+                <h4 class="text-success fw-bold">@Model.SoTien.ToString("#,##0") VNĐ</h4>
+                <p class="mb-1">Hình thức: <span class="badge bg-info text-dark">@(Model.HinhThuc == 0 ? "Tiền mặt" : "Chuyển khoản")</span></p>
+                <p>Người thu: @(Model.NguoiThu ?? "Admin")</p>
+            </div>
+        </div>
+
+        <div class="bg-light p-3 rounded mb-4 border">
+            <p class="mb-0 fw-bold">Nội dung thu:</p>
+            <p class="mb-0 fst-italic">@Model.NoiDung</p>
+        </div>
+
+        <div class="row mt-5 text-center">
+            <div class="col-6">
+                <p class="fw-bold">Người nộp tiền</p>
+                <p class="small text-muted fst-italic">(Ký, ghi rõ họ tên)</p>
+                <br /><br /><br />
+            </div>
+            <div class="col-6">
+                <p class="fw-bold">Người lập phiếu</p>
+                <p class="small text-muted fst-italic">(Ký, ghi rõ họ tên)</p>
+                <br /><br /><br />
+                <p class="fw-bold">@Model.NguoiThu</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 fst-italic text-muted small">
+            <p>Cảm ơn quý học viên đã tin tưởng ITPRO Academy!</p>
+        </div>
+    </div>
+</div>

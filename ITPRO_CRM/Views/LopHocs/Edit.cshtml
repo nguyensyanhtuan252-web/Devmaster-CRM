@@ -1,0 +1,197 @@
+﻿@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Cập nhật Lớp học: " + Model.TenLop;
+}
+
+<style>
+    /* CSS tinh chỉnh UI sắc nét, tối giản */
+    .crm-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        background: #fff;
+    }
+
+    .crm-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .crm-input {
+        border-radius: 4px;
+        border: 1px solid #cbd5e1;
+        padding: 0.6rem 1rem;
+        color: #1e293b;
+        box-shadow: none !important;
+        transition: border-color 0.2s;
+    }
+
+        .crm-input:focus {
+            border-color: #0f172a;
+            outline: none;
+        }
+
+    .crm-input-group-text {
+        border-radius: 4px;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #64748b;
+        font-size: 0.875rem;
+    }
+
+    .crm-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.3px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .crm-btn {
+        border-radius: 4px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.8rem;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.2s;
+    }
+
+    .crm-btn-dark {
+        background-color: #0f172a;
+        border-color: #0f172a;
+        color: #fff;
+    }
+
+        .crm-btn-dark:hover {
+            background-color: #1e293b;
+            border-color: #1e293b;
+        }
+
+    .crm-btn-outline {
+        background-color: #fff;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+    }
+
+        .crm-btn-outline:hover {
+            background-color: #f8fafc;
+            color: #0f172a;
+            border-color: #94a3b8;
+        }
+</style>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-dark mb-0" style="letter-spacing: -0.5px;">HIỆU CHỈNH LỚP HỌC</h4>
+                <button type="button" onclick="window.history.back()" class="btn crm-btn crm-btn-outline">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Trở về
+                </button>
+            </div>
+
+            <div class="crm-card p-4 p-md-5">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-5">
+                        <div class="crm-section-title">
+                            <i class="fa-solid fa-square-poll-horizontal me-2 text-secondary"></i> Thông tin cơ bản
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label asp-for="TenLop" class="form-label crm-label">Tên lớp học <span class="text-danger">*</span></label>
+                                <input asp-for="TenLop" class="form-control crm-input" placeholder="Nhập mã/tên lớp" required />
+                                <span asp-validation-for="TenLop" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="HocPhi" class="form-label crm-label">Học phí quy định <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input asp-for="HocPhi" type="number" class="form-control crm-input text-end fw-semibold" />
+                                    <span class="input-group-text crm-input-group-text fw-bold">VNĐ</span>
+                                </div>
+                                <span asp-validation-for="HocPhi" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-black-50 opacity-25 mb-5" />
+
+                    <div class="mb-5">
+                        <div class="crm-section-title">
+                            <i class="fa-solid fa-calendar-day me-2 text-secondary"></i> Kế hoạch đào tạo
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label asp-for="NgayKhaiGiang" class="form-label crm-label">Khai giảng</label>
+                                <input asp-for="NgayKhaiGiang" type="date" class="form-control crm-input" />
+                                <span asp-validation-for="NgayKhaiGiang" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="NgayKetThuc" class="form-label crm-label">Dự kiến kết thúc</label>
+                                <input asp-for="NgayKetThuc" type="date" class="form-control crm-input" />
+                                <span asp-validation-for="NgayKetThuc" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="LichHoc" class="form-label crm-label">Lịch học</label>
+                                <div class="input-group">
+                                    <span class="input-group-text crm-input-group-text"><i class="fa-solid fa-clock"></i></span>
+                                    <input asp-for="LichHoc" class="form-control crm-input" placeholder="VD: T3, T5" />
+                                </div>
+                                <span asp-validation-for="LichHoc" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-black-50 opacity-25 mb-5" />
+
+                    <div class="mb-5">
+                        <div class="crm-section-title">
+                            <i class="fa-solid fa-sliders me-2 text-secondary"></i> Vận hành
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label asp-for="SiSoToiDa" class="form-label crm-label">Giới hạn sĩ số</label>
+                                <div class="input-group">
+                                    <span class="input-group-text crm-input-group-text"><i class="fa-solid fa-users"></i></span>
+                                    <input asp-for="SiSoToiDa" type="number" class="form-control crm-input" min="1" />
+                                </div>
+                                <span asp-validation-for="SiSoToiDa" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="TrangThai" class="form-label crm-label">Trạng thái lớp</label>
+                                <select asp-for="TrangThai" class="form-select crm-input fw-semibold">
+                                    <option value="0">Sắp mở (Chờ khai giảng)</option>
+                                    <option value="1">Đang hoạt động</option>
+                                    <option value="2">Đã kết thúc</option>
+                                </select>
+                                <span asp-validation-for="TrangThai" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 pt-2">
+                        <button type="submit" class="btn crm-btn crm-btn-dark shadow-sm">
+                            <i class="fa-solid fa-check me-2"></i> Lưu dữ liệu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

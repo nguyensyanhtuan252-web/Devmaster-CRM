@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.LopHoc>
+
+@{
+    ViewData["Title"] = "Danh sách Lớp học";
+}
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-primary">Quản lý Đào tạo</h3>
+        <a asp-action="Create" class="btn btn-success fw-bold shadow-sm rounded-pill px-4">
+            <i class="fa-solid fa-plus me-1"></i> Mở lớp mới
+        </a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            string borderClass = item.TrangThai == 1 ? "border-success" : (item.TrangThai == 0 ? "border-warning" : "border-secondary");
+            string badgeClass = item.TrangThai == 1 ? "bg-success" : (item.TrangThai == 0 ? "bg-warning text-dark" : "bg-secondary");
+            string statusName = item.TrangThai == 1 ? "Đang học" : (item.TrangThai == 0 ? "Sắp mở" : "Đã đóng");
+            var siSo = item.HocViens?.Count ?? 0;
+            var maxSiSo = item.SiSoToiDa > 0 ? item.SiSoToiDa : 20;
+            var percent = (siSo * 100) / maxSiSo;
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0 border-top border-4 @borderClass rounded-4 overflow-hidden">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-3 align-items-center">
+                            <span class="badge @badgeClass rounded-pill px-3 py-2">@statusName</span>
+                            <span class="text-danger fw-bold fs-5">@item.HocPhi.ToString("#,##0") đ</span>
+                        </div>
+                        <h4 class="card-title fw-bold text-dark mb-3">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark">@item.TenLop</a>
+                        </h4>
+
+                        <div class="bg-light p-3 rounded-3 mb-3">
+                            <div class="text-muted small mb-1">
+                                <i class="fa-solid fa-calendar-days text-primary me-2"></i> @item.LichHoc
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fa-solid fa-flag text-success me-2"></i> Khai giảng: @item.NgayKhaiGiang.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between small mt-2 fw-bold">
+                            <span class="text-muted">Sĩ số: <span class="text-dark">@siSo / @maxSiSo</span></span>
+                            <span class="text-@borderClass.Replace("border-", "")">@percent%</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 8px; border-radius: 10px;">
+                            <div class="progress-bar @badgeClass" style="width: @percent%"></div>
+                        </div>
+
+                        @if (item.CoLichHocHomNay && item.TrangThai == 1)
+                        {
+                            <div class="d-grid mt-4">
+                                <a asp-controller="DiemDanhs" asp-action="Index" asp-route-lopId="@item.Id"
+                                   class="btn btn-success fw-bold shadow-sm rounded-pill py-2"
+                                   style="background: linear-gradient(45deg, #198754, #20c997); border: none;">
+                                    <i class="fa-solid fa-clipboard-user me-2"></i> ĐIỂM DANH HÔM NAY
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-footer bg-white text-center border-0 pb-3 pt-0">
+                        <div class="btn-group shadow-sm rounded-pill">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-light border px-3 text-warning"><i class="fa-solid fa-pen"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-light border px-4 fw-bold text-primary">Quản lý lớp</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-light border px-3 text-danger"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

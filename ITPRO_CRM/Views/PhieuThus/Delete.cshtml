@@ -1,0 +1,51 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Xóa Phiếu Thu";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="bg-danger py-4 text-center">
+                    <i class="fa-solid fa-triangle-exclamation text-white fa-3x mb-2"></i>
+                    <h4 class="text-white fw-bold mb-0">Xác nhận xóa phiếu?</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted text-center small mb-4">
+                        Hành động này sẽ xóa vĩnh viễn dữ liệu tài chính này. <br />
+                        <strong>Lưu ý:</strong> Tổng thu của học viên sẽ bị giảm đi tương ứng.
+                    </p>
+
+                    <div class="bg-light rounded-3 p-3 mb-4 border-start border-danger border-4">
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted small fw-bold">MÃ PHIẾU:</div>
+                            <div class="col-7 fw-bold text-dark">@Model.MaPhieu</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted small fw-bold">HỌC VIÊN:</div>
+                            <div class="col-7 fw-bold text-primary">@Model.HocVien?.HoTen</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 text-muted small fw-bold">SỐ TIỀN:</div>
+                            <div class="col-7 fw-bold text-danger">@string.Format("{0:N0}", Model.SoTien) đ</div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger py-2 fw-bold rounded-pill shadow-sm">
+                                <i class="fa-solid fa-trash-can me-2"></i> ĐỒNG Ý XÓA VĨNH VIỄN
+                            </button>
+                            <button type="button" onclick="window.history.back()" class="btn btn-light py-2 fw-bold rounded-pill border">
+                                KHÔNG, QUAY LẠI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,330 @@
+﻿@using System.Text.Json
+@model IEnumerable<ITPRO_CRM.Models.HocVien>
+@{
+    ViewData["Title"] = "Tổng quan";
+
+    var rawLabels7 = ViewBag.ChartLabels7 as List<string> ?? new List<string>();
+    var rawData7 = ViewBag.ChartData7 as List<decimal> ?? new List<decimal>();
+    var rawLabelsMonth = ViewBag.ChartLabelsMonth as List<string> ?? new List<string>();
+    var rawDataMonth = ViewBag.ChartDataMonth as List<decimal> ?? new List<decimal>();
+
+    var jsonLabels7 = JsonSerializer.Serialize(rawLabels7);
+    var jsonData7 = JsonSerializer.Serialize(rawData7);
+    var jsonLabelsMonth = JsonSerializer.Serialize(rawLabelsMonth);
+    var jsonDataMonth = JsonSerializer.Serialize(rawDataMonth);
+
+    decimal revToday = ViewBag.RevenueToday != null ? (decimal)ViewBag.RevenueToday : 0;
+    decimal revMonth = ViewBag.RevenueMonth != null ? (decimal)ViewBag.RevenueMonth : 0;
+    int achieved = ViewBag.MyNewStudents != null ? (int)ViewBag.MyNewStudents : 0;
+    int target = ViewBag.MyKpiTarget != null ? (int)ViewBag.MyKpiTarget : 0;
+    double percent = ViewBag.KpiPercentage != null ? Convert.ToDouble(ViewBag.KpiPercentage) : 0;
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .luxury-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 20px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .luxury-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+    .card-icon-bg {
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        font-size: 6rem;
+        opacity: 0.04;
+        transform: rotate(15deg);
+        pointer-events: none;
+        transition: 0.3s;
+    }
+
+    .card-label {
+        color: #64748b;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+
+    .card-value {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0;
+        line-height: 1.2;
+    }
+
+    .kpi-progress {
+        height: 8px;
+        background-color: #f1f5f9;
+        border-radius: 10px;
+        margin-top: 15px;
+        overflow: hidden;
+    }
+
+    .kpi-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 1s ease-in-out;
+    }
+
+    .revenue-toggle, .chart-filter {
+        cursor: pointer;
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold text-dark mb-1">Xin chào!</h4>
+            <span class="text-muted small"><i class="fa-regular fa-clock me-1"></i> Cập nhật: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
+        </div>
+        <a asp-controller="HocViens" asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+            <i class="fa-solid fa-plus me-2"></i> Thêm Học viên
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="luxury-card">
+                <i class="fa-solid fa-bullseye card-icon-bg text-primary"></i>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div class="card-label text-primary mb-0">KPI THÁNG NÀY</div>
+                    <div class="d-flex gap-1">
+                        <span class="btn btn-sm btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#kpiHistoryModal" style="width: 28px; height: 28px;">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </span>
+                        <button type="button" class="btn btn-sm btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center border-0" data-bs-toggle="modal" data-bs-target="#kpiModal" style="width: 28px; height: 28px;">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-baseline mt-2">
+                    <div class="card-value text-primary">@achieved</div>
+                    <div class="fs-5 mx-1 text-muted">/</div>
+                    <div class="fs-5 text-muted fw-bold">@(target > 0 ? target.ToString() : "N/A")</div>
+                </div>
+
+                @if (target > 0)
+                {
+                    <div class="kpi-progress mt-3">
+                        <div class="kpi-bar" style="width: @(percent > 100 ? 100 : percent)%; background: @(percent >= 100 ? "#22c55e" : "#3b82f6");"></div>
+                    </div>
+                    <div class="card-sub text-end mt-2 small text-muted">
+                        @(percent >= 100 ? "🎉 Đã hoàn thành!" : Math.Round(percent) + "% tiến độ")
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-3 text-danger small fw-bold">Thiết lập KPI mục tiêu</div>
+                }
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="luxury-card">
+                <i class="fa-solid fa-sack-dollar card-icon-bg text-success"></i>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="card-label text-success">Doanh thu</div>
+                    <select class="revenue-toggle" id="revenueFilter" onchange="toggleRevenue()">
+                        <option value="day">Hôm nay</option>
+                        <option value="month">Tháng này</option>
+                    </select>
+                </div>
+                <div class="card-value text-success" id="revDay">@string.Format("{0:N0}", revToday)</div>
+                <div class="card-value text-success d-none" id="revMonth">@string.Format("{0:N0}", revMonth)</div>
+                <div class="card-sub text-success"><small>VNĐ</small></div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="HocViens" asp-action="Leads" class="luxury-card">
+                <i class="fa-solid fa-filter card-icon-bg text-warning"></i>
+                <div class="card-label text-warning">Lead Tiềm năng</div>
+                <div class="card-value text-dark">@ViewBag.TotalLeads</div>
+                <div class="card-sub">Khách hàng chờ xử lý</div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="LopHocs" asp-action="Index" class="luxury-card">
+                <i class="fa-solid fa-chalkboard-user card-icon-bg text-info"></i>
+                <div class="card-label text-info">Lớp đang mở</div>
+                <div class="card-value text-dark">@ViewBag.ActiveClasses</div>
+                <div class="card-sub">Hoạt động đào tạo</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="bg-white p-4 shadow-sm h-100" style="border-radius: 20px;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-bold text-secondary text-uppercase mb-0 small">Biểu đồ Doanh thu</h6>
+                    <select class="chart-filter" id="chartTimeSelect" onchange="updateChart()">
+                        <option value="7days">7 ngày gần nhất</option>
+                        <option value="month">Trong tháng</option>
+                    </select>
+                </div>
+                <div style="height: 320px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="bg-white p-4 shadow-sm h-100" style="border-radius: 20px; border-top: 4px solid #ef4444;">
+                <h6 class="fw-bold text-danger text-uppercase mb-4 small">Cần liên hệ ngay</h6>
+                <div class="d-flex flex-column gap-3">
+                    @{
+                        var dsHen = ViewBag.LichHenHomNay as List<ITPRO_CRM.Models.HocVien>;
+                    }
+                    @if (dsHen != null && dsHen.Any())
+                    {
+                        foreach (var item in dsHen)
+                        {
+                            bool isQuahan = item.NgayHen.Value.Date < DateTime.Today;
+                            <a asp-controller="HocViens" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none d-block p-3 rounded-3" style="background: #f8fafc; border-left: 4px solid @(isQuahan ? "#ef4444" : "#3b82f6");">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="mb-0 fw-bold text-dark">@item.HoTen</h6>
+                                    <span class="badge @(isQuahan ? "bg-danger" : "bg-primary")">@(isQuahan ? "Quá hạn" : "Hôm nay")</span>
+                                </div>
+                                <div class="small text-muted">Lịch: @item.NgayHen.Value.ToString("HH:mm - dd/MM")</div>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-mug-hot fs-1 opacity-25 mb-3"></i>
+                            <p class="small">Hôm nay không có lịch hẹn dồn ứ.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const data7Days = { labels: @Html.Raw(jsonLabels7), data: @Html.Raw(jsonData7) };
+    const dataMonth = { labels: @Html.Raw(jsonLabelsMonth), data: @Html.Raw(jsonDataMonth) };
+    let myChart = null;
+
+    document.addEventListener("DOMContentLoaded", () => renderChart(data7Days.labels, data7Days.data));
+
+    function renderChart(labels, data) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+            }
+        });
+    }
+
+    function updateChart() {
+        const type = document.getElementById('chartTimeSelect').value;
+        type === '7days' ? renderChart(data7Days.labels, data7Days.data) : renderChart(dataMonth.labels, dataMonth.data);
+    }
+
+    function toggleRevenue() {
+        const type = document.getElementById('revenueFilter').value;
+        document.getElementById('revDay').classList.toggle('d-none', type !== 'day');
+        document.getElementById('revMonth').classList.toggle('d-none', type === 'day');
+    }
+
+    function fetchKpiHistory() {
+        const picker = document.getElementById('historyMonthPicker').value;
+        if (!picker) return;
+        const [year, month] = picker.split('-');
+        fetch(`/Home/GetKpiHistory?month=${month}&year=${year}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('histAchieved').innerText = data.achieved;
+                document.getElementById('histTarget').innerText = data.target || "N/A";
+                const p = data.target > 0 ? (data.achieved / data.target) * 100 : 0;
+                document.getElementById('histProgressBar').style.width = Math.min(p, 100) + '%';
+                document.getElementById('histPercent').innerText = Math.round(p) + '%';
+            });
+    }
+</script>
+
+<div class="modal fade" id="kpiModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <form asp-controller="Home" asp-action="UpdateKPI" method="post">
+                <div class="modal-header border-0 pb-0">
+                    <h6 class="fw-bold">Thiết lập mục tiêu</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <input type="number" name="newTarget" class="form-control form-control-lg text-center fw-bold mb-3" value="@target" min="1" required />
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="kpiHistoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h6 class="fw-bold">Lịch sử KPI</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <input type="month" id="historyMonthPicker" class="form-control mb-3" value="@DateTime.Now.ToString("yyyy-MM")" onchange="fetchKpiHistory()" />
+                <h1 class="fw-bold" id="histAchieved">0</h1>
+                <p class="small text-muted mb-3">Học viên đã chốt</p>
+                <div class="kpi-progress mb-2"><div class="kpi-bar" id="histProgressBar" style="width: 0%; background: #0dcaf0;"></div></div>
+                <div class="d-flex justify-content-between small fw-bold">
+                    <span id="histPercent">0%</span>
+                    <span>Mục tiêu: <span id="histTarget">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model ITPRO_CRM.Models.ChienDich
+
+@{
+    ViewData["Title"] = "Cập nhật Chiến dịch: " + Model.TenChienDich;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold text-dark mb-0"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i>HIỆU CHỈNH CHIẾN DỊCH</h4>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm">
+            <i class="fa-solid fa-rotate-left me-1"></i> Hủy thay đổi
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TenChienDich" class="form-label fw-bold small text-muted">Tên chiến dịch</label>
+                            <input asp-for="TenChienDich" class="form-control border-2 shadow-none" required />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LoaiChienDich" class="form-label fw-bold small text-muted">Loại hình</label>
+                            <select asp-for="LoaiChienDich" class="form-select border-2 shadow-none">
+                                <option value="Facebook Ads">📱 Facebook Ads</option>
+                                <option value="Google Ads">🔍 Google Ads</option>
+                                <option value="Tiktok Ads">🎵 Tiktok Ads</option>
+                                <option value="Khác">Khác...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="DangHoatDong" class="form-label fw-bold small text-muted">Trạng thái hiện tại</label>
+                            <select asp-for="DangHoatDong" class="form-select border-2 border-primary shadow-none">
+                                <option value="true">🟢 Đang hoạt động</option>
+                                <option value="false">🔴 Tạm dừng / Kết thúc</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="NganSach" class="form-label fw-bold small text-muted">Ngân sách (VNĐ)</label>
+                            <input asp-for="NganSach" type="number" class="form-control border-2 text-danger fw-bold shadow-none" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MoTa" class="form-label fw-bold small text-muted">Ghi chú chỉnh sửa</label>
+                            <textarea asp-for="MoTa" class="form-control border-2 shadow-none" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-top d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                        <i class="fa-solid fa-floppy-disk me-2"></i> LƯU THAY ĐỔI
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

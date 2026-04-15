@@ -1,0 +1,70 @@
+﻿@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Mở lớp học mới";
+}
+
+<div class="container-fluid px-4 mt-4">
+    <h3 class="fw-bold text-success"><i class="fa-solid fa-plus"></i> Mở Lớp Học Mới</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create" class="card shadow-sm">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="TenLop" class="control-label fw-bold"></label>
+                            <input asp-for="TenLop" class="form-control" placeholder="VD: JAVA-WEB-K15" />
+                            <span asp-validation-for="TenLop" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="HocPhi" class="control-label fw-bold"></label>
+                            <input asp-for="HocPhi" class="form-control" type="number" />
+                            <span asp-validation-for="HocPhi" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="NgayKhaiGiang" class="control-label"></label>
+                            <input asp-for="NgayKhaiGiang" class="form-control" />
+                            <span asp-validation-for="NgayKhaiGiang" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NgayKetThuc" class="control-label"></label>
+                            <input asp-for="NgayKetThuc" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LichHoc" class="control-label"></label>
+                        <input asp-for="LichHoc" class="form-control" placeholder="VD: T2-T4-T6 (19h30)" />
+                        <span asp-validation-for="LichHoc" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="SiSoToiDa" class="control-label"></label>
+                            <input asp-for="SiSoToiDa" class="form-control" value="20" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="TrangThai" class="control-label"></label>
+                            <select asp-for="TrangThai" class="form-select">
+                                <option value="0">Sắp mở</option>
+                                <option value="1">Đang học</option>
+                                <option value="2">Đã kết thúc</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <a asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+                        <button type="submit" class="btn btn-success px-4">Lưu Lớp Học</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,206 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.PhieuThu>
+
+@{
+    ViewData["Title"] = "Quản lý Tài chính";
+    // Tính toán nhanh số liệu để hiển thị lên Dashboard (Demo)
+    var tongDoanhThu = Model.Sum(x => x.SoTien);
+    var giaoDichHomNay = Model.Count(x => x.NgayThu.Date == DateTime.Now.Date);
+}
+
+<style>
+    /* CSS Tùy chỉnh cho giao diện CRM */
+    .crm-card-stat {
+        border: none;
+        border-radius: 12px;
+        transition: transform 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+        .crm-card-stat:hover {
+            transform: translateY(-5px);
+        }
+
+    .table-crm thead th {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .table-crm tbody tr {
+        transition: background 0.2s;
+    }
+
+        .table-crm tbody tr:hover {
+            background-color: #fbfbfb;
+        }
+
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        background-color: #e9ecef;
+        color: #0d6efd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .text-money {
+        font-family: 'Consolas', monospace;
+        font-weight: 700;
+        color: #198754;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        line-height: 32px;
+        text-align: center;
+        border-radius: 6px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card crm-card-stat bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="opacity-75 mb-1">Tổng doanh thu</h6>
+                            <h3 class="fw-bold mb-0">@tongDoanhThu.ToString("#,##0") đ</h3>
+                        </div>
+                        <i class="fa-solid fa-sack-dollar fa-3x opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card crm-card-stat bg-white h-100 border-start border-4 border-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Giao dịch hôm nay</h6>
+                            <h3 class="fw-bold text-dark mb-0">@giaoDichHomNay</h3>
+                        </div>
+                        <div class="icon-shape bg-success bg-opacity-10 text-success rounded-3 p-3">
+                            <i class="fa-solid fa-calendar-day fa-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card crm-card-stat bg-white h-100 border-start border-4 border-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Công nợ (Dự kiến)</h6>
+                            <h3 class="fw-bold text-dark mb-0">0 đ</h3>
+                        </div>
+                        <div class="icon-shape bg-warning bg-opacity-10 text-warning rounded-3 p-3">
+                            <i class="fa-solid fa-file-invoice-dollar fa-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
+            <h5 class="fw-bold text-primary mb-0">
+                <i class="fa-solid fa-list-ul me-2"></i> Lịch sử Thu phí
+            </h5>
+            <div>
+                <button class="btn btn-outline-secondary btn-sm me-2"><i class="fa-solid fa-filter"></i> Lọc</button>
+                <button class="btn btn-outline-success btn-sm me-2"><i class="fa-solid fa-file-excel"></i> Xuất Excel</button>
+                <a asp-action="Create" class="btn btn-primary btn-sm shadow-sm"><i class="fa-solid fa-plus"></i> Tạo Phiếu thu</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-crm align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Mã phiếu</th>
+                        <th>Học viên / Người nộp</th>
+                        <th>Nội dung thu</th>
+                        <th>Số tiền</th>
+                        <th>Hình thức</th>
+                        <th>Ngày nộp</th>
+                        <th class="text-end pe-4">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 text-muted fw-bold">#@item.Id</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle me-3">
+                                        @(item.HocVien?.HoTen?.Substring(0, 1) ?? "K")
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">@(item.HocVien?.HoTen ?? "Khách vãng lai")</div>
+                                        <small class="text-muted" style="font-size: 0.75rem">
+                                            <i class="fa-solid fa-book-open me-1"></i> @(item.LopHoc?.TenLop ?? "Chưa xếp lớp")
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="d-inline-block text-truncate" style="max-width: 200px;" title="@item.NoiDung">
+                                    @item.NoiDung
+                                </span>
+                            </td>
+                            <td>
+                                <span class="text-money">
+                                    @string.Format("{0:N0}", item.SoTien) <span class="small text-muted fw-normal">đ</span>
+                                </span>
+                            </td>
+                            <td>
+                                @if (item.HinhThuc == 1)
+                                {
+                                    <span class="badge bg-success bg-opacity-10 text-success px-2 py-1"><i class="fa-solid fa-money-bill-wave"></i> Tiền mặt</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1"><i class="fa-solid fa-building-columns"></i> Chuyển khoản</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="small">@item.NgayThu.ToString("dd/MM/yyyy")</div>
+                                <div class="text-muted" style="font-size: 0.7rem">Người thu: @(item.NguoiThu ?? "Admin")</div>
+                            </td>
+                            <td class="text-end pe-4">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-light action-btn text-warning" title="Sửa"><i class="fa-solid fa-pen"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-light action-btn text-info" title="Chi tiết"><i class="fa-solid fa-circle-info"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-light action-btn text-danger" title="Xóa"><i class="fa-solid fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-top-0 py-3 d-flex justify-content-between align-items-center">
+            <small class="text-muted">Hiển thị @Model.Count() giao dịch mới nhất</small>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Tiếp</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

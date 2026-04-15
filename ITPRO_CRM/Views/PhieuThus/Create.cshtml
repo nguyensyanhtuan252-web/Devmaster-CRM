@@ -1,0 +1,185 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Lập Phiếu Thu";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="mb-3">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-primary bg-opacity-10 py-3 border-0">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="fa-solid fa-file-invoice-dollar me-2"></i>LẬP PHIẾU THU MỚI
+                    </h5>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fa-solid fa-circle-info me-2 text-muted"></i>Thông tin chứng từ</h6>
+
+                                <div class="mb-3">
+                                    <label asp-for="MaPhieu" class="form-label fw-bold small text-muted"></label>
+                                    <input asp-for="MaPhieu" class="form-control border-2 shadow-none" placeholder="Để trống hệ thống sẽ tự sinh mã (VD: PT2603...)" />
+                                    <span asp-validation-for="MaPhieu" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="NgayThu" class="form-label fw-bold small text-muted"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-2 text-muted"><i class="fa-regular fa-calendar-days"></i></span>
+                                        <input asp-for="NgayThu" class="form-control border-2 shadow-none" />
+                                    </div>
+                                    <span asp-validation-for="NgayThu" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="NguoiThu" class="form-label fw-bold small text-muted"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-2 text-muted"><i class="fa-solid fa-user-pen"></i></span>
+                                        <input asp-for="NguoiThu" class="form-control border-2 shadow-none" value="@Context.Session.GetString("UserName")" placeholder="Tên người lập phiếu..." />
+                                    </div>
+                                    <span asp-validation-for="NguoiThu" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fa-solid fa-money-bill-transfer me-2 text-muted"></i>Chi tiết giao dịch</h6>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-sm-5">
+                                        <label class="form-label fw-bold small text-muted">Mã Học Viên</label>
+                                        <select id="searchMaHV" class="form-select border-2 shadow-none" asp-items="ViewBag.ListMaHV">
+                                            <option value="">-- Gõ mã --</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <label asp-for="HocVienId" class="form-label fw-bold small text-muted">Học Viên <span class="text-danger">*</span></label>
+                                        <select asp-for="HocVienId" class="form-select border-2 shadow-none" asp-items="ViewBag.HocVienId" required>
+                                            <option value="">-- Gõ tên hoặc SĐT --</option>
+                                        </select>
+                                        <span asp-validation-for="HocVienId" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="LopHocId" class="form-label fw-bold small text-muted">Lớp học (Tùy chọn)</label>
+                                    <select asp-for="LopHocId" class="form-select border-2 shadow-none" asp-items="ViewBag.LopHocId">
+                                        <option value="">-- Thu khác / Không gán lớp --</option>
+                                    </select>
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-sm-7">
+                                        <label asp-for="SoTien" class="form-label fw-bold small text-muted">Số tiền thu <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input asp-for="SoTien" type="number" class="form-control border-2 border-success text-success fw-bold text-end shadow-none" required min="0" />
+                                            <span class="input-group-text bg-success text-white fw-bold border-success">VNĐ</span>
+                                        </div>
+                                        <span asp-validation-for="SoTien" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label asp-for="HinhThuc" class="form-label fw-bold small text-muted"></label>
+                                        <select asp-for="HinhThuc" class="form-select border-2 shadow-none">
+                                            <option value="1">💳 Chuyển khoản</option>
+                                            <option value="0">💵 Tiền mặt</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label asp-for="NoiDung" class="form-label fw-bold small text-muted"></label>
+                                    <textarea asp-for="NoiDung" class="form-control border-2 shadow-none" rows="3" placeholder="Ghi rõ lý do thu tiền (VD: Thu học phí tháng 3, Tiền mua giáo trình...)"></textarea>
+                                    <span asp-validation-for="NoiDung" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-3">
+                            <button type="reset" class="btn btn-light rounded-pill px-4 fw-bold">Nhập lại</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                                <i class="fa-solid fa-save me-2"></i> LƯU PHIẾU THU
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <style>
+        /* Tinh chỉnh lại giao diện Select2 cho đẹp và hợp với Bootstrap 5 */
+        .select2-container .select2-selection--single {
+            height: 40px !important;
+            border: 2px solid #dee2e6 !important;
+            border-radius: 6px !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057;
+            font-weight: 500;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // Biến 2 ô thành ô tìm kiếm
+            $('#searchMaHV').select2({
+                placeholder: "",
+                allowClear: true
+            });
+
+            $('#HocVienId').select2({
+                placeholder: "",
+                allowClear: true
+            });
+
+            // ⚡ CHIÊU THỨ 1: Khi chọn Mã -> Tên tự nhảy
+            $('#searchMaHV').on('change', function() {
+                var selectedId = $(this).val();
+                // Nếu có chọn mã và ID khác với ô Tên hiện tại thì ép ô Tên nhảy theo
+                if (selectedId && $('#HocVienId').val() !== selectedId) {
+                    $('#HocVienId').val(selectedId).trigger('change');
+                }
+            });
+
+            // ⚡ CHIÊU THỨ 2: Khi chọn Tên -> Mã tự nhảy
+            $('#HocVienId').on('change', function() {
+                var selectedId = $(this).val();
+                // Nếu có chọn tên và ID khác với ô Mã hiện tại thì ép ô Mã nhảy theo
+                if (selectedId && $('#searchMaHV').val() !== selectedId) {
+                    $('#searchMaHV').val(selectedId).trigger('change');
+                }
+            });
+        });
+    </script>
+}

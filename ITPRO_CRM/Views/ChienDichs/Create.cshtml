@@ -1,0 +1,120 @@
+﻿@model ITPRO_CRM.Models.ChienDich
+
+@{
+    ViewData["Title"] = "Tạo Chiến Dịch Mới";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="mb-3">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-primary bg-opacity-10 py-3 border-0">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="fa-solid fa-bullhorn me-2"></i>TẠO CHIẾN DỊCH MARKETING
+                    </h5>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fa-solid fa-circle-info me-2 text-muted"></i>Thông tin cơ bản</h6>
+
+                                <div class="mb-3">
+                                    <label asp-for="TenChienDich" class="form-label fw-bold small text-muted">Tên chiến dịch <span class="text-danger">*</span></label>
+                                    <input asp-for="TenChienDich" class="form-control border-2 shadow-none" placeholder="VD: Khuyến mãi mùa hè 2026..." required />
+                                    <span asp-validation-for="TenChienDich" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="LoaiChienDich" class="form-label fw-bold small text-muted">Nguồn / Loại chiến dịch</label>
+                                    <select asp-for="LoaiChienDich" class="form-select border-2 shadow-none">
+                                        <option value="Facebook Ads">📱 Facebook Ads</option>
+                                        <option value="Google Ads">🔍 Google Ads</option>
+                                        <option value="Tiktok Ads">🎵 Tiktok Ads</option>
+                                        <option value="Email Marketing">📧 Email Marketing</option>
+                                        <option value="Sự kiện Offline">🎪 Sự kiện Offline (Workshop, Hội thảo)</option>
+                                        <option value="Giới thiệu">🤝 Khách giới thiệu (Referral)</option>
+                                        <option value="Khác">Khác...</option>
+                                    </select>
+                                    <span asp-validation-for="LoaiChienDich" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="MoTa" class="form-label fw-bold small text-muted">Mô tả nội dung / Link đính kèm</label>
+                                    <textarea asp-for="MoTa" class="form-control border-2 shadow-none" rows="4" placeholder="Ghi chú thêm về mục tiêu, đối tượng hướng tới, hoặc dán link Google Drive ảnh/video..."></textarea>
+                                    <span asp-validation-for="MoTa" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="fa-solid fa-calendar-check me-2 text-muted"></i>Kế hoạch & Ngân sách</h6>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label asp-for="NgayBatDau" class="form-label fw-bold small text-muted">Ngày bắt đầu</label>
+                                        <input asp-for="NgayBatDau" type="date" class="form-control border-2 shadow-none" />
+                                        <span asp-validation-for="NgayBatDau" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <label asp-for="NgayKetThuc" class="form-label fw-bold small text-muted">Ngày kết thúc</label>
+                                        <input asp-for="NgayKetThuc" type="date" class="form-control border-2 shadow-none" />
+                                        <span asp-validation-for="NgayKetThuc" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="NganSach" class="form-label fw-bold small text-muted">Ngân sách chi phí dự kiến</label>
+                                    <div class="input-group">
+                                        <input asp-for="NganSach" type="number" class="form-control border-2 border-danger text-danger fw-bold text-end shadow-none" placeholder="0" min="0" />
+                                        <span class="input-group-text bg-danger text-white fw-bold border-danger">VNĐ</span>
+                                    </div>
+                                    <span asp-validation-for="NganSach" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="DoanhThuKyVong" class="form-label fw-bold small text-muted">Doanh thu kỳ vọng mang lại</label>
+                                    <div class="input-group">
+                                        <input asp-for="DoanhThuKyVong" type="number" class="form-control border-2 border-success text-success fw-bold text-end shadow-none" placeholder="0" min="0" />
+                                        <span class="input-group-text bg-success text-white fw-bold border-success">VNĐ</span>
+                                    </div>
+                                    <span asp-validation-for="DoanhThuKyVong" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3 mt-4">
+                                    <label asp-for="DangHoatDong" class="form-label fw-bold small text-muted">Trạng thái chiến dịch</label>
+                                    <select asp-for="DangHoatDong" class="form-select border-2 shadow-none border-primary">
+                                        <option value="true">🟢 Đang hoạt động (Kích hoạt)</option>
+                                        <option value="false">🔴 Bản nháp / Tạm dừng</option>
+                                    </select>
+                                    <span asp-validation-for="DangHoatDong" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-3">
+                            <button type="reset" class="btn btn-light rounded-pill px-4 fw-bold">Nhập lại</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                                <i class="fa-solid fa-rocket me-2"></i> LÊN CHIẾN DỊCH
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

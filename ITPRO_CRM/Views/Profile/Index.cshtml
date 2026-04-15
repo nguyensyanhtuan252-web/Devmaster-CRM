@@ -1,0 +1,214 @@
+﻿@model ITPRO_CRM.Models.NhanVien
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+}
+
+<style>
+    /* 1. Ảnh bìa Gradient sang trọng */
+    .profile-cover {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        height: 160px;
+        border-radius: 15px 15px 0 0;
+        position: relative;
+    }
+
+    /* 2. Avatar đè lên ảnh bìa */
+    .profile-avatar-container {
+        position: absolute;
+        bottom: -50px;
+        left: 40px;
+        border: 5px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    /* 3. Card tổng thể */
+    .profile-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        overflow: hidden; /* Để bo góc ảnh bìa */
+    }
+
+    /* 4. Input đẹp hơn */
+    .form-control-custom {
+        border: 1px solid #e2e8f0;
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+
+        .form-control-custom:focus {
+            background-color: #fff;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+        }
+
+        .form-control-custom:disabled {
+            background-color: #e9ecef;
+            opacity: 0.8;
+        }
+
+    /* 5. Nhãn label */
+    .form-label-custom {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    /* 6. Badge trạng thái */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+</style>
+
+<div class="container py-4">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success border-0 shadow-sm mb-4 d-flex align-items-center">
+            <i class="fa-solid fa-circle-check fs-4 me-3 text-success"></i>
+            <div>
+                <strong>Thành công!</strong> @TempData["Success"]
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 mb-4">
+            <div class="card profile-card bg-white h-100">
+                <div class="profile-cover">
+                    <div class="profile-avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=@Model.HoTen&background=fff&color=1e3c72&size=128&font-size=0.4"
+                             class="rounded-circle" width="100" height="100" alt="Avatar">
+                    </div>
+                </div>
+
+                <div class="card-body pt-5 mt-3 px-4">
+                    <h4 class="fw-bold text-dark mb-1">@Model.HoTen</h4>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge bg-primary me-2">
+                            @if (Model.VaiTro == 0)
+                            {
+                                <i class="fa-solid fa-shield-halved me-1"></i> <span>Administrator</span>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-user-tie me-1"></i> <span>Nhân viên Sale</span>
+                            }
+                        </span>
+
+                        @if (Model.TrangThai)
+                        {
+                            <span class="status-badge status-active">
+                                <i class="fa-solid fa-circle me-1" style="font-size: 8px;"></i> Đang hoạt động
+                            </span>
+                        }
+                    </div>
+
+                    <p class="text-muted small mb-4">
+                        Chào mừng trở lại hệ thống CRM. Hãy cập nhật thông tin cá nhân đầy đủ để công việc thuận tiện hơn.
+                    </p>
+
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold text-muted small">Ngày tham gia</span>
+                        <span class="text-dark small fw-bold">01/01/2026</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <span class="fw-bold text-muted small">Mã nhân viên</span>
+                        <span class="text-dark small fw-bold">#NV-@Model.Id.ToString("D4")</span>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <a asp-action="ChangePassword" class="btn btn-outline-primary py-2 rounded-pill fw-bold">
+                            <i class="fa-solid fa-key me-2"></i> Đổi mật khẩu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card profile-card bg-white h-100">
+                <div class="card-header bg-white py-3 px-4 border-bottom">
+                    <h6 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-user-gear me-2 text-primary"></i> Thông tin chi tiết</h6>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="UpdateProfile" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <h6 class="text-primary fw-bold mb-3 small text-uppercase"><i class="fa-solid fa-lock me-2"></i> Tài khoản đăng nhập</h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Email (User)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0 bg-light text-muted ps-3 rounded-start-3"><i class="fa-solid fa-envelope"></i></span>
+                                    <input type="text" class="form-control form-control-custom border-start-0 rounded-end-3" value="@Model.Email" readonly disabled />
+                                </div>
+                                <div class="form-text ms-2"><i class="fa-solid fa-circle-info me-1"></i> Email không thể thay đổi.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Vai trò hệ thống</label>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0 bg-light text-muted ps-3 rounded-start-3"><i class="fa-solid fa-user-tag"></i></span>
+                                    <input type="text" class="form-control form-control-custom border-start-0 rounded-end-3 text-primary fw-bold"
+                                           value="@(Model.VaiTro == 0 ? "Quản trị viên (Admin)" : "Nhân viên Kinh doanh")" readonly disabled />
+                                </div>
+                            </div>
+
+                            <div class="col-12"><hr class="text-muted opacity-25"></div>
+
+                            <div class="col-12">
+                                <h6 class="text-primary fw-bold mb-3 small text-uppercase"><i class="fa-solid fa-address-card me-2"></i> Thông tin cá nhân</h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Họ và Tên</label>
+                                <input asp-for="HoTen" class="form-control form-control-custom" placeholder="Nhập họ tên đầy đủ..." />
+                                <span asp-validation-for="HoTen" class="text-danger small mt-1 d-block"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label-custom">Số điện thoại</label>
+                                <input asp-for="SoDienThoai" class="form-control form-control-custom" placeholder="Nhập số điện thoại liên hệ..." />
+                                <span asp-validation-for="SoDienThoai" class="text-danger small mt-1 d-block"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label-custom">Giới thiệu bản thân (Bio)</label>
+                                <textarea class="form-control form-control-custom" rows="3" placeholder="Viết vài dòng giới thiệu về bạn..." disabled>Tính năng đang phát triển...</textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-center mt-5">
+                            <button type="reset" class="btn btn-light px-4 py-2 me-3 rounded-pill fw-bold text-muted">Hủy bỏ</button>
+                            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow-sm">
+                                <i class="fa-solid fa-floppy-disk me-2"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

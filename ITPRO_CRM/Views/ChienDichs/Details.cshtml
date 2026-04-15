@@ -1,0 +1,55 @@
+﻿@model ITPRO_CRM.Models.ChienDich
+
+@{
+    ViewData["Title"] = "Chi tiết chiến dịch: " + Model.TenChienDich;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">@Model.TenChienDich</h3>
+            <span class="badge @(Model.DangHoatDong ? "bg-success" : "bg-secondary") rounded-pill px-3 py-2">
+                <i class="fa-solid @(Model.DangHoatDong ? "fa-circle-play" : "fa-circle-stop") me-1"></i>
+                @(Model.DangHoatDong ? "Đang chạy" : "Tạm dừng")
+            </span>
+        </div>
+        <div class="btn-group shadow-sm">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4 fw-bold">Sửa thông tin</a>
+            <button type="button" onclick="window.history.back()" class="btn btn-light border px-4">Quay lại</button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                <div class="text-muted small fw-bold text-uppercase mb-2">Ngân sách đầu tư</div>
+                <h3 class="text-danger fw-bold mb-0">@string.Format("{0:N0}", Model.NganSach) <small class="fs-6">đ</small></h3>
+                <div class="mt-3 p-2 bg-light rounded-3 small text-muted">
+                    <i class="fa-solid fa-clock me-1"></i> Bắt đầu: @Model.NgayBatDau.ToString("dd/MM/yyyy")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                <h6 class="fw-bold border-bottom pb-2 mb-3"><i class="fa-solid fa-circle-info me-2 text-primary"></i>Thông tin bổ sung</h6>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label class="text-muted small fw-bold">LOẠI CHIẾN DỊCH:</label>
+                        <p class="fw-bold text-dark fs-5">@Model.LoaiChienDich</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="text-muted small fw-bold">DOANH THU KỲ VỌNG:</label>
+                        <p class="fw-bold text-success fs-5">@string.Format("{0:N0}", Model.DoanhThuKyVong) đ</p>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-muted small fw-bold">MÔ TẢ CHI TIẾT:</label>
+                        <div class="p-3 bg-light rounded-3 mt-1" style="min-height: 100px;">
+                            @Html.Raw(Model.MoTa?.Replace("\n", "<br/>") ?? "Không có mô tả.")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

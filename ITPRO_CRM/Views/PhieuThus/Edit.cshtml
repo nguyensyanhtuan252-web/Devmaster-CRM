@@ -1,0 +1,70 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Phiếu Thu: " + Model.MaPhieu;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="mb-3">
+                <button type="button" onclick="window.history.back()" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Quay lại
+                </button>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-warning bg-opacity-10 py-3 border-0">
+                    <h5 class="fw-bold text-warning mb-0">
+                        <i class="fa-solid fa-file-pen me-2"></i>HIỆU CHỈNH PHIẾU THU: @Model.MaPhieu
+                    </h5>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="HocVienId" /> <div class="row g-4">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Thông tin gốc</h6>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-muted">Học viên</label>
+                                    <input class="form-control border-2 bg-light shadow-none" value="@Model.HocVien?.HoTen" readonly />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="NgayThu" class="form-label fw-bold small text-muted">Ngày thu</label>
+                                    <input asp-for="NgayThu" class="form-control border-2 shadow-none" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Nội dung chỉnh sửa</h6>
+                                <div class="mb-3">
+                                    <label asp-for="SoTien" class="form-label fw-bold small text-muted">Số tiền (VNĐ)</label>
+                                    <input asp-for="SoTien" type="number" class="form-control border-2 border-success text-success fw-bold shadow-none" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="HinhThuc" class="form-label fw-bold small text-muted">Hình thức</label>
+                                    <select asp-for="HinhThuc" class="form-select border-2 shadow-none">
+                                        <option value="1">💳 Chuyển khoản</option>
+                                        <option value="0">💵 Tiền mặt</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="NoiDung" class="form-label fw-bold small text-muted">Lý do điều chỉnh</label>
+                                <textarea asp-for="NoiDung" class="form-control border-2 shadow-none" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-3">
+                            <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold shadow-sm text-dark">
+                                <i class="fa-solid fa-check me-2"></i> XÁC NHẬN CẬP NHẬT
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

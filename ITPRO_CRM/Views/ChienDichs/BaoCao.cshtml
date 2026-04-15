@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Báo cáo Hiệu quả Chiến dịch";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-primary"><i class="fa-solid fa-chart-line"></i> Hiệu quả Marketing (ROI)</h3>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 fw-bold text-dark">So sánh: Chi phí Quảng cáo vs Doanh thu Học phí</h6>
+        </div>
+        <div class="card-body">
+            <canvas id="roiChart" width="100%" height="40"></canvas>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fa-solid fa-info-circle"></i> <strong>Cách tính:</strong>
+        Doanh thu được tính bằng tổng học phí của tất cả học viên đăng ký từ chiến dịch đó (Dựa trên lớp học họ đã xếp).
+    </div>
+</div>
+
+<script>
+    // Nhận dữ liệu từ Controller
+    var labels = @Html.Raw(ViewBag.ChartLabel);
+    var dataChiPhi = @Html.Raw(ViewBag.ChartChiPhi);
+    var dataDoanhThu = @Html.Raw(ViewBag.ChartDoanhThu);
+
+    var ctx = document.getElementById("roiChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'bar', // Biểu đồ cột
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Chi phí (Ngân sách)",
+                    backgroundColor: "rgba(220, 53, 69, 0.8)", // Màu đỏ
+                    borderColor: "rgba(220, 53, 69, 1)",
+                    data: dataChiPhi
+                },
+                {
+                    label: "Doanh thu thực tế",
+                    backgroundColor: "rgba(25, 135, 84, 0.8)", // Màu xanh lá
+                    borderColor: "rgba(25, 135, 84, 1)",
+                    data: dataDoanhThu
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            // Format tiền Việt (thêm dấu phẩy)
+                            return value.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,363 @@
+﻿@model ITPRO_CRM.Models.HocVien
+
+@{
+    ViewData["Title"] = "Quản lý Học viên: " + Model.HoTen;
+    var activeTab = TempData["ActiveTab"] as string ?? "finance"; // Mặc định mở tab Tài chính
+
+    // --- XỬ LÝ SỐ LIỆU TÀI CHÍNH ---
+    decimal hocPhiCuaLop = Model.LopHoc?.HocPhi ?? 0;
+    decimal tongDaNop = Model.PhieuThus?.Sum(p => p.SoTien) ?? 0;
+    decimal conNo = hocPhiCuaLop - tongDaNop;
+
+    // Logic cảnh báo tài chính
+    string colorTaiChinh = conNo > 0 ? "danger" : "success";
+    string textTaiChinh = conNo > 0 ? $"Còn nợ {conNo:N0}đ" : "Đã hoàn thành học phí";
+    string iconTaiChinh = conNo > 0 ? "fa-circle-exclamation" : "fa-circle-check";
+
+    // --- XỬ LÝ SỐ LIỆU ĐIỂM DANH ---
+    int tongBuoiDaHoc = Model.DiemDanhs?.Count ?? 0;
+    int soBuoiCoMat = Model.DiemDanhs?.Count(d => d.TrangThai == 1) ?? 0;
+    int soBuoiVang = tongBuoiDaHoc - soBuoiCoMat;
+
+    // Logic cảnh báo học tập
+    string colorHocTap = soBuoiVang >= 3 ? "warning" : "primary";
+    string textHocTap = soBuoiVang >= 3 ? $"Báo động: Vắng {soBuoiVang} buổi" : "Chuyên cần tốt";
+    string iconHocTap = soBuoiVang >= 3 ? "fa-triangle-exclamation" : "fa-user-graduate";
+}
+
+<style>
+    .luxury-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        height: 100%;
+    }
+
+    .nav-tabs .nav-link {
+        color: #64748b;
+        border: none;
+        padding: 12px 20px;
+        font-weight: 600;
+        border-bottom: 3px solid transparent;
+        transition: 0.3s;
+    }
+
+        .nav-tabs .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #2563eb;
+            background: none;
+            border-bottom: 3px solid #2563eb;
+        }
+
+    .info-label {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .info-value {
+        font-size: 1rem;
+        color: #1e293b;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold">
+            <i class="fa-solid fa-arrow-left me-1"></i> Danh sách Học viên
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light border btn-sm rounded-pill px-4 fw-bold shadow-sm">
+            <i class="fa-solid fa-pen me-1"></i> Cập nhật hồ sơ
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="luxury-card d-flex align-items-center">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm me-3" style="width: 70px; height: 70px; font-size: 2rem;">
+                    @(Model.HoTen?.Substring(0, 1) ?? "H")
+                </div>
+                <div>
+                    <h5 class="fw-bold text-dark mb-1">@Model.HoTen</h5>
+
+                    @if (!string.IsNullOrEmpty(Model.MaHocVien))
+                    {
+                        <div class="mb-1">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill shadow-sm px-2 py-1">
+                                <i class="fa-solid fa-id-card-clip me-1"></i> MSHV: @Model.MaHocVien
+                            </span>
+                        </div>
+                    }
+
+                    <span class="badge bg-light text-secondary border border-secondary border-opacity-25 mt-1">
+                        <i class="fa-solid fa-chalkboard-user me-1"></i> @(Model.LopHoc?.TenLop ?? "Chưa có lớp")
+                    </span>
+                    <div class="small text-muted mt-1"><i class="fa-solid fa-phone me-1"></i> @Model.SoDienThoai</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="luxury-card border-bottom border-@colorTaiChinh border-4">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="info-label text-@colorTaiChinh">Trạng thái Học phí</span>
+                    <i class="fa-solid @iconTaiChinh text-@colorTaiChinh fs-5"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-1">@string.Format("{0:N0}", tongDaNop)đ <span class="fs-6 text-muted fw-normal">/ @string.Format("{0:N0}", hocPhiCuaLop)đ</span></h4>
+                <div class="badge bg-@colorTaiChinh bg-opacity-10 text-@colorTaiChinh border border-@colorTaiChinh border-opacity-25">
+                    @textTaiChinh
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="luxury-card border-bottom border-@colorHocTap border-4">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="info-label text-@colorHocTap">Chuyên cần</span>
+                    <i class="fa-solid @iconHocTap text-@colorHocTap fs-5"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-1">@soBuoiCoMat <span class="fs-6 text-muted fw-normal">/ @tongBuoiDaHoc buổi</span></h4>
+                <div class="badge bg-@colorHocTap bg-opacity-10 text-@colorHocTap border border-@colorHocTap border-opacity-25">
+                    @textHocTap
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-white border-bottom pt-3 pb-0 px-4">
+            <ul class="nav nav-tabs" id="studentTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link @(activeTab == "finance" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#finance" type="button">
+                        <i class="fa-solid fa-file-invoice-dollar me-2"></i>Tài chính
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link @(activeTab == "academic" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#academic" type="button">
+                        <i class="fa-solid fa-clipboard-user me-2"></i>Điểm danh
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link @(activeTab == "care" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#care" type="button">
+                        <i class="fa-solid fa-headset me-2"></i>Chăm sóc
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link @(activeTab == "profile" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#profile" type="button">
+                        <i class="fa-solid fa-address-card me-2"></i>Hồ sơ
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4 bg-light">
+            <div class="tab-content">
+
+                <div class="tab-pane fade @(activeTab == "finance" ? "show active" : "")" id="finance">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h6 class="fw-bold text-dark mb-0">Lịch sử nộp học phí</h6>
+                        @if (conNo > 0)
+                        {
+                            <button type="button" class="btn btn-sm btn-success fw-bold rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalThuTien">
+                                <i class="fa-solid fa-plus me-1"></i> Thu thêm tiền
+                            </button>
+                        }
+                    </div>
+
+                    <div class="bg-white rounded-3 shadow-sm overflow-hidden">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Mã Phiếu</th>
+                                    <th>Ngày nộp</th>
+                                    <th>Số tiền</th>
+                                    <th>Hình thức</th>
+                                    <th>Nội dung</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.PhieuThus != null && Model.PhieuThus.Any())
+                                {
+                                    foreach (var pt in Model.PhieuThus.OrderByDescending(p => p.NgayThu))
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-secondary">@(pt.MaPhieu ?? $"PT{pt.Id:0000}")</td>
+                                            <td>@pt.NgayThu.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td class="fw-bold text-success">@string.Format("{0:N0}", pt.SoTien) đ</td>
+                                            <td>
+                                                @if (pt.HinhThuc == 1)
+                                                {
+                                                    <span class="badge bg-secondary">Tiền mặt</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-info text-dark">Chuyển khoản</span>
+                                                }
+                                            </td>
+                                            <td class="text-muted small">@pt.NoiDung</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="5" class="text-center text-muted py-4">Chưa có lịch sử nộp tiền.</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade @(activeTab == "academic" ? "show active" : "")" id="academic">
+                    <h6 class="fw-bold text-dark mb-4">Lịch sử học tập & Điểm danh</h6>
+                    <div class="bg-white rounded-3 shadow-sm overflow-hidden p-3">
+                        @if (Model.DiemDanhs != null && Model.DiemDanhs.Any())
+                        {
+                            <div class="row g-2">
+                                @foreach (var dd in Model.DiemDanhs.OrderBy(d => d.NgayDiemDanh))
+                                {
+                                    <div class="col-md-3">
+                                        <div class="border rounded p-2 text-center" style="background: @(dd.TrangThai == 1 ? "#f0fdf4" : "#fef2f2"); border-color: @(dd.TrangThai == 1 ? "#bbf7d0" : "#fecaca") !important;">
+                                            <div class="small fw-bold text-muted mb-1">@dd.NgayDiemDanh.ToString("dd/MM/yyyy")</div>
+                                            @if (dd.TrangThai == 1)
+                                            {
+                                                <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i> Có mặt</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger"><i class="fa-solid fa-xmark me-1"></i> Vắng</span>
+                                            }
+                                            <div class="small text-muted mt-1" style="font-size: 0.7rem;">@(string.IsNullOrEmpty(dd.GhiChu) ? "-" : dd.GhiChu)</div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center text-muted py-4">Học viên này chưa có dữ liệu điểm danh.</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="tab-pane fade @(activeTab == "care" ? "show active" : "")" id="care">
+                    <div class="bg-white p-4 rounded-3 shadow-sm mb-4 border-top border-primary border-4">
+                        <h6 class="fw-bold text-primary mb-3"><i class="fa-solid fa-pen-to-square me-2"></i>Ghi nhận Chăm sóc / Phản hồi</h6>
+                        <form asp-action="AddNote" method="post">
+                            <input type="hidden" name="HocVienId" value="@Model.Id" />
+                            <div class="row g-2">
+                                <div class="col-md-2">
+                                    <select name="HinhThuc" class="form-select shadow-none">
+                                        <option value="Hỗ trợ học tập">Hỗ trợ học tập</option>
+                                        <option value="Nhắc học phí">Nhắc học phí</option>
+                                        <option value="Phản hồi/Khiếu nại">Khách phàn nàn</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <input name="NoiDung" class="form-control shadow-none" placeholder="Nội dung chăm sóc..." required />
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group" title="Hẹn lịch gọi lại">
+                                        <span class="input-group-text bg-light text-primary border-primary border-opacity-25"><i class="fa-regular fa-clock"></i></span>
+                                        <input type="datetime-local" name="NgayHen" class="form-control border-primary border-opacity-25 shadow-none" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">Lưu phản hồi</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="px-2">
+                        @if (Model.LichSuTuVans != null && Model.LichSuTuVans.Count > 0)
+                        {
+                            foreach (var item in Model.LichSuTuVans.OrderByDescending(x => x.NgayTuVan))
+                            {
+                                <div class="d-flex mb-3 align-items-start">
+                                    <div class="text-center me-3" style="width: 60px;">
+                                        <div class="bg-white rounded shadow-sm py-1 border border-light">
+                                            <small class="d-block fw-bold text-dark">@item.NgayTuVan.ToString("dd/MM")</small>
+                                            <small class="text-muted" style="font-size: 0.7rem;">@item.NgayTuVan.ToString("HH:mm")</small>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 bg-white p-3 rounded-3 shadow-sm border-start border-3 border-secondary">
+                                        <strong class="text-primary small">@item.HinhThuc</strong>
+                                        <p class="mb-0 small mt-1 text-dark">@item.NoiDung</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="tab-pane fade @(activeTab == "profile" ? "show active" : "")" id="profile">
+                    <div class="bg-white p-4 rounded-3 shadow-sm">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-uppercase text-muted small border-bottom pb-2 mb-3">Thông tin liên lạc</h6>
+                                <div class="mb-3"><div class="info-label">Email</div><div class="info-value">@(string.IsNullOrEmpty(Model.Email) ? "--" : Model.Email)</div></div>
+                                <div class="mb-3"><div class="info-label">Ngày sinh</div><div class="info-value">@(Model.NgaySinh.ToString("dd/MM/yyyy") == "01/01/0001" ? "--" : Model.NgaySinh.ToString("dd/MM/yyyy"))</div></div>
+                                <div class="mb-3"><div class="info-label">Địa chỉ</div><div class="info-value">@(string.IsNullOrEmpty(Model.DiaChi) ? "--" : Model.DiaChi)</div></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-bold text-uppercase text-muted small border-bottom pb-2 mb-3">Thông tin Công việc/Học tập</h6>
+                                <div class="mb-3"><div class="info-label">Trường học / Công ty</div><div class="info-value">@(string.IsNullOrEmpty(Model.TruongHoc) ? "--" : Model.TruongHoc)</div></div>
+                                <div class="mb-3"><div class="info-label">Chuyên ngành</div><div class="info-value">@(string.IsNullOrEmpty(Model.NganhHoc) ? "--" : Model.NganhHoc)</div></div>
+                                <div class="mb-3"><div class="info-label">Mục tiêu ban đầu</div><div class="info-value">@(string.IsNullOrEmpty(Model.MucTieuHocTap) ? "--" : Model.MucTieuHocTap)</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="modalThuTien" tabindex="-1" aria-labelledby="modalThuTienLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg rounded-4">
+                            <form asp-controller="HocViens" asp-action="ThemPhieuThu" method="post">
+                                <input type="hidden" name="HocVienId" value="@Model.Id" />
+
+                                <div class="modal-header bg-success text-white border-0 rounded-top-4">
+                                    <h5 class="modal-title fw-bold" id="modalThuTienLabel"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Tạo phiếu thu mới</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body p-4 bg-light">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold text-secondary small">Số tiền thu (VNĐ)</label>
+                                        <input type="number" name="SoTien" class="form-control fw-bold text-success fs-5" value="@conNo" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold text-secondary small">Hình thức thanh toán</label>
+                                        <select name="HinhThuc" class="form-select">
+                                            <option value="2">🏦 Chuyển khoản ngân hàng</option>
+                                            <option value="1">💵 Tiền mặt</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label class="form-label fw-bold text-secondary small">Nội dung thu</label>
+                                        <input type="text" name="NoiDung" class="form-control" value="Thu học phí đợt tiếp theo" required />
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                                    <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="submit" class="btn btn-success fw-bold rounded-pill px-4 shadow-sm"><i class="fa-solid fa-check me-1"></i> Lưu phiếu thu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
