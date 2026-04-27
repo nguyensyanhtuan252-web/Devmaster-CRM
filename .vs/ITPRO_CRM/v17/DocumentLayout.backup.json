@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,16 +23,12 @@
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\hocvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -72,10 +76,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\calageen..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro\\itpro_crm\\itpro_crm\\views\\cauhinhs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -360,7 +360,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 281,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -368,72 +368,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "HocViensController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HocViensController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HocViensController.cs",
               "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HocViensController.cs",
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\HocViensController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAmwDQAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAJUCAAAAAAAAAAAkwAQAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-03T01:45:55.808Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HomeController.cs",
               "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HomeController.cs",
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAYwHYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-23T07:14:55.946Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 2,
               "Title": "BaoCaosController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\BaoCaosController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\BaoCaosController.cs",
               "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\BaoCaosController.cs",
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\BaoCaosController.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAowEAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAowEAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-28T04:14:53.804Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAAAAKYAAAAOAAAAAAAAAA==",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml*",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml*",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAALIAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-03-10T03:41:05.589Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
               "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
               "RelativeToolTip": "ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
-              "ViewState": "AgIAADkAAAAAAAAAAAAAAMAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAMAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-01-28T04:19:32.879Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "HocVien.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\HocVien.cs",
@@ -441,21 +441,19 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\HocVien.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:24:00.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:24:00.271Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "AccessController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\AccessController.cs",
               "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\AccessController.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAqwC8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T06:43:24.018Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T06:43:24.018Z"
             },
             {
               "$type": "Document",
@@ -467,12 +465,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
               "ViewState": "AgIAAAUAAAAAAAAAAAAowCMAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T03:35:02.951Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T03:35:02.951Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Home\\Index.cshtml",
@@ -480,12 +477,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAEkBAAAAAAAAAAAAAEkBAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T07:18:23.403Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T07:18:23.403Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
@@ -493,12 +489,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
               "ViewState": "AgIAACkAAAAAAAAAAAAYwD0AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T09:16:56.862Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T09:16:56.862Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "LopHoc.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Models\\LopHoc.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\LopHoc.cs",
@@ -506,12 +501,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\LopHoc.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAxwEgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-03T03:04:06.097Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-03T03:04:06.097Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Privacy.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Home\\Privacy.cshtml",
@@ -519,12 +513,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Home\\Privacy.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-26T07:30:59.813Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T07:30:59.813Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
@@ -532,12 +525,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T03:29:35.152Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:29:35.152Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ChienDichsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ChienDichsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
@@ -545,12 +537,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
               "ViewState": "AgIAAGsAAAAAAAAAAAAqwK4AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T02:01:40.05Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T02:01:40.05Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "site.css",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "ITPRO_CRM\\wwwroot\\css\\site.css",
@@ -558,12 +549,11 @@
               "RelativeToolTip": "ITPRO_CRM\\wwwroot\\css\\site.css",
               "ViewState": "AgIAAIwAAAAAAAAAAAAmwLAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-03-10T03:40:35.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T03:40:35.353Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "DiemDanhsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
@@ -571,12 +561,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
               "ViewState": "AgIAAEUAAAAAAAAAAIBJwF0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T03:58:53.552Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:58:53.552Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
@@ -584,8 +573,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
               "ViewState": "AgIAADQAAAAAAAAAAAAmwFQAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-28T01:42:09.498Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-28T01:42:09.498Z"
             },
             {
               "$type": "Document",
@@ -597,12 +585,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
               "ViewState": "AgIAACcAAAAAAAAAAAAowEUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-04T02:19:22.879Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T02:19:22.879Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
@@ -610,12 +597,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
               "ViewState": "AgIAAKAAAAAAAAAAAAAYwMQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T03:44:29.501Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:44:29.501Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "ITPRO_CRMContext.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO\\ITPRO_CRM\\ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
@@ -623,8 +609,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T04:10:03.64Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T04:10:03.64Z"
             },
             {
               "$type": "Document",
@@ -636,8 +621,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
               "ViewState": "AgIAAAQAAAAAAAAAAAAcwDMAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T03:43:35.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:43:35.446Z"
             },
             {
               "$type": "Document",
@@ -649,8 +633,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
               "ViewState": "AgIAAGIAAAAAAAAAAAAiwHoAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T03:22:42.512Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:22:42.512Z"
             },
             {
               "$type": "Document",
@@ -662,12 +645,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
               "ViewState": "AgIAABQAAAAAAAAAAAAowDIAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-04T02:19:18.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T02:19:18.933Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "calageen..sql",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\calageen..sql",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\calageen..sql",
@@ -686,8 +668,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\CauHinhs\\Index.cshtml",
               "ViewState": "AgIAAIcAAAAAAAAAAAAowKUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-04T01:18:27.358Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T01:18:27.358Z"
             },
             {
               "$type": "Document",
@@ -699,8 +680,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
               "ViewState": "AgIAAFIAAAAAAAAAAAAowGIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T03:24:08.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T03:24:08.185Z"
             },
             {
               "$type": "Document",
@@ -712,8 +692,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
               "ViewState": "AgIAABgAAAAAAAAAAAAowDYAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T03:47:40.198Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T03:47:40.198Z"
             },
             {
               "$type": "Document",
@@ -725,8 +704,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
               "ViewState": "AgIAACAAAAAAAAAAAAAcwEAAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T03:34:17.436Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T03:34:17.436Z"
             },
             {
               "$type": "Document",
@@ -738,8 +716,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAIBJwBgAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T03:35:13.45Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T03:35:13.45Z"
             },
             {
               "$type": "Document",
@@ -751,8 +728,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\PhieuThu.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAkwC4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-28T02:16:54.525Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-28T02:16:54.525Z"
             },
             {
               "$type": "Document",
@@ -764,8 +740,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
               "ViewState": "AgIAAB0AAAAAAAAAAAAMwDMAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T06:32:32.023Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T06:32:32.023Z"
             },
             {
               "$type": "Document",
@@ -777,8 +752,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\PhieuThusController.cs",
               "ViewState": "AgIAAEAAAAAAAAAAAAAkwDoAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-28T02:19:19.413Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-28T02:19:19.413Z"
             },
             {
               "$type": "Document",
@@ -790,8 +764,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
               "ViewState": "AgIAADoAAAAAAAAAAAAcwEwAAACFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-04T02:19:16.41Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T02:19:16.41Z"
             },
             {
               "$type": "Document",
@@ -803,8 +776,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\ChienDich.cs",
               "ViewState": "AgIAABUAAAAAAAAAAAAIwCMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T01:57:12.879Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T01:57:12.879Z"
             },
             {
               "$type": "Document",
@@ -816,8 +788,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
               "ViewState": "AgIAAEoAAAAAAAAAAAAowGgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-03T02:56:57.456Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-03T02:56:57.456Z"
             },
             {
               "$type": "Document",
@@ -829,8 +800,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
               "ViewState": "AgIAANcAAAAAAAAAAAAMwPIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T05:42:16.261Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:42:16.261Z"
             },
             {
               "$type": "Document",
@@ -842,8 +812,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260306020712_ThemMaHocVien.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAuwBUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T02:07:13.351Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T02:07:13.351Z"
             },
             {
               "$type": "Document",
@@ -855,8 +824,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\NhanVien.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAIwCIAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T06:54:10.467Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T06:54:10.467Z"
             },
             {
               "$type": "Document",
@@ -868,8 +836,7 @@
               "RelativeToolTip": "ITPRO_CRM\\ITPRO_CRM.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T02:08:44.288Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-05T02:08:44.288Z"
             },
             {
               "$type": "Document",
@@ -925,8 +892,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260204023556_InitialCreate.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-04T02:35:56.882Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T02:35:56.882Z"
             },
             {
               "$type": "Document",
@@ -978,8 +944,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
               "ViewState": "AgIAACoAAAAAAAAAAAAEwDYAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-28T02:24:21.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-28T02:24:21.145Z"
             },
             {
               "$type": "Document",
@@ -991,8 +956,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-02T04:27:48.55Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-02T04:27:48.55Z"
             },
             {
               "$type": "Document",
@@ -1004,8 +968,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\CauHinhsController.cs",
               "ViewState": "AgIAADwBAAAAAAAAAAAmwEYBAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-28T04:22:51.337Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-28T04:22:51.337Z"
             },
             {
               "$type": "Document",
@@ -1028,8 +991,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
               "ViewState": "AgIAAFAAAAAAAAAAAAAcwHMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-26T04:04:37.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-26T04:04:37.138Z"
             },
             {
               "$type": "Document",
@@ -1041,8 +1003,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
               "ViewState": "AgIAAEkAAAAAAAAAAAAcwFcAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T10:02:55.784Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T10:02:55.784Z"
             },
             {
               "$type": "Document",
@@ -1054,8 +1015,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\CauHinhs\\Edit.cshtml",
               "ViewState": "AgIAAH4AAAAAAAAAAAAuwKwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-04T01:24:37.971Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-04T01:24:37.971Z"
             },
             {
               "$type": "Document",
@@ -1067,8 +1027,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T02:51:01.757Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T02:51:01.757Z"
             },
             {
               "$type": "Document",
@@ -1135,8 +1094,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\ProfileController.cs",
               "ViewState": "AgIAADEAAAAAAAAAAAAuwFcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-30T03:05:54.77Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T03:05:54.77Z"
             },
             {
               "$type": "Document",
@@ -1148,8 +1106,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Profile\\ChangePassword.cshtml",
               "ViewState": "AgIAAGAAAAAAAAAAAIBZwLAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T03:07:16.924Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T03:07:16.924Z"
             },
             {
               "$type": "Document",
@@ -1172,8 +1129,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\LichSuTuVan.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAowB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:51:04.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:51:04.305Z"
             },
             {
               "$type": "Document",
@@ -1196,8 +1152,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T03:36:24.678Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T03:36:24.678Z"
             },
             {
               "$type": "Document",
@@ -1209,8 +1164,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Profile\\Index.cshtml",
               "ViewState": "AgIAAK8AAAAAAAAAAAAuwNUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T03:06:49.436Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T03:06:49.436Z"
             },
             {
               "$type": "Document",
@@ -1222,8 +1176,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LichSuTuVans\\Delete.cshtml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAYwBoAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T02:30:33.928Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T02:30:33.928Z"
             },
             {
               "$type": "Document",
@@ -1235,8 +1188,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LichSuTuVans\\Details.cshtml",
               "ViewState": "AgIAAAsAAAAAAAAAAAAYwBwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T02:30:42.583Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T02:30:42.583Z"
             },
             {
               "$type": "Document",
@@ -1248,8 +1200,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LichSuTuVans\\Index.cshtml",
               "ViewState": "AgIAAAcAAAAAAAAAAAAYwBUAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T02:31:02.231Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T02:31:02.231Z"
             },
             {
               "$type": "Document",
@@ -1261,8 +1212,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LichSuTuVans\\Edit.cshtml",
               "ViewState": "AgIAAAwAAAAAAAAAAAAYwBwAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-30T02:30:52.551Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-30T02:30:52.551Z"
             },
             {
               "$type": "Document",
@@ -1274,8 +1224,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LichSuTuVans\\Create.cshtml",
               "ViewState": "AgIAAAsAAAAAAAAAAAAYwBsAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T01:43:23.603Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T01:43:23.603Z"
             },
             {
               "$type": "Document",
@@ -1296,8 +1245,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\LichSuTuVansController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:55:19.133Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:55:19.133Z"
             },
             {
               "$type": "Document",
@@ -1309,8 +1257,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\LopHocsController.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAowCsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:12:51.227Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:12:51.227Z"
             },
             {
               "$type": "Document",
@@ -1340,8 +1287,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Access\\Login.cshtml",
               "ViewState": "AgIAAJIAAAAAAAAAAADwv6wAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T06:44:20.453Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T06:44:20.453Z"
             },
             {
               "$type": "Document",
@@ -1353,8 +1299,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\DiemDanh.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T03:57:35.904Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:57:35.904Z"
             },
             {
               "$type": "Document",
@@ -1366,8 +1311,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
               "ViewState": "AgIAADEAAAAAAAAAAAAUwEUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T03:19:09.807Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:19:09.807Z"
             },
             {
               "$type": "Document",
@@ -1379,8 +1323,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
               "ViewState": "AgIAAJMAAAAAAAAAAAAAwLgAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T03:02:08.822Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T03:02:08.822Z"
             },
             {
               "$type": "Document",
@@ -1392,8 +1335,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
               "ViewState": "AgIAACgAAAAAAAAAAAAAwEwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T02:50:45.729Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T02:50:45.729Z"
             },
             {
               "$type": "Document",
@@ -1405,8 +1347,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\KhoaHocs\\Index.cshtml",
               "ViewState": "AgIAADgAAAAAAAAAAADwv0wAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T08:18:26.809Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T08:18:26.809Z"
             },
             {
               "$type": "Document",
@@ -1418,8 +1359,7 @@
               "RelativeToolTip": "..\\..\\..\\..\\Users\\tuan252\\.nuget\\packages\\epplus\\8.4.1\\readme.txt",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-01-23T08:37:54.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T08:37:54.286Z"
             },
             {
               "$type": "Document",
@@ -1431,8 +1371,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\KhoaHocsController.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAswFgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T08:14:59.466Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T08:14:59.466Z"
             },
             {
               "$type": "Document",
@@ -1444,8 +1383,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\KhoaHocs\\Create.cshtml",
               "ViewState": "AgIAAAEAAAAAAAAAAADwvz0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-23T08:16:27.755Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T08:16:27.755Z"
             },
             {
               "$type": "Document",
@@ -1457,8 +1395,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\KhoaHoc.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAADwvx4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:01:21.208Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:01:21.208Z"
             },
             {
               "$type": "Document",
@@ -1470,8 +1407,7 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\ErrorViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-23T05:00:57.769Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T05:00:57.769Z"
             },
             {
               "$type": "Document",
@@ -1483,8 +1419,7 @@
               "RelativeToolTip": "ITPRO_CRM\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-01-23T04:48:38.369Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-23T04:48:38.369Z"
             }
           ]
         },
@@ -1499,14 +1434,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }

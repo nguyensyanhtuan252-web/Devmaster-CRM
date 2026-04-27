@@ -271,3 +271,4 @@ C:\TT Đồ án\DoAn\ITPRO\ITPRO_CRM\ITPRO_CRM\bin\Debug\net8.0\ExcelNumberForma
 C:\TT Đồ án\DoAn\ITPRO\ITPRO_CRM\ITPRO_CRM\bin\Debug\net8.0\RBush.dll
 C:\TT Đồ án\DoAn\ITPRO\ITPRO_CRM\ITPRO_CRM\bin\Debug\net8.0\SixLabors.Fonts.dll
 C:\TT Đồ án\DoAn\ITPRO\ITPRO_CRM\ITPRO_CRM\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\TT Đồ án\DoAn\ITPRO\ITPRO_CRM\ITPRO_CRM\obj\Debug\net8.0\ITPRO_CRM.sourcelink.json

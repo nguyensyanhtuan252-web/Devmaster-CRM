@@ -33,7 +33,7 @@ namespace ITPRO_CRM.Controllers
         // 🟢 TIỀM NĂNG (LEADS) -> Trạng thái 0
         public async Task<IActionResult> Leads()
         {
-            ViewData["TitlePage"] = "Danh sách Tiềm năng (Leads)";
+            ViewData["TitlePage"] = "Danh sách Tiềm năng ";
             ViewData["CurrentStatus"] = 0;
 
             // 1. LẤY THÔNG TIN NGƯỜI DÙNG ĐANG ĐĂNG NHẬP
@@ -69,7 +69,7 @@ namespace ITPRO_CRM.Controllers
         // 🟡 CƠ HỘI (PIPELINE) -> Trạng thái 1
         public async Task<IActionResult> Pipeline()
         {
-            ViewData["TitlePage"] = "Cơ hội bán hàng (Pipeline)";
+            ViewData["TitlePage"] = "Danh sách Đang tư vấn";
             ViewData["CurrentStatus"] = 1; // Đánh dấu menu active
 
             var opportunities = await _context.HocVien
