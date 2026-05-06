@@ -31,57 +31,60 @@ namespace ITPRO_CRM.Controllers
 
         // 🟢 TIỀM NĂNG (LEADS) -> Trạng thái 0 (Chưa liên hệ)
         // 🟢 TIỀM NĂNG (LEADS) -> Trạng thái 0
+        // --- DANH SÁCH TIỀM NĂNG (Trạng thái 0) ---
         public async Task<IActionResult> Leads()
         {
-            ViewData["TitlePage"] = "Danh sách Tiềm năng ";
+            ViewData["TitlePage"] = "Danh sách Tiềm năng";
             ViewData["CurrentStatus"] = 0;
 
-            // 1. LẤY THÔNG TIN NGƯỜI DÙNG ĐANG ĐĂNG NHẬP
             var userName = HttpContext.Session.GetString("UserName");
             if (userName == null) return RedirectToAction("Login", "Access");
 
             var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
             int currentUserId = currentEmployee?.Id ?? 0;
-            int role = currentEmployee?.VaiTro ?? 1; // Giả định VaiTro 0 là Admin
+            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
 
-            // 2. TRUY VẤN CÓ PHÂN QUYỀN
-            IQueryable<HocVien> query = _context.HocVien
-                .Where(h => h.TrangThai == 0) // Chỉ lấy trạng thái Tiềm năng
+            // Chỉ lấy Trạng thái 0
+            var query = _context.HocVien
                 .Include(h => h.LopHoc)
                 .Include(h => h.NhanVien)
-                .Include(h => h.ChienDich)
-                .Include(h => h.LichSuTuVans)
                 .Where(h => h.TrangThai == 0);
 
-            // Nếu KHÔNG PHẢI Admin (VaiTro != 0) thì chỉ lấy khách của chính mình
-            if (role != 0)
+            if (!isAdmin)
             {
                 query = query.Where(h => h.NhanVienId == currentUserId);
             }
 
-            var leads = await query
-                .OrderByDescending(h => h.NgayTao)
-                .ToListAsync();
-
+            var leads = await query.OrderByDescending(h => h.NgayTao).ToListAsync();
             return View("Index", leads);
         }
 
-        // 🟡 CƠ HỘI (PIPELINE) -> Trạng thái 1
+        // --- DANH SÁCH ĐANG TƯ VẤN (Trạng thái 1) ---
         public async Task<IActionResult> Pipeline()
         {
             ViewData["TitlePage"] = "Danh sách Đang tư vấn";
-            ViewData["CurrentStatus"] = 1; // Đánh dấu menu active
+            ViewData["CurrentStatus"] = 1;
 
-            var opportunities = await _context.HocVien
-                .Where(h => h.TrangThai == 1) // LỌC CHUẨN: Chỉ lấy số 1
+            var userName = HttpContext.Session.GetString("UserName");
+            if (userName == null) return RedirectToAction("Login", "Access");
+
+            var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
+            int currentUserId = currentEmployee?.Id ?? 0;
+            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+
+            // Chỉ lấy Trạng thái 1
+            var query = _context.HocVien
                 .Include(h => h.LopHoc)
                 .Include(h => h.NhanVien)
-                .Include(h => h.ChienDich)
-                .Include(h => h.LichSuTuVans) // 👉 BỔ SUNG: Kéo theo Lịch sử tư vấn để đếm tương tác
-                .OrderByDescending(h => h.NgayTao)
-                .ToListAsync();
+                .Where(h => h.TrangThai == 1);
 
-            return View("Index", opportunities);
+            if (!isAdmin)
+            {
+                query = query.Where(h => h.NhanVienId == currentUserId);
+            }
+
+            var data = await query.OrderByDescending(h => h.NgayTao).ToListAsync();
+            return View("Index", data);
         }
 
         // 🔵 HỌC VIÊN CHÍNH THỨC -> Trạng thái 2

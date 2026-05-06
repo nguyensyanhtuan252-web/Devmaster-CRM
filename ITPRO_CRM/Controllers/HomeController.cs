@@ -24,55 +24,70 @@ namespace ITPRO_CRM.Controllers
             // 2. LẤY THÔNG TIN NHÂN VIÊN VÀ XÁC ĐỊNH QUYỀN
             var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
             int currentUserId = currentEmployee?.Id ?? 0;
-
-            // Xác định xem có phải Admin không (Dựa vào VaiTro trong DB hoặc Email đặc biệt)
             bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+
+            // Truyền quyền isAdmin sang View để ẩn/hiện nút sửa
+            ViewBag.IsAdmin = isAdmin;
 
             // 3. THIẾT LẬP THỜI GIAN
             var today = DateTime.Today;
             var startOfMonth = new DateTime(today.Year, today.Month, 1);
             var endOfMonth = startOfMonth.AddMonths(1);
 
-            // 4. TÍNH TOÁN KPI (SỐ NHẢY CHUẨN Ở ĐÂY)
+            // 4. TÍNH TOÁN KPI (SỐ LIỆU THỰC TẾ)
             var kpiQuery = _context.HocVien
-                .Where(h => h.TrangThai == 2) // Chỉ đếm "Đã học"
+                .Where(h => h.TrangThai == 2) // Chỉ đếm học viên đã chốt (Học viên chính thức)
                 .Where(h => h.NgayTao >= startOfMonth && h.NgayTao < endOfMonth);
 
-            if (!isAdmin)
-            {
-                // Nếu là Sale: Chỉ đếm khách của mình
-                kpiQuery = kpiQuery.Where(h => h.NhanVienId == currentUserId);
-            }
-            var myNewStudents = await kpiQuery.CountAsync();
+            int myKpiTarget = 0;
+            int myNewStudents = 0;
 
-            // 5. TÍNH TOÁN LEAD TIỀM NĂNG (ĐỒNG BỘ VỚI TRANG DANH SÁCH)
-            var leadQuery = _context.HocVien.Where(h => h.TrangThai == 0 || h.TrangThai == 1);
-            if (!isAdmin)
+            if (isAdmin)
             {
-                leadQuery = leadQuery.Where(h => h.NhanVienId == currentUserId);
-            }
-            var totalLeads = await leadQuery.CountAsync();
+                // 1. Lấy danh sách nhân viên Sale
+                var allSales = await _context.NhanVien.Where(n => n.VaiTro != 0).ToListAsync();
+                ViewBag.AllStaff = allSales;
 
-            // 6. GỬI DỮ LIỆU SANG VIEW
-            int kpiAdminFallback = HttpContext.Session.GetInt32("AdminKPI") ?? 40;
-            int myKpiTarget = currentEmployee?.KpiThang ?? kpiAdminFallback;
+                // 2. TÍNH TOÁN TIẾN ĐỘ TỪNG NGƯỜI: Đếm số học viên đã chốt (Trạng thái 2) của mỗi nhân viên trong tháng
+                var staffProgress = await _context.HocVien
+                    .Where(h => h.TrangThai == 2 && h.NgayTao >= startOfMonth && h.NgayTao < endOfMonth)
+                    .GroupBy(h => h.NhanVienId)
+                    .Select(g => new { StaffId = g.Key, Count = g.Count() })
+                    .ToDictionaryAsync(x => x.StaffId ?? 0, x => x.Count);
+
+                ViewBag.StaffProgress = staffProgress; // Gửi cái này sang View để hiện con số thực tế
+
+                // 3. TÍNH TỔNG KPI TRUNG TÂM: Tổng chỉ tiêu của tất cả nhân viên
+                myKpiTarget = allSales.Sum(n => n.KpiThang ?? 0);
+
+                // 4. TỔNG THỰC TẾ TRUNG TÂM: Tổng số học viên chốt được của cả trung tâm
+                myNewStudents = await kpiQuery.CountAsync();
+            }
+            else
+            {
+                // Nếu là Sale: Chỉ lấy chỉ tiêu và kết quả của cá nhân
+                myKpiTarget = currentEmployee?.KpiThang ?? 0;
+                myNewStudents = await kpiQuery.Where(h => h.NhanVienId == currentUserId).CountAsync();
+            }
 
             ViewBag.MyNewStudents = myNewStudents;
             ViewBag.MyKpiTarget = myKpiTarget;
             ViewBag.KpiPercentage = myKpiTarget > 0 ? (myNewStudents * 100) / myKpiTarget : 0;
-            ViewBag.TotalLeads = totalLeads;
+
+            // 5. TÍNH TOÁN LEAD TIỀM NĂNG (ĐỒNG BỘ VỚI TRANG DANH SÁCH)
+            var leadQuery = _context.HocVien.Where(h => h.TrangThai == 0);
+            if (!isAdmin) leadQuery = leadQuery.Where(h => h.NhanVienId == currentUserId);
+            ViewBag.TotalLeads = await leadQuery.CountAsync();
+
+            // 6. GỬI DỮ LIỆU KHÁC SANG VIEW
             ViewBag.ActiveClasses = await _context.LopHoc.CountAsync(l => l.TrangThai == 1);
 
-            // --- CÁC CHỈ SỐ DOANH THU (Admin thấy hết, Sale thấy cá nhân nếu cần) ---
+            // 7. DOANH THU
             var revQuery = _context.PhieuThu.AsQueryable();
-            // Nếu muốn Sale chỉ thấy doanh thu mình chốt, hãy bỏ comment dòng dưới:
-            // if (!isAdmin) revQuery = revQuery.Where(p => p.HocVien.NhanVienId == currentUserId);
-
             ViewBag.RevenueToday = await revQuery.Where(p => p.NgayThu >= today && p.NgayThu < today.AddDays(1)).SumAsync(p => (decimal?)p.SoTien) ?? 0;
             ViewBag.RevenueMonth = await revQuery.Where(p => p.NgayThu >= startOfMonth && p.NgayThu < endOfMonth).SumAsync(p => (decimal?)p.SoTien) ?? 0;
 
-            // --- DỮ LIỆU BIỂU ĐỒ & LỊCH HẸN ---
-            // (Giữ nguyên logic cũ của bạn vì nó đã chạy ổn)
+            // 8. DỮ LIỆU BIỂU ĐỒ (7 ngày gần nhất)
             var labels7 = new List<string>();
             var data7 = new List<decimal>();
             for (int i = 6; i >= 0; i--)
@@ -84,6 +99,7 @@ namespace ITPRO_CRM.Controllers
             ViewBag.ChartLabels7 = labels7;
             ViewBag.ChartData7 = data7;
 
+            // 9. LỊCH HẸN VÀ DANH SÁCH MỚI
             var dsLichHen = await _context.HocVien
                 .Where(h => h.NgayHen != null && h.NgayHen.Value.Date <= today && h.TrangThai == 1)
                 .Where(h => isAdmin || h.NhanVienId == currentUserId)
@@ -97,23 +113,47 @@ namespace ITPRO_CRM.Controllers
             return View(newStudentsList);
         }
 
-        // Các hàm UpdateKPI và GetKpiHistory giữ nguyên logic isAdmin tương tự
+        // CHỨC NĂNG QUAN TRỌNG: Admin gán KPI cho nhân viên
         [HttpPost]
-        public async Task<IActionResult> UpdateKPI(int newTarget)
+        public async Task<IActionResult> AssignKPI(int staffId, int newKpi)
+        {
+            // Bảo mật: Kiểm tra xem người thực hiện có phải Admin không
+            var userName = HttpContext.Session.GetString("UserName");
+            var currentAdmin = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
+
+            if (currentAdmin == null || currentAdmin.VaiTro != 0)
+            {
+                return Forbid(); // Không có quyền thì cấm thực hiện
+            }
+
+            // Tìm nhân viên cần gán và cập nhật chỉ tiêu
+            var staff = await _context.NhanVien.FindAsync(staffId);
+            if (staff != null && newKpi >= 0)
+            {
+                staff.KpiThang = newKpi;
+                _context.Update(staff);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // Lấy lịch sử KPI tháng bất kỳ (Ajax gọi)
+        [HttpGet]
+        public async Task<JsonResult> GetKpiHistory(int month, int year)
         {
             var userName = HttpContext.Session.GetString("UserName");
             var nv = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
-            if (nv != null && newTarget > 0)
-            {
-                nv.KpiThang = newTarget;
-                _context.Update(nv);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                HttpContext.Session.SetInt32("AdminKPI", newTarget);
-            }
-            return RedirectToAction("Index");
+
+            var start = new DateTime(year, month, 1);
+            var end = start.AddMonths(1);
+
+            var achieved = await _context.HocVien
+                .Where(h => h.TrangThai == 2 && h.NgayTao >= start && h.NgayTao < end)
+                .Where(h => nv.VaiTro == 0 || h.NhanVienId == nv.Id)
+                .CountAsync();
+
+            return Json(new { achieved = achieved, target = (nv.VaiTro == 0 ? 0 : nv.KpiThang) });
         }
     }
 }
