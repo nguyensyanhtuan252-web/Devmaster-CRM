@@ -1,0 +1,467 @@
+﻿@model ITPRO_CRM.Models.MauEmail
+
+@{
+    ViewData["Title"] = "Xác nhận xoá mẫu Email";
+    string badgeClass = Model.LoaiMau switch
+    {
+        "Marketing" => "badge-marketing",
+        "Tài chính" => "badge-taichinh",
+        "Thông báo" => "badge-thongbao",
+        _ => "badge-khac"
+    };
+    string badgeIcon = Model.LoaiMau switch
+    {
+        "Marketing" => "fa-tag",
+        "Tài chính" => "fa-circle-dollar-to-slot",
+        "Thông báo" => "fa-bell",
+        _ => "fa-circle"
+    };
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap');
+
+    .email-page {
+        font-family: 'Sora', sans-serif;
+    }
+
+    /* ── Header ── */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 32px;
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin: 0 0 4px;
+        letter-spacing: -0.3px;
+    }
+
+    .page-subtitle {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .btn-back {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 9px;
+        color: #94a3b8;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        transition: background .2s, color .2s;
+    }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.09);
+            color: #e2e8f0;
+        }
+
+    /* ── Centered layout ── */
+    .delete-wrap {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    /* ── Warning banner ── */
+    .warning-banner {
+        background: rgba(239,68,68,0.07);
+        border: 1px solid rgba(239,68,68,0.18);
+        border-radius: 14px;
+        padding: 22px 24px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 22px;
+    }
+
+    .warning-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(239,68,68,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #f87171;
+        flex-shrink: 0;
+        animation: warnPulse 2.5s ease-in-out infinite;
+    }
+
+    @@keyframes warnPulse {
+        0%, 100%
+
+    {
+        box-shadow: 0 0 0 0 rgba(239,68,68,0);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(239,68,68,0.08);
+    }
+
+    }
+
+    .warning-text h6 {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #fca5a5;
+        margin: 0 0 5px;
+    }
+
+    .warning-text p {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* ── Card preview ── */
+    .card-dark {
+        background: #1a1d2e;
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 14px;
+        padding: 24px;
+        margin-bottom: 18px;
+    }
+
+    .card-section-title {
+        font-size: 0.71rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 0 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .card-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+
+    /* ── Info rows ── */
+    .info-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+    .info-key {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        width: 110px;
+        flex-shrink: 0;
+    }
+
+    .info-val {
+        font-size: 0.84rem;
+        color: #cbd5e1;
+        word-break: break-word;
+        flex: 1;
+    }
+
+        .info-val.mono {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: #a5b4fc;
+        }
+
+    /* Badge */
+    .badge-loai {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 600;
+    }
+
+    .badge-marketing {
+        background: rgba(16,185,129,0.12);
+        color: #34d399;
+    }
+
+    .badge-taichinh {
+        background: rgba(245,158,11,0.12);
+        color: #fbbf24;
+    }
+
+    .badge-thongbao {
+        background: rgba(59,130,246,0.12);
+        color: #60a5fa;
+    }
+
+    .badge-khac {
+        background: rgba(148,163,184,0.10);
+        color: #94a3b8;
+    }
+
+    /* ── Checklist ── */
+    .checklist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+        .checklist li {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+            .checklist li i {
+                color: #ef4444;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+
+    /* ── Confirm input ── */
+    .confirm-block {
+        background: rgba(239,68,68,0.05);
+        border: 1px solid rgba(239,68,68,0.12);
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 18px;
+    }
+
+        .confirm-block label {
+            display: block;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+            .confirm-block label code {
+                font-family: 'IBM Plex Mono', monospace;
+                background: rgba(239,68,68,0.1);
+                color: #fca5a5;
+                border-radius: 4px;
+                padding: 1px 6px;
+                font-size: 0.8rem;
+            }
+
+    .confirm-input {
+        width: 100%;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(239,68,68,0.2);
+        border-radius: 8px;
+        color: #e2e8f0;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.84rem;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color .2s;
+    }
+
+        .confirm-input:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+        }
+
+    /* ── Buttons ── */
+    .action-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-delete-confirm {
+        flex: 1;
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.87rem;
+        font-weight: 700;
+        padding: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        transition: opacity .2s, transform .15s;
+        letter-spacing: 0.3px;
+        opacity: .4;
+        pointer-events: none;
+    }
+
+        .btn-delete-confirm.ready {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+            .btn-delete-confirm.ready:hover {
+                opacity: .88;
+                transform: translateY(-1px);
+            }
+
+    .btn-cancel {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 10px;
+        color: #64748b;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.84rem;
+        padding: 13px 22px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: background .2s, color .2s;
+        white-space: nowrap;
+    }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.09);
+            color: #e2e8f0;
+        }
+</style>
+
+<div class="email-page container-fluid mt-4">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <h5 class="page-title"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>Xác nhận xoá mẫu Email</h5>
+            <p class="page-subtitle">Hành động này không thể hoàn tác sau khi xác nhận</p>
+        </div>
+        <a asp-action="Index" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+    </div>
+
+    <div class="delete-wrap">
+
+        <!-- Warning banner -->
+        <div class="warning-banner">
+            <div class="warning-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="warning-text">
+                <h6>Bạn sắp xoá vĩnh viễn mẫu email này</h6>
+                <p>Mẫu email sau khi xoá sẽ không thể khôi phục. Các chiến dịch email đang sử dụng mẫu này có thể bị ảnh hưởng.</p>
+            </div>
+        </div>
+
+        <!-- Thông tin mẫu sẽ bị xoá -->
+        <div class="card-dark">
+            <p class="card-section-title"><i class="fa-solid fa-file-lines" style="color:#f87171;"></i> Mẫu sẽ bị xoá</p>
+
+            <div class="info-row">
+                <span class="info-key">ID</span>
+                <span class="info-val mono">#@Model.Id</span>
+            </div>
+            <div class="info-row">
+                <span class="info-key">Tên mẫu</span>
+                <span class="info-val mono">@Model.TenMau</span>
+            </div>
+            <div class="info-row">
+                <span class="info-key">Tiêu đề</span>
+                <span class="info-val">@Model.TieuDe</span>
+            </div>
+            <div class="info-row">
+                <span class="info-key">Loại mẫu</span>
+                <span class="info-val">
+                    <span class="badge-loai @badgeClass">
+                        <i class="fa-solid @badgeIcon"></i> @Model.LoaiMau
+                    </span>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="info-key">Ngày tạo</span>
+                <span class="info-val mono">@Model.NgayTao.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+
+        <!-- Cảnh báo hệ quả -->
+        <div class="card-dark">
+            <p class="card-section-title"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Hệ quả khi xoá</p>
+            <ul class="checklist">
+                <li>
+                    <i class="fa-solid fa-xmark-circle"></i>
+                    Mẫu email <strong style="color:#e2e8f0;">@Model.TenMau</strong> sẽ bị xoá khỏi cơ sở dữ liệu hoàn toàn.
+                </li>
+                <li>
+                    <i class="fa-solid fa-xmark-circle"></i>
+                    Không thể sử dụng mã mẫu <code style="font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:#fca5a5;">@Model.TenMau</code> cho chiến dịch mới.
+                </li>
+                <li>
+                    <i class="fa-solid fa-xmark-circle"></i>
+                    Hành động <strong style="color:#fca5a5;">không thể hoàn tác</strong>. Bạn sẽ phải tạo lại từ đầu nếu cần.
+                </li>
+            </ul>
+        </div>
+
+        <!-- Confirm input -->
+        <div class="confirm-block">
+            <label>
+                Nhập chính xác tên mẫu <code>@Model.TenMau</code> để xác nhận xoá:
+            </label>
+            <input type="text" class="confirm-input" id="confirmInput"
+                   placeholder="Nhập tên mẫu để mở khoá nút xoá..." autocomplete="off" />
+        </div>
+
+        <!-- Buttons -->
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="action-row">
+                <button type="submit" class="btn-delete-confirm" id="btnDelete">
+                    <i class="fa-solid fa-trash"></i> XÁC NHẬN XOÁ
+                </button>
+                <a asp-action="Index" class="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i> Huỷ bỏ
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            var expected = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TenMau ?? ""));
+            var input    = document.getElementById('confirmInput');
+            var btn      = document.getElementById('btnDelete');
+
+            input.addEventListener('input', function () {
+                if (this.value.trim() === expected) {
+                    btn.classList.add('ready');
+                } else {
+                    btn.classList.remove('ready');
+                }
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,967 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\detailsstudent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\detailsstudent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\hocvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\hocvienscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\migrations\\20260509080800_capnhathocphivaghichu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\migrations\\20260509080800_capnhathocphivaghichu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\dotthanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\dotthanhtoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\data\\itpro_crmcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\data\\itpro_crmcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\diemdanh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\diemdanh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\mauemails\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\emailmarketing\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\emailmarketing\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\mauemails\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\mauemails\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\phieuthus\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\phieuthuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\phieuthuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\phieuthus\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\phieuthus\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\cauhinhs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\cauhinhs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\cauhinhscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\cauhinhscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\mauemails\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\mauemails\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\emailmarketingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\emailmarketingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\emailmarketing\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\emailmarketing\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\migrations\\20260507104758_addlophocupgrade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\migrations\\20260507104758_addlophocupgrade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\lophoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\lophoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\lophocscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\lophocscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\pipeline.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\pipeline.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\baocao.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\baocao.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\phieuthus\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\phieuthus\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\baocaos\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\baocaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\accesscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 335,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DotThanhToan.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DotThanhToan.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\DotThanhToan.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DotThanhToan.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\DotThanhToan.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAiwBIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T07:44:52.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DiemDanh.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DiemDanh.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\DiemDanh.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DiemDanh.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\DiemDanh.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAkwB8AAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T06:16:24.231Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HocViensController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HocViensController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HocViensController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HocViensController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\HocViensController.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAiwKIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T05:27:42.338Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
+              "ViewState": "AgIAAN8EAAAAAAAAAAAqwPIEAACQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T10:17:53.924Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DetailsStudent.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
+              "ViewState": "AgIAACECAAAAAAAAAAAIwEECAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:59:22.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAqwHIAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:58:54.997Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAOACAAAAAAAAAAAiwAcDAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-09T07:54:04.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAIwH8AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T08:17:05.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20260509080800_CapNhatHocPhiVaGhiChu.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T08:08:00.663Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
+              "ViewState": "AgIAAFwBAAAAAAAAAAAIwHkBAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T02:47:06.835Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ITPRO_CRMContext.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAwwB0AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T04:19:38.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "ViewState": "AgIAAKgCAAAAAAAAAAAIwMgCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:34:24.497Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
+              "ViewState": "AgIAAEMCAAAAAAAAAADwv2sCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T02:53:05.5Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
+              "ViewState": "AgIAAOMBAAAAAAAAAADwvwsCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T02:52:53.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "PhieuThusController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\PhieuThusController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\PhieuThusController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\PhieuThusController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\PhieuThusController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAiwCwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T16:39:00.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
+              "ViewState": "AgIAAPwAAAAAAAAAAAAswBkBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T07:48:50.853Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
+              "ViewState": "AgIAABEBAAAAAAAAAAAqwC4BAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T07:45:19.028Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
+              "ViewState": "AgIAABwBAAAAAAAAAADwv0QBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T16:22:14.296Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
+              "ViewState": "AgIAAAUBAAAAAAAAAAAIwCUBAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T07:42:20.415Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
+              "ViewState": "AgIAAOoAAAAAAAAAAAAuwPUAAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:47:41.688Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAuwGcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T09:00:14.238Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
+              "ViewState": "AgIAAOEAAAAAAAAAAAAqwA4BAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:59:06.956Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "HocVien.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\HocVien.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\HocVien.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAIA+wCcAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T10:23:01.182Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
+              "ViewState": "AgIAAH4BAAAAAAAAAAAawI0BAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T10:44:54.006Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml [Read Only]",
+              "ViewState": "AgIAAM0AAAAAAAAAAADwv+sAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T05:01:31.393Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "CauHinhsController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\CauHinhsController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\CauHinhsController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\CauHinhsController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\CauHinhsController.cs",
+              "ViewState": "AgIAADsBAAAAAAAAAAAqwFgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T04:00:56.058Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml [Read Only]",
+              "ViewState": "AgIAANgAAAAAAAAAAADwv/YAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T05:01:29.819Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T04:02:03.248Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml [Read Only]",
+              "ViewState": "AgIAADoBAAAAAAAAAADwv1gBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T05:01:32.404Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml [Read Only]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T05:01:31.094Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml [Read Only]",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T05:01:31.704Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "EmailMarketingController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAqwLgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T02:48:42.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Profile\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Profile\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Profile\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Profile\\Index.cshtml",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T03:32:15.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAuwBUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T02:55:24.381Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAuwBUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-08T02:55:36.085Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "20260507104758_AddLopHocUpgrade.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T10:47:58.826Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAuwGsAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T16:23:02.676Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
+              "ViewState": "AgIAABECAAAAAAAAAAAwwDQCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T10:45:11.694Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
+              "ViewState": "AgIAAEUBAAAAAAAAAAAwwGoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T10:45:03.411Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAwwJgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T10:44:43.449Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
+              "ViewState": "AgIAAPkAAAAAAAAAAAAwwB4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T10:44:32.647Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "LopHoc.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\LopHoc.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\LopHoc.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\LopHoc.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\LopHoc.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAwwJUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T10:44:08.037Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "LopHocsController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\LopHocsController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\LopHocsController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\LopHocsController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\LopHocsController.cs",
+              "ViewState": "AgIAAMoAAAAAAAAAAADwv+EAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T10:43:33.711Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
+              "ViewState": "AgIAAG4BAAAAAAAAAAAmwJUBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:35:38.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "Pipeline.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T03:10:03.716Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAMECAAAAAAAAAIAwwNkCAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-06T17:02:08.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "BaoCao.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
+              "ViewState": "AgIAACwAAAAAAAAAAAAIwEwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:35:49.117Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:35:06.827Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAuwJcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:34:55.836Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
+              "ViewState": "AgIAACcBAAAAAAAAAAAmwE4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:34:43.737Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
+              "ViewState": "AgIAAPQAAAAAAAAAAAAmwCABAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T07:48:37.457Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAmwHsAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T07:45:45.028Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "BaoCaosController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\BaoCaosController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\BaoCaosController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\BaoCaosController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\BaoCaosController.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAmwFsAAABaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T06:14:09.095Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
+              "ViewState": "AgIAADgFAAAAAAAAAAAIwFgFAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T06:13:17.859Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "BaoCaosController_New.cs",
+              "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs",
+              "ToolTip": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs [Read Only]",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAmwK4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T06:12:49.458Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "ProfileController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ProfileController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ProfileController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ProfileController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ProfileController.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T04:19:28.886Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "AccessController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\AccessController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\AccessController.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T04:19:21.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T04:19:04.104Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 65,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

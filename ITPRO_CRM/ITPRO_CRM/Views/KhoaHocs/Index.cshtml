@@ -1,0 +1,183 @@
+@model IEnumerable<ITPRO_CRM.Models.KhoaHoc>
+
+@{
+    ViewData["Title"] = "Quản lý Khóa học";
+    var total = Model.Count();
+    var active = Model.Count(x => x.TrangThai);
+    var inactive = Model.Count(x => !x.TrangThai);
+    var avgFee = total > 0 ? Model.Average(x => x.HocPhi ?? 0) : 0;
+}
+
+<style>
+    .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+    .page-title { font-size:20px; font-weight:700; color:var(--text); }
+    .page-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+    .stat-strip { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+    .stat-chip { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; flex:1; min-width:140px; }
+    .stat-chip-icon { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .stat-chip-val { font-size:20px; font-weight:700; font-family:'DM Mono',monospace; line-height:1; }
+    .stat-chip-lbl { font-size:11px; color:var(--text2); margin-top:2px; }
+    .filter-bar { display:flex; align-items:center; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+    .filter-bar input { background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:7px 12px; font-size:12.5px; outline:none; width:220px; transition:border-color .15s; }
+    .filter-bar input:focus { border-color:var(--accent); }
+    .filter-bar input::placeholder { color:var(--text3); }
+    .filter-btn { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--surface); color:var(--text2); cursor:pointer; transition:all .13s; }
+    .filter-btn.active, .filter-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .ml-auto { margin-left:auto; }
+    .courses-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+    .course-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:transform .2s,box-shadow .2s,border-color .2s; display:flex; flex-direction:column; }
+    .course-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--border2); }
+    .course-thumb { height:160px; background:linear-gradient(135deg,#1e3a5f,#2563eb); position:relative; overflow:hidden; flex-shrink:0; }
+    .course-thumb img { width:100%; height:100%; object-fit:cover; opacity:.85; }
+    .course-thumb-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:48px; opacity:.3; }
+    .course-thumb-badge { position:absolute; top:10px; right:10px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge-active { background:rgba(63,185,80,.9); color:#fff; }
+    .badge-inactive { background:rgba(139,148,158,.7); color:#fff; }
+    .course-body { padding:16px; flex:1; display:flex; flex-direction:column; }
+    .course-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:8px; line-height:1.4; }
+    .course-meta { display:flex; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+    .course-meta-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text2); }
+    .course-meta-item i { font-size:11px; color:var(--text3); }
+    .course-desc { font-size:12px; color:var(--text2); line-height:1.6; flex:1; margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .course-price { font-size:18px; font-weight:700; font-family:'DM Mono',monospace; color:var(--accent); margin-bottom:14px; }
+    .course-price span { font-size:11px; font-family:'DM Sans',sans-serif; color:var(--text2); font-weight:400; margin-left:2px; }
+    .course-actions { display:flex; gap:6px; padding:12px 16px; border-top:1px solid var(--border); background:var(--surface2); }
+    .btn-ca { flex:1; padding:7px; border-radius:8px; font-size:12px; font-weight:600; text-align:center; border:1px solid var(--border); background:var(--surface); color:var(--text2); text-decoration:none; transition:all .13s; cursor:pointer; display:block; }
+    .btn-ca:hover { background:var(--surface2); color:var(--text); }
+    .btn-ca.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .btn-ca.primary:hover { background:var(--accent-h); }
+    .btn-ca.danger:hover { background:var(--danger-dim); color:var(--danger); border-color:var(--danger); }
+    .add-btn { display:inline-flex; align-items:center; gap:6px; padding:9px 18px; background:var(--accent); color:#fff; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; border:none; cursor:pointer; transition:background .13s; }
+    .add-btn:hover { background:var(--accent-h); color:#fff; }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--text2); grid-column:1 / -1; }
+    .empty-state i { font-size:48px; color:var(--text3); display:block; margin-bottom:16px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <div class="page-title"><i class="fa-solid fa-book-open-reader me-2" style="color:var(--accent)"></i>Quản lý Khóa học</div>
+        <div class="page-sub">Tổng cộng @total khóa học trong hệ thống</div>
+    </div>
+    <a asp-action="Create" class="add-btn">
+        <i class="fa-solid fa-plus"></i> Tạo khóa học mới
+    </a>
+</div>
+
+<div class="stat-strip">
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--accent-dim);color:var(--accent)"><i class="fa-solid fa-layer-group"></i></div>
+        <div><div class="stat-chip-val">@total</div><div class="stat-chip-lbl">Tổng khóa học</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--success-dim);color:var(--success)"><i class="fa-solid fa-circle-check"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--success)">@active</div><div class="stat-chip-lbl">Đang tuyển sinh</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--danger-dim);color:var(--danger)"><i class="fa-solid fa-circle-pause"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--danger)">@inactive</div><div class="stat-chip-lbl">Ngừng tuyển</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--warning-dim);color:var(--warning)"><i class="fa-solid fa-coins"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--warning)">@(avgFee.ToString("N0"))</div><div class="stat-chip-lbl">Học phí TB (đ)</div></div>
+    </div>
+</div>
+
+<div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm tên khóa học..." oninput="filterCourses()">
+    <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">Tất cả (@total)</button>
+    <button class="filter-btn" id="btn-active" onclick="setFilter('active')">Đang tuyển (@active)</button>
+    <button class="filter-btn" id="btn-inactive" onclick="setFilter('inactive')">Ngừng tuyển (@inactive)</button>
+    <div class="ml-auto" style="display:flex;gap:6px">
+        <button class="filter-btn active" onclick="setView('grid')" id="view-grid" title="Dạng lưới"><i class="fa-solid fa-grip"></i></button>
+        <button class="filter-btn" onclick="setView('list')" id="view-list" title="Dạng danh sách"><i class="fa-solid fa-list"></i></button>
+    </div>
+</div>
+
+<div class="courses-grid" id="coursesGrid">
+    @foreach (var item in Model)
+    {
+        <div class="course-card" data-status="@(item.TrangThai ? "active" : "inactive")" data-name="@item.TenKhoaHoc.ToLower()">
+            <div class="course-thumb">
+                @if (!string.IsNullOrEmpty(item.HinhAnh))
+                {
+                    <img src="~/images/@item.HinhAnh" alt="@item.TenKhoaHoc" />
+                }
+                else
+                {
+                    <div class="course-thumb-placeholder">📚</div>
+                }
+                <span class="course-thumb-badge @(item.TrangThai ? "badge-active" : "badge-inactive")">
+                    @(item.TrangThai ? "Đang tuyển sinh" : "Ngừng tuyển")
+                </span>
+            </div>
+            <div class="course-body">
+                <div class="course-name">@item.TenKhoaHoc</div>
+                <div class="course-meta">
+                    @if (item.SoBuoi.HasValue)
+                    {
+                        <span class="course-meta-item"><i class="fa-solid fa-calendar-days"></i> @item.SoBuoi buổi học</span>
+                    }
+                    @if (item.HocPhi.HasValue)
+                    {
+                        <span class="course-meta-item"><i class="fa-solid fa-tag"></i> @item.HocPhi.Value.ToString("N0") đ</span>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(item.MoTa))
+                {
+                    <div class="course-desc">@item.MoTa</div>
+                }
+                else
+                {
+                    <div class="course-desc" style="color:var(--text3);font-style:italic">Chưa có mô tả.</div>
+                }
+                <div class="course-price">
+                    @(item.HocPhi.HasValue ? item.HocPhi.Value.ToString("N0") : "Liên hệ")
+                    @if (item.HocPhi.HasValue) { <span>VNĐ</span> }
+                </div>
+            </div>
+            <div class="course-actions">
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn-ca"><i class="fa-solid fa-eye me-1"></i>Chi tiết</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-ca"><i class="fa-solid fa-pen me-1"></i>Sửa</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-ca danger"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-book-open"></i>
+            <div style="font-size:15px;font-weight:600;margin-bottom:8px">Chưa có khóa học nào</div>
+            <div style="font-size:13px">Nhấn "Tạo khóa học mới" để bắt đầu</div>
+        </div>
+    }
+</div>
+
+<script>
+    let currentFilter = 'all';
+    function filterCourses() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.course-card').forEach(card => {
+            const nameMatch = (card.dataset.name || '').includes(q);
+            const statusMatch = currentFilter === 'all' || card.dataset.status === currentFilter;
+            card.style.display = (nameMatch && statusMatch) ? '' : 'none';
+        });
+    }
+    function setFilter(f) {
+        currentFilter = f;
+        document.querySelectorAll('.filter-btn[id^="btn-"]').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + f).classList.add('active');
+        filterCourses();
+    }
+    function setView(v) {
+        const grid = document.getElementById('coursesGrid');
+        document.getElementById('view-grid').classList.toggle('active', v === 'grid');
+        document.getElementById('view-list').classList.toggle('active', v === 'list');
+        if (v === 'list') {
+            grid.style.gridTemplateColumns = '1fr';
+            document.querySelectorAll('.course-thumb').forEach(t => t.style.display = 'none');
+        } else {
+            grid.style.gridTemplateColumns = '';
+            document.querySelectorAll('.course-thumb').forEach(t => t.style.display = '');
+        }
+    }
+</script>

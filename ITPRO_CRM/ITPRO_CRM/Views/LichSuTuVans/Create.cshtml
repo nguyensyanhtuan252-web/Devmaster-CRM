@@ -1,0 +1,47 @@
+﻿@model ITPRO_CRM.Models.LichSuTuVan
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>LichSuTuVan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NoiDung" class="control-label"></label>
+                <input asp-for="NoiDung" class="form-control" />
+                <span asp-validation-for="NoiDung" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KetQua" class="control-label"></label>
+                <input asp-for="KetQua" class="form-control" />
+                <span asp-validation-for="KetQua" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayTuVan" class="control-label"></label>
+                <input asp-for="NgayTuVan" class="form-control" />
+                <span asp-validation-for="NgayTuVan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HocVienId" class="control-label"></label>
+                <select asp-for="HocVienId" class ="form-control" asp-items="ViewBag.HocVienId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

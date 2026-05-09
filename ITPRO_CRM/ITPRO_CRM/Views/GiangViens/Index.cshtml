@@ -1,0 +1,170 @@
+@model IEnumerable<ITPRO_CRM.Models.GiangVien>
+
+@{
+    ViewData["Title"] = "Đội ngũ Giảng viên";
+    var total = Model.Count();
+    var active = Model.Count(x => x.TrangThai == 1);
+    var inactive = Model.Count(x => x.TrangThai != 1);
+}
+
+<style>
+    .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+    .page-title { font-size:20px; font-weight:700; color:var(--text); }
+    .page-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+    .stat-strip { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+    .stat-chip { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; flex:1; min-width:130px; }
+    .stat-chip-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+    .stat-chip-val { font-size:20px; font-weight:700; font-family:'DM Mono',monospace; line-height:1; }
+    .stat-chip-lbl { font-size:11px; color:var(--text2); margin-top:2px; }
+    .filter-bar { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
+    .filter-bar input { background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:7px 12px; font-size:12.5px; outline:none; width:220px; transition:border-color .15s; }
+    .filter-bar input:focus { border-color:var(--accent); }
+    .filter-bar input::placeholder { color:var(--text3); }
+    .filter-btn { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--surface); color:var(--text2); cursor:pointer; transition:all .13s; }
+    .filter-btn.active,.filter-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .gv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+    /* Teacher card */
+    .gv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; text-align:center; transition:transform .2s,box-shadow .2s,border-color .2s; position:relative; overflow:hidden; }
+    .gv-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--border2); }
+    .gv-card.inactive { opacity:.65; }
+    /* Status indicator strip at top */
+    .gv-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--success); border-radius:3px 3px 0 0; }
+    .gv-card.inactive::before { background:var(--text3); }
+    .gv-avatar-wrap { position:relative; display:inline-block; margin-bottom:12px; }
+    .gv-avatar { width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--border); }
+    .gv-status-dot { position:absolute; bottom:4px; right:4px; width:14px; height:14px; border-radius:50%; border:2px solid var(--surface); }
+    .gv-status-dot.active { background:var(--success); }
+    .gv-status-dot.inactive { background:var(--text3); }
+    .gv-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .gv-major { font-size:12px; font-weight:600; color:var(--accent); margin-bottom:8px; }
+    .gv-degree { font-size:11px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:3px 10px; display:inline-block; color:var(--text2); margin-bottom:10px; }
+    .gv-bio { font-size:12px; color:var(--text2); line-height:1.5; margin-bottom:14px; text-align:left; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .gv-tags { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-bottom:14px; }
+    .gv-tag { font-size:10px; background:var(--accent-dim); color:var(--accent); border-radius:4px; padding:2px 6px; font-weight:600; }
+    .gv-contacts { display:flex; justify-content:center; gap:8px; margin-bottom:12px; }
+    .gv-contact-btn { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); display:flex; align-items:center; justify-content:center; color:var(--text2); text-decoration:none; transition:all .12s; font-size:13px; }
+    .gv-contact-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .gv-actions { display:flex; gap:6px; }
+    .gv-action-btn { flex:1; padding:6px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; text-align:center; text-decoration:none; cursor:pointer; transition:all .12s; }
+    .gv-action-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .gv-action-btn.danger:hover { background:var(--danger-dim); color:var(--danger); border-color:var(--danger); }
+    .add-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:var(--accent); color:#fff; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; border:none; cursor:pointer; transition:background .13s; }
+    .add-btn:hover { background:var(--accent-h); color:#fff; }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--text2); grid-column:1/-1; }
+    .empty-state i { font-size:48px; color:var(--text3); display:block; margin-bottom:16px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <div class="page-title"><i class="fa-solid fa-chalkboard-user me-2" style="color:var(--accent)"></i>Đội ngũ Giảng viên</div>
+        <div class="page-sub">@total giảng viên — @active đang công tác, @inactive đã nghỉ</div>
+    </div>
+    <a asp-action="Create" class="add-btn">
+        <i class="fa-solid fa-user-plus"></i> Thêm Giảng viên
+    </a>
+</div>
+
+<!-- Stats -->
+<div class="stat-strip">
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--accent-dim);color:var(--accent)"><i class="fa-solid fa-users"></i></div>
+        <div><div class="stat-chip-val">@total</div><div class="stat-chip-lbl">Tổng giảng viên</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--success-dim);color:var(--success)"><i class="fa-solid fa-circle-check"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--success)">@active</div><div class="stat-chip-lbl">Đang công tác</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--danger-dim);color:var(--danger)"><i class="fa-solid fa-circle-xmark"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--danger)">@inactive</div><div class="stat-chip-lbl">Đã nghỉ</div></div>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên, chuyên môn..." oninput="filterGV()">
+    <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">Tất cả</button>
+    <button class="filter-btn" id="btn-active" onclick="setFilter('active')">Đang công tác</button>
+    <button class="filter-btn" id="btn-inactive" onclick="setFilter('inactive')">Đã nghỉ</button>
+</div>
+
+<!-- Teacher grid -->
+<div class="gv-grid" id="gvGrid">
+    @foreach (var item in Model)
+    {
+        var avatarUrl = string.IsNullOrEmpty(item.AnhDaiDien)
+            ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(item.HoTen)}&background=1d4ed8&color=fff&size=160"
+            : item.AnhDaiDien;
+        var isActive = item.TrangThai == 1;
+
+        <div class="gv-card @(!isActive ? "inactive" : "")"
+             data-name="@item.HoTen.ToLower()"
+             data-major="@(item.ChuyenMon?.ToLower() ?? "")"
+             data-status="@(isActive ? "active" : "inactive")">
+            <div class="gv-avatar-wrap">
+                <img src="@avatarUrl" class="gv-avatar" alt="@item.HoTen">
+                <span class="gv-status-dot @(isActive ? "active" : "inactive")" title="@(isActive ? "Đang công tác" : "Đã nghỉ")"></span>
+            </div>
+            <div class="gv-name">@item.HoTen</div>
+            @if (!string.IsNullOrEmpty(item.ChuyenMon))
+            {
+                <div class="gv-major">@item.ChuyenMon</div>
+            }
+            @if (!string.IsNullOrEmpty(item.BangCap))
+            {
+                <div class="gv-degree"><i class="fa-solid fa-graduation-cap me-1"></i>@item.BangCap</div>
+            }
+            @if (!string.IsNullOrEmpty(item.KinhNghiem))
+            {
+                <div class="gv-tags">
+                    <span class="gv-tag"><i class="fa-solid fa-briefcase me-1"></i>@item.KinhNghiem</span>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(item.TieuSu))
+            {
+                <div class="gv-bio">@item.TieuSu</div>
+            }
+            <div class="gv-contacts">
+                @if (!string.IsNullOrEmpty(item.Email))
+                {
+                    <a href="mailto:@item.Email" class="gv-contact-btn" title="@item.Email"><i class="fa-solid fa-envelope"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(item.SoDienThoai))
+                {
+                    <a href="tel:@item.SoDienThoai" class="gv-contact-btn" title="@item.SoDienThoai"><i class="fa-solid fa-phone"></i></a>
+                }
+                <a asp-action="Details" asp-route-id="@item.Id" class="gv-contact-btn" title="Xem hồ sơ chi tiết"><i class="fa-solid fa-eye"></i></a>
+            </div>
+            <div class="gv-actions">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="gv-action-btn"><i class="fa-solid fa-pen me-1"></i>Sửa</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="gv-action-btn danger"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <div style="font-size:15px;font-weight:600;margin-bottom:8px">Chưa có giảng viên nào</div>
+            <a asp-action="Create" class="add-btn" style="display:inline-flex;margin-top:12px">Thêm giảng viên đầu tiên</a>
+        </div>
+    }
+</div>
+
+<script>
+    let gvFilter = 'all';
+    function filterGV() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.gv-card').forEach(card => {
+            const nameOk = !q || (card.dataset.name || '').includes(q) || (card.dataset.major || '').includes(q);
+            const statusOk = gvFilter === 'all' || card.dataset.status === gvFilter;
+            card.style.display = (nameOk && statusOk) ? '' : 'none';
+        });
+    }
+    function setFilter(f) {
+        gvFilter = f;
+        document.querySelectorAll('.filter-btn[id^="btn-"]').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-' + f).classList.add('active');
+        filterGV();
+    }
+</script>

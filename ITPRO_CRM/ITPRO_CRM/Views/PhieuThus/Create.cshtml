@@ -1,0 +1,303 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Lập phiếu thu mới";
+    // Mặc định lấy tên người dùng đang đăng nhập làm Người thu (nếu có dùng Session)
+    // var currentUser = Context.Session.GetString("UserName") ?? "Admin";
+    var currentUser = "admin@devmaster.edu.vn"; // Tạm thời theo ảnh của bạn
+}
+
+<style>
+    /* ĐỒNG BỘ DARK/LIGHT MODE */
+    .dm-wrap .card {
+        background-color: var(--surface) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text);
+    }
+
+    .dm-wrap .text-dark {
+        color: var(--text) !important;
+    }
+
+    .dm-wrap .text-muted {
+        color: var(--text2) !important;
+    }
+
+    .dm-wrap .bg-light {
+        background-color: var(--surface2) !important;
+    }
+
+    .dm-wrap .border-bottom {
+        border-bottom-color: var(--border) !important;
+    }
+
+    /* FORM INPUT STYLE */
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13.5px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+        .dm-input:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1) !important;
+        }
+
+        .dm-input:disabled, .dm-input[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: var(--surface) !important;
+        }
+
+        .dm-input::placeholder {
+            color: var(--text3) !important;
+        }
+
+        /* Ô NHẬP TIỀN ĐẶC BIỆT */
+        .dm-input.money-input {
+            text-align: right;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--success) !important;
+            font-family: 'DM Mono', 'Consolas', monospace;
+        }
+
+    .input-group-text.money-addon {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        border-left: none !important;
+        color: var(--text2) !important;
+        font-weight: 600;
+        font-size: 13px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    /* TIÊU ĐỀ SECTION */
+    .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text2);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title i {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .section-title.c-pri i {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+        .section-title.c-suc i {
+            color: var(--success);
+            opacity: 1;
+        }
+
+    label.form-label {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text2) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    /* BUTTONS */
+    .dm-btn-save {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .dm-btn-save:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+</style>
+
+<div class="container py-4 dm-wrap">
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-link text-decoration-none p-0" style="color: var(--text2); font-size: 13px;">
+            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header border-bottom py-3 px-4" style="background-color: transparent;">
+            <h5 class="fw-bold m-0" style="color: var(--accent);">
+                <i class="fa-solid fa-file-invoice-dollar me-2"></i> LẬP PHIẾU THU MỚI
+            </h5>
+        </div>
+
+        <div class="card-body p-4 p-lg-5">
+            <form asp-action="Create" method="post" id="createPhieuThuForm">
+                <div class="row g-5">
+
+                    <div class="col-lg-5">
+                        <div class="p-4 rounded-4" style="background-color: var(--surface2); border: 1px solid var(--border);">
+                            <div class="section-title c-pri">
+                                <i class="fa-solid fa-circle-info"></i> Thông tin chứng từ
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Mã phiếu</label>
+                                <input type="text" class="form-control dm-input" placeholder="Hệ thống tự động sinh (VD: PT2026...)" readonly disabled />
+                                <small class="text-muted" style="font-size: 10px; margin-top: 4px; display: block;">Mã phiếu sẽ được tự tạo sau khi lưu.</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Ngày thu <span class="text-danger">*</span></label>
+                                <input asp-for="NgayThu" type="datetime-local" class="form-control dm-input" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
+                                <span asp-validation-for="NgayThu" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Người thu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text dm-input border-end-0 text-muted"><i class="fa-solid fa-user-check"></i></span>
+                                    <input asp-for="NguoiThu" type="text" class="form-control dm-input border-start-0 ps-0" value="@currentUser" readonly style="background-color: var(--surface2) !important; opacity: 1; font-weight: 600;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="section-title c-suc">
+                            <i class="fa-solid fa-money-check-dollar"></i> Chi tiết giao dịch
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">Học viên / Người nộp <span class="text-danger">*</span></label>
+                                <select asp-for="HocVienId" class="form-select dm-input" asp-items="ViewBag.HocVienId" required>
+                                    <option value="">-- Tìm kiếm hoặc chọn học viên --</option>
+                                </select>
+                                <span asp-validation-for="HocVienId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">Lớp học (Tùy chọn)</label>
+                                <select asp-for="LopHocId" class="form-select dm-input" asp-items="ViewBag.LopHocId">
+                                    <option value="">-- Thu khác / Không gán lớp --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Số tiền thu <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="text" id="SoTienDisplay" class="form-control dm-input money-input border-end-0" placeholder="0" required oninput="formatMoneyInput(this)" />
+                                    <span class="input-group-text money-addon">VNĐ</span>
+
+                                    <input type="hidden" asp-for="SoTien" id="SoTienReal" />
+                                </div>
+                                <span asp-validation-for="SoTien" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Hình thức thanh toán <span class="text-danger">*</span></label>
+                                <select asp-for="HinhThuc" class="form-select dm-input" required>
+                                    <option value="1">💳 Chuyển khoản (Mặc định)</option>
+                                    <option value="0">💵 Tiền mặt</option>
+                                    <option value="2">🏧 Quẹt thẻ POS</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Nội dung / Lý do thu <span class="text-danger">*</span></label>
+                            <textarea asp-for="NoiDung" class="form-control dm-input" rows="3" placeholder="Ghi rõ lý do thu tiền (VD: Thu học phí kỳ 1 lớp CNTT...)" required></textarea>
+                            <span asp-validation-for="NoiDung" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border-color: var(--border); margin: 30px 0;" />
+
+                <div class="d-flex justify-content-end gap-3">
+                    <button type="button" class="dm-btn-cancel" onclick="window.history.back();">Hủy bỏ</button>
+                    <button type="submit" class="dm-btn-save" id="btnSubmit">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> XÁC NHẬN LƯU
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // HÀM TỰ ĐỘNG PHẨY SỐ TIỀN MƯỢT MÀ
+        function formatMoneyInput(input) {
+            // Lấy ID ô ẩn chứa giá trị thật
+            const realInput = document.getElementById('SoTienReal');
+
+            // Xóa mọi ký tự không phải là số
+            let value = input.value.replace(/[^0-9]/g, '');
+
+            if (value === '') {
+                realInput.value = '';
+                input.value = '';
+                return;
+            }
+
+            // Gán số thực vào ô ẩn (VD: 10000000)
+            const numericValue = parseInt(value, 10);
+            realInput.value = numericValue;
+
+            // Hiển thị ra màn hình có dấu phẩy (VD: 10,000,000)
+            input.value = numericValue.toLocaleString('en-US');
+        }
+
+        // CHỐNG DOUBLE CLICK (Tránh sale ấn nút LƯU 2 lần tạo ra 2 phiếu)
+        document.getElementById('createPhieuThuForm').addEventListener('submit', function() {
+            var btn = document.getElementById('btnSubmit');
+            if(this.checkValidity()) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> ĐANG LƯU...';
+                btn.classList.add('disabled');
+            }
+        });
+    </script>
+}

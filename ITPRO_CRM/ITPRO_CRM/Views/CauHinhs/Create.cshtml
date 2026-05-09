@@ -1,0 +1,259 @@
+﻿@model ITPRO_CRM.Models.CauHinh
+
+@{
+    ViewData["Title"] = "Tạo cấu hình hệ thống";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
+    .settings-root {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background: #f0f4f8;
+        min-height: 100vh;
+        padding: 2rem 1.5rem;
+    }
+
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .page-header-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #1e40af, #3b82f6);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(59,130,246,0.4);
+    }
+
+    .page-header h4 {
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        font-size: 1.3rem;
+        letter-spacing: -0.3px;
+    }
+
+    .page-header p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .config-card {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 2px 20px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+        border: 1px solid rgba(226,232,240,0.7);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1.6rem 2rem 1.2rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .section-header-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        flex-shrink: 0;
+    }
+
+    .section-header h6 {
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    .form-body {
+        padding: 1.8rem 2rem;
+    }
+
+    .field-group {
+        margin-bottom: 1.4rem;
+    }
+
+    .field-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .field-label i {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+    .field-input {
+        width: 100%;
+        border-radius: 10px;
+        border: 1.5px solid #e2e8f0;
+        padding: 0.72rem 1rem;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #1e293b;
+        background: #fafbfc;
+        transition: all 0.2s ease;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #3b82f6;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+        }
+
+        .field-input::placeholder {
+            color: #b0bec5;
+            font-weight: 400;
+        }
+
+    .card-footer-actions {
+        background: #f8fafc;
+        border-top: 1px solid #e9eef4;
+        padding: 1.2rem 2rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .btn-cancel {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #64748b;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.6rem 1.4rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.2s;
+    }
+
+        .btn-cancel:hover {
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+    .btn-save {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+        border-radius: 10px;
+        padding: 0.65rem 1.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(59,130,246,0.35);
+    }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            box-shadow: 0 5px 16px rgba(59,130,246,0.45);
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="settings-root">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+
+            <div class="page-header">
+                <div class="page-header-icon">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <div>
+                    <h4>Khởi tạo cấu hình hệ thống</h4>
+                    <p>Nhập thông tin cơ bản để bắt đầu sử dụng hệ thống</p>
+                </div>
+            </div>
+
+            <div class="config-card">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger px-4 pt-3"></div>
+
+                    <div class="section-header">
+                        <div class="section-header-dot"></div>
+                        <h6>Thông tin trung tâm</h6>
+                    </div>
+
+                    <div class="form-body">
+
+                        <div class="field-group">
+                            <label asp-for="TenTrungTam" class="field-label">
+                                <i class="fa-solid fa-landmark"></i> Tên trung tâm / Đơn vị
+                            </label>
+                            <input asp-for="TenTrungTam" class="field-input" placeholder="Ví dụ: ITPRO Academy" />
+                            <span asp-validation-for="TenTrungTam" class="text-danger" style="font-size:0.8rem"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label asp-for="DiaChi" class="field-label">
+                                <i class="fa-solid fa-location-dot"></i> Địa chỉ trụ sở
+                            </label>
+                            <input asp-for="DiaChi" class="field-input" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành phố" />
+                            <span asp-validation-for="DiaChi" class="text-danger" style="font-size:0.8rem"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label asp-for="SoDienThoai" class="field-label">
+                                <i class="fa-solid fa-phone"></i> Hotline liên hệ
+                            </label>
+                            <input asp-for="SoDienThoai" class="field-input" placeholder="09x xxx xxxx" />
+                            <span asp-validation-for="SoDienThoai" class="text-danger" style="font-size:0.8rem"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer-actions">
+                        <a asp-action="Index" class="btn-cancel">
+                            <i class="fa-solid fa-xmark"></i> Hủy bỏ
+                        </a>
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-plus"></i> Tạo cấu hình
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,282 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+
+@{
+    ViewData["Title"] = "Hiệu chỉnh phiếu thu";
+}
+
+<style>
+    /* ĐỒNG BỘ DARK/LIGHT MODE */
+    .dm-wrap .card {
+        background-color: var(--surface) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text);
+    }
+
+    .dm-wrap .text-dark {
+        color: var(--text) !important;
+    }
+
+    .dm-wrap .text-muted {
+        color: var(--text2) !important;
+    }
+
+    .dm-wrap .border-bottom {
+        border-bottom-color: var(--border) !important;
+    }
+
+    /* FORM INPUT STYLE */
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13.5px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+        .dm-input:focus {
+            border-color: var(--warning) !important;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1) !important; /* Glow màu cam khi focus */
+        }
+        /* Style riêng cho các ô read-only (Thông tin gốc) */
+        .dm-input:disabled, .dm-input[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: var(--surface) !important;
+            border-style: dashed !important;
+        }
+
+        /* Ô NHẬP TIỀN ĐẶC BIỆT */
+        .dm-input.money-input {
+            text-align: right;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--success) !important;
+            font-family: 'DM Mono', 'Consolas', monospace;
+        }
+
+    .input-group-text.money-addon {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        border-left: none !important;
+        color: var(--text2) !important;
+        font-weight: 600;
+        font-size: 13px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    /* TIÊU ĐỀ SECTION */
+    .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text2);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title.c-warn i {
+            color: var(--warning);
+            opacity: 1;
+        }
+
+        .section-title.c-pri i {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+    label.form-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    /* BUTTONS */
+    .dm-btn-update {
+        background: var(--warning);
+        color: #000;
+        border: none;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .dm-btn-update:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+            color: #000;
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+</style>
+
+<div class="container py-4 dm-wrap">
+    <div class="mb-3">
+        <button type="button" onclick="window.history.back();" class="dm-btn-cancel py-1 px-3 border-0">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header border-bottom py-3 px-4" style="background-color: transparent;">
+            <h5 class="fw-bold m-0" style="color: var(--warning);">
+                <i class="fa-solid fa-file-pen me-2"></i> HIỆU CHỈNH PHIẾU THU: @Model.MaPhieu
+            </h5>
+        </div>
+
+        <div class="card-body p-4 p-lg-5">
+            <form asp-action="Edit" method="post" id="editPhieuThuForm">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="MaPhieu" />
+                <input type="hidden" asp-for="NguoiThu" />
+                <input type="hidden" asp-for="HocVienId" />
+                <input type="hidden" asp-for="LopHocId" />
+
+                <div class="row g-5 mb-4">
+                    <div class="col-lg-5">
+                        <div class="p-4 rounded-4 h-100" style="background-color: transparent; border: 1px solid var(--border);">
+                            <div class="section-title text-muted">
+                                <i class="fa-solid fa-lock"></i> Thông tin gốc (Không thể sửa)
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Học viên</label>
+                                <input type="text" class="form-control dm-input" value="@(ViewBag.HocVienName ?? "Học viên #" + Model.HocVienId)" readonly />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Lớp học</label>
+                                <input type="text" class="form-control dm-input" value="@(ViewBag.LopHocName ?? "Không gán lớp")" readonly />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Ngày thu gốc</label>
+                                <input asp-for="NgayThu" type="datetime-local" class="form-control dm-input" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="p-4 rounded-4 h-100" style="background-color: var(--surface2); border: 1px solid var(--border);">
+                            <div class="section-title c-warn">
+                                <i class="fa-solid fa-pen-to-square"></i> Nội dung chỉnh sửa
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Số tiền (VNĐ) <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" id="SoTienDisplay" class="form-control dm-input money-input border-end-0" value="@Model.SoTien" required oninput="formatMoneyInput(this)" />
+                                        <span class="input-group-text money-addon">VNĐ</span>
+
+                                        <input type="hidden" asp-for="SoTien" id="SoTienReal" value="@Model.SoTien" />
+                                    </div>
+                                    <span asp-validation-for="SoTien" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Hình thức <span class="text-danger">*</span></label>
+                                    <select asp-for="HinhThuc" class="form-select dm-input" required>
+                                        <option value="1">💳 Chuyển khoản</option>
+                                        <option value="0">💵 Tiền mặt</option>
+                                        <option value="2">🏧 Quẹt thẻ POS</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Lý do điều chỉnh / Nội dung <span class="text-danger">*</span></label>
+                                <textarea asp-for="NoiDung" class="form-control dm-input" rows="4" placeholder="Ghi rõ lý do bạn hiệu chỉnh phiếu thu này..." required></textarea>
+                                <span asp-validation-for="NoiDung" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border-color: var(--border); margin: 30px 0;" />
+
+                <div class="d-flex justify-content-end gap-3">
+                    <button type="button" class="dm-btn-cancel" onclick="window.history.back();">Hủy bỏ</button>
+                    <button type="submit" class="dm-btn-update" id="btnSubmit">
+                        <i class="fa-solid fa-check me-1"></i> XÁC NHẬN CẬP NHẬT
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // HÀM TỰ ĐỘNG PHẨY SỐ TIỀN MƯỢT MÀ
+        function formatMoneyInput(input) {
+            const realInput = document.getElementById('SoTienReal');
+            let value = input.value.replace(/[^0-9]/g, '');
+
+            if (value === '') {
+                realInput.value = '';
+                input.value = '';
+                return;
+            }
+
+            const numericValue = parseInt(value, 10);
+            realInput.value = numericValue;
+            input.value = numericValue.toLocaleString('en-US');
+        }
+
+        // TỰ ĐỘNG FORMAT SỐ TIỀN KHI VỪA MỞ TRANG (LOAD DỮ LIỆU CŨ)
+        document.addEventListener("DOMContentLoaded", function() {
+            const displayInput = document.getElementById('SoTienDisplay');
+            if (displayInput && displayInput.value) {
+                // Định dạng số tiền ban đầu (ví dụ 700000 thành 700,000)
+                const num = parseInt(displayInput.value.replace(/[^0-9]/g, ''), 10);
+                if (!isNaN(num)) {
+                    displayInput.value = num.toLocaleString('en-US');
+                }
+            }
+        });
+
+        // CHỐNG DOUBLE CLICK KHI SUBMIT
+        document.getElementById('editPhieuThuForm').addEventListener('submit', function() {
+            var btn = document.getElementById('btnSubmit');
+            if(this.checkValidity()) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> ĐANG XỬ LÝ...';
+                btn.classList.add('disabled');
+            }
+        });
+    </script>
+}

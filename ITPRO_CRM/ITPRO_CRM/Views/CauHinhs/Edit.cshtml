@@ -1,0 +1,934 @@
+﻿@model ITPRO_CRM.Models.CauHinh
+
+@{
+    ViewData["Title"] = "Cấu hình hệ thống";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .cfg-root {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background: #f1f5f9;
+        min-height: 100vh;
+    }
+
+    /* HERO */
+    .cfg-hero {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 45%, #0ea5e9 100%);
+        padding: 2.2rem 2.5rem 3.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cfg-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .cfg-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: 30%;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+
+    .cfg-hero-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .cfg-hero-left {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    .cfg-hero-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255,255,255,0.18);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.4rem;
+        border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .cfg-hero h3 {
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.45rem;
+        margin: 0 0 0.2rem;
+        letter-spacing: -0.4px;
+    }
+
+    .cfg-hero p {
+        color: rgba(255,255,255,0.72);
+        margin: 0;
+        font-size: 0.87rem;
+    }
+
+    .cfg-hero-badge {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: #fff;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.35rem 0.9rem;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .cfg-hero-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+    @@keyframes blink {
+        0%, 100% {
+            opacity: 1
+        }
+
+        50% {
+            opacity: 0.4
+        }
+    }
+
+    /* TABS */
+    .cfg-tabs-wrap {
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0 2.5rem;
+        display: flex;
+        gap: 0;
+        overflow-x: auto;
+    }
+
+    .cfg-tab {
+        padding: 1rem 1.4rem;
+        font-size: 0.87rem;
+        font-weight: 600;
+        color: #64748b;
+        border: none;
+        background: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.18s;
+        margin-bottom: -1px;
+        font-family: 'Be Vietnam Pro',sans-serif;
+        white-space: nowrap;
+    }
+
+        .cfg-tab:hover {
+            color: #1d4ed8;
+        }
+
+        .cfg-tab.active {
+            color: #1d4ed8;
+            border-bottom-color: #1d4ed8;
+        }
+
+    .tab-badge {
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 0.15rem 0.45rem;
+        border-radius: 10px;
+    }
+
+    /* BODY LAYOUT */
+    .cfg-body {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 1.5rem;
+        padding: 1.8rem 2.5rem 5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* CARDS */
+    .cfg-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e8edf3;
+        box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+    }
+
+    .cfg-card-head {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 1.25rem 1.6rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .cfg-card-head-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+
+    .icon-blue {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .icon-green {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    .icon-amber {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+    .icon-slate {
+        background: #f8fafc;
+        color: #475569;
+    }
+
+    .cfg-card-head h6 {
+        font-weight: 700;
+        font-size: 0.97rem;
+        color: #0f172a;
+        margin: 0;
+    }
+
+    .cfg-card-head p {
+        font-size: 0.78rem;
+        color: #94a3b8;
+        margin: 0.1rem 0 0;
+    }
+
+    .cfg-card-body {
+        padding: 1.5rem 1.6rem;
+    }
+
+    /* LOGO */
+    .logo-zone {
+        display: flex;
+        align-items: center;
+        gap: 1.4rem;
+        padding: 1.25rem;
+        border: 2px dashed #cbd5e1;
+        border-radius: 14px;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 1.5rem;
+    }
+
+        .logo-zone:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+    .logo-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+        background: linear-gradient(135deg,#1e40af,#3b82f6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 800;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+    }
+
+    .logo-info strong {
+        display: block;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.2rem;
+    }
+
+    .logo-info span {
+        font-size: 0.78rem;
+        color: #94a3b8;
+    }
+
+    .logo-upload-btn {
+        margin-left: auto;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        color: #475569;
+        font-family: 'Be Vietnam Pro',sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.45rem 0.9rem;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s;
+    }
+
+        .logo-upload-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+    /* FIELDS */
+    .field-row {
+        display: grid;
+        gap: 1.1rem;
+        margin-bottom: 1.1rem;
+    }
+
+        .field-row.col2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+    .field-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .field-label {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.65px;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+        .field-label i {
+            color: #94a3b8;
+        }
+
+    .field-input {
+        width: 100%;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.72rem 1rem;
+        font-family: 'Be Vietnam Pro',sans-serif;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #1e293b;
+        background: #fafbfc;
+        outline: none;
+        transition: all 0.18s;
+    }
+
+        .field-input:focus {
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+        }
+
+        .field-input::placeholder {
+            color: #c0cad8;
+            font-weight: 400;
+        }
+
+    .field-hint {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .phone-wrap {
+        position: relative;
+    }
+
+    .phone-prefix {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 0.85rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #475569;
+        border-right: 1.5px solid #e2e8f0;
+        background: #f1f5f9;
+        border-radius: 10px 0 0 10px;
+        pointer-events: none;
+    }
+
+    .phone-wrap .field-input {
+        padding-left: 3.8rem;
+    }
+
+    .section-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1.5rem 0 1.2rem;
+        color: #94a3b8;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+        .section-divider::before, .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f1f5f9;
+        }
+
+    /* SIDEBAR */
+    .sidebar-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e8edf3;
+        box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+        overflow: hidden;
+        margin-bottom: 1.25rem;
+    }
+
+    .sidebar-card-head {
+        padding: 1.1rem 1.4rem;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.87rem;
+        font-weight: 700;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .sidebar-card-body {
+        padding: 1.2rem 1.4rem;
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+    .stat-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+
+    .stat-text {
+        flex: 1;
+        min-width: 0;
+    }
+
+        .stat-text strong {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stat-text span {
+            font-size: 0.74rem;
+            color: #94a3b8;
+        }
+
+    .checklist-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.55rem 0;
+        font-size: 0.84rem;
+        color: #475569;
+        font-weight: 500;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+    .check-icon {
+        color: #22c55e;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .warn-icon {
+        color: #f59e0b;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .version-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg,#f0fdf4,#dcfce7);
+        border: 1px solid #bbf7d0;
+        color: #15803d;
+        font-size: 0.76rem;
+        font-weight: 700;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    /* SAVE BAR */
+    .cfg-save-bar {
+        position: sticky;
+        bottom: 0;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid #e2e8f0;
+        padding: 1rem 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 50;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .save-bar-hint {
+        font-size: 0.82rem;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .save-bar-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .btn-cancel {
+        font-family: 'Be Vietnam Pro',sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #64748b;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 0.6rem 1.3rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        transition: all 0.18s;
+    }
+
+        .btn-cancel:hover {
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+    .btn-save {
+        font-family: 'Be Vietnam Pro',sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg,#1d4ed8,#2563eb);
+        border: none;
+        border-radius: 10px;
+        padding: 0.65rem 1.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(37,99,235,0.4);
+    }
+
+        .btn-save:hover {
+            background: linear-gradient(135deg,#1e40af,#1d4ed8);
+            box-shadow: 0 5px 18px rgba(37,99,235,0.5);
+            transform: translateY(-1px);
+        }
+
+    @@media (max-width:960px) {
+        .cfg-body {
+            grid-template-columns: 1fr;
+            padding: 1.2rem;
+        }
+
+        .cfg-hero {
+            padding: 1.5rem 1.2rem 2.5rem;
+        }
+
+        .cfg-tabs-wrap {
+            padding: 0 1.2rem;
+        }
+
+        .cfg-save-bar {
+            padding: 0.9rem 1.2rem;
+        }
+
+        .field-row.col2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="cfg-root">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger px-4 pt-2" style="font-size:0.83rem"></div>
+
+        <div class="cfg-hero">
+            <div class="cfg-hero-inner">
+                <div class="cfg-hero-left">
+                    <div class="cfg-hero-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <div>
+                        <h3>Thiết lập hệ thống</h3>
+                        <p>Quản lý thông tin trung tâm · Tùy chỉnh hiển thị · Cấu hình liên hệ</p>
+                    </div>
+                </div>
+                <div class="cfg-hero-badge"><span class="dot"></span> Hệ thống đang hoạt động</div>
+            </div>
+        </div>
+
+        <div class="cfg-tabs-wrap">
+            <button type="button" class="cfg-tab active" onclick="switchTab(this,'tab-general')">
+                <i class="fa-solid fa-building"></i> Thông tin chung
+            </button>
+            <button type="button" class="cfg-tab" onclick="switchTab(this,'tab-display')">
+                <i class="fa-solid fa-palette"></i> Hiển thị &amp; Ngôn ngữ <span class="tab-badge">Mới</span>
+            </button>
+            <button type="button" class="cfg-tab" onclick="switchTab(this,'tab-advanced')">
+                <i class="fa-solid fa-shield-halved"></i> Nâng cao
+            </button>
+        </div>
+
+        <div class="cfg-body">
+
+            <!-- LEFT -->
+            <div>
+
+                <div id="tab-general">
+                    <div class="cfg-card">
+                        <div class="cfg-card-head">
+                            <div class="cfg-card-head-icon icon-blue"><i class="fa-solid fa-landmark"></i></div>
+                            <div>
+                                <h6>Nhận diện thương hiệu</h6>
+                                <p>Tên, logo và địa chỉ chính thức của trung tâm</p>
+                            </div>
+                        </div>
+                        <div class="cfg-card-body">
+                            <div class="logo-zone" onclick="document.getElementById('logoInput').click()">
+                                <div class="logo-avatar">IT</div>
+                                <div class="logo-info">
+                                    <strong>Logo trung tâm</strong>
+                                    <span>PNG hoặc JPG · Khuyến nghị 256×256px · Tối đa 2MB</span>
+                                </div>
+                                <button type="button" class="logo-upload-btn"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Tải lên</button>
+                            </div>
+                            <input type="file" id="logoInput" accept="image/*" style="display:none">
+
+                            <div class="field-row">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-building"></i> Tên trung tâm / Đơn vị</label>
+                                    <input asp-for="TenTrungTam" class="field-input" placeholder="VD: ITPRO Academy" />
+                                    <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Tên này sẽ xuất hiện trên hóa đơn, hợp đồng và báo cáo.</span>
+                                    <span asp-validation-for="TenTrungTam" class="text-danger" style="font-size:0.78rem"></span>
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-location-dot"></i> Địa chỉ trụ sở chính</label>
+                                    <input asp-for="DiaChi" class="field-input" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành phố" />
+                                    <span asp-validation-for="DiaChi" class="text-danger" style="font-size:0.78rem"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cfg-card">
+                        <div class="cfg-card-head">
+                            <div class="cfg-card-head-icon icon-green"><i class="fa-solid fa-address-book"></i></div>
+                            <div>
+                                <h6>Thông tin liên hệ</h6>
+                                <p>Hotline và kênh liên lạc hiển thị cho học viên</p>
+                            </div>
+                        </div>
+                        <div class="cfg-card-body">
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-phone"></i> Hotline chính</label>
+                                    <div class="phone-wrap">
+                                        <span class="phone-prefix"><i class="fa-solid fa-phone" style="font-size:0.78rem;margin-right:4px;color:#94a3b8"></i> +84</span>
+                                        <input asp-for="SoDienThoai" class="field-input" placeholder="9x xxx xxxx" />
+                                    </div>
+                                    <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Số điện thoại hỗ trợ học viên.</span>
+                                    <span asp-validation-for="SoDienThoai" class="text-danger" style="font-size:0.78rem"></span>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-phone-volume"></i> Hotline dự phòng</label>
+                                    <div class="phone-wrap">
+                                        <span class="phone-prefix"><i class="fa-solid fa-phone" style="font-size:0.78rem;margin-right:4px;color:#94a3b8"></i> +84</span>
+                                        <input class="field-input" placeholder="Tùy chọn" />
+                                    </div>
+                                    <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Dùng khi hotline chính bận.</span>
+                                </div>
+                            </div>
+
+                            <div class="section-divider">Mạng xã hội &amp; Website</div>
+
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-brands fa-facebook"></i> Facebook Page</label>
+                                    <input class="field-input" placeholder="facebook.com/itpro.academy" />
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-brands fa-youtube"></i> Kênh YouTube</label>
+                                    <input class="field-input" placeholder="youtube.com/@@itpro" />
+                                </div>
+                            </div>
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-globe"></i> Website chính thức</label>
+                                    <input class="field-input" placeholder="https://itpro.edu.vn" />
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-brands fa-tiktok"></i> TikTok</label>
+                                    <input class="field-input" placeholder="tiktok.com/@@itpro" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-display" style="display:none">
+                    <div class="cfg-card">
+                        <div class="cfg-card-head">
+                            <div class="cfg-card-head-icon icon-amber"><i class="fa-solid fa-palette"></i></div>
+                            <div>
+                                <h6>Giao diện &amp; Ngôn ngữ</h6>
+                                <p>Tuỳ chỉnh màu sắc thương hiệu và ngôn ngữ hiển thị</p>
+                            </div>
+                        </div>
+                        <div class="cfg-card-body">
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-droplet"></i> Màu thương hiệu chính</label>
+                                    <div style="display:flex;gap:0.6rem;align-items:center">
+                                        <input type="color" value="#2563eb" style="width:48px;height:42px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px 4px;background:#fff">
+                                        <input class="field-input" value="#2563eb" style="flex:1" />
+                                    </div>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-droplet"></i> Màu nhấn phụ</label>
+                                    <div style="display:flex;gap:0.6rem;align-items:center">
+                                        <input type="color" value="#0ea5e9" style="width:48px;height:42px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px 4px;background:#fff">
+                                        <input class="field-input" value="#0ea5e9" style="flex:1" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-language"></i> Ngôn ngữ hệ thống</label>
+                                    <select class="field-input"><option selected>Tiếng Việt</option><option>English</option></select>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-clock"></i> Múi giờ</label>
+                                    <select class="field-input"><option selected>GMT+7 (Hà Nội)</option><option>GMT+0</option></select>
+                                </div>
+                            </div>
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-money-bill"></i> Đơn vị tiền tệ</label>
+                                    <select class="field-input"><option selected>VNĐ (₫)</option><option>USD ($)</option></select>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-calendar"></i> Định dạng ngày</label>
+                                    <select class="field-input"><option selected>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-advanced" style="display:none">
+                    <div class="cfg-card">
+                        <div class="cfg-card-head">
+                            <div class="cfg-card-head-icon icon-slate"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <h6>Bảo mật &amp; Phiên đăng nhập</h6>
+                                <p>Cài đặt xác thực và kiểm soát truy cập</p>
+                            </div>
+                        </div>
+                        <div class="cfg-card-body">
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-clock-rotate-left"></i> Thời gian hết phiên (phút)</label>
+                                    <input class="field-input" type="number" value="60" min="15" max="480" />
+                                    <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Tự động đăng xuất sau thời gian không hoạt động.</span>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-users"></i> Số phiên tối đa / tài khoản</label>
+                                    <input class="field-input" type="number" value="3" min="1" max="10" />
+                                </div>
+                            </div>
+                            <div class="section-divider">Sao lưu dữ liệu</div>
+                            <div class="field-row col2">
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-rotate"></i> Tần suất sao lưu tự động</label>
+                                    <select class="field-input"><option>Hàng ngày</option><option selected>Hàng tuần</option><option>Hàng tháng</option></select>
+                                </div>
+                                <div class="field-wrap">
+                                    <label class="field-label"><i class="fa-solid fa-database"></i> Lưu trữ bản sao lưu (ngày)</label>
+                                    <input class="field-input" type="number" value="30" min="7" max="365" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SIDEBAR -->
+            <div>
+                <div class="sidebar-card">
+                    <div class="sidebar-card-head"><i class="fa-solid fa-signal" style="color:#22c55e"></i> Trạng thái hệ thống</div>
+                    <div class="sidebar-card-body">
+                        <div class="stat-item">
+                            <div class="stat-icon icon-blue"><i class="fa-solid fa-server"></i></div>
+                            <div class="stat-text"><strong>Server</strong><span>Hoạt động bình thường</span></div>
+                            <span class="version-pill"><i class="fa-solid fa-circle-check"></i> Online</span>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon icon-green"><i class="fa-solid fa-database"></i></div>
+                            <div class="stat-text"><strong>Cơ sở dữ liệu</strong><span>Kết nối ổn định</span></div>
+                            <span class="version-pill"><i class="fa-solid fa-circle-check"></i> OK</span>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon icon-amber"><i class="fa-solid fa-hard-drive"></i></div>
+                            <div class="stat-text"><strong>Dung lượng lưu trữ</strong><span>2.4 GB / 10 GB đã dùng</span></div>
+                        </div>
+                        <div style="margin-top:0.6rem">
+                            <div style="height:6px;background:#f1f5f9;border-radius:6px;overflow:hidden">
+                                <div style="width:24%;height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:6px"></div>
+                            </div>
+                            <div style="font-size:0.73rem;color:#94a3b8;margin-top:0.4rem">24% đã sử dụng · Còn 7.6 GB trống</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-card-head"><i class="fa-solid fa-list-check" style="color:#2563eb"></i> Danh sách kiểm tra</div>
+                    <div class="sidebar-card-body">
+                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Tên trung tâm đã thiết lập</div>
+                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Địa chỉ đã cập nhật</div>
+                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Hotline đã khai báo</div>
+                        <div class="checklist-item"><i class="fa-solid fa-triangle-exclamation warn-icon"></i> Chưa tải logo lên</div>
+                        <div class="checklist-item"><i class="fa-solid fa-triangle-exclamation warn-icon"></i> Chưa cấu hình mạng xã hội</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-card-head"><i class="fa-solid fa-code-branch" style="color:#7c3aed"></i> Thông tin phiên bản</div>
+                    <div class="sidebar-card-body">
+                        <div class="stat-item">
+                            <div class="stat-icon" style="background:#f5f3ff;color:#7c3aed"><i class="fa-solid fa-cube"></i></div>
+                            <div class="stat-text"><strong>Devmaster CRM</strong><span>Phiên bản 2.5.1</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon" style="background:#fdf4ff;color:#a21caf"><i class="fa-solid fa-calendar-days"></i></div>
+                            <div class="stat-text"><strong>Cập nhật gần nhất</strong><span>08/05/2026</span></div>
+                        </div>
+                        <div class="stat-item" style="border:none">
+                            <div class="stat-icon" style="background:#eff6ff;color:#2563eb"><i class="fa-solid fa-user-shield"></i></div>
+                            <div class="stat-text"><strong>Giấy phép</strong><span>Pro · Còn 284 ngày</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cfg-save-bar">
+            <div class="save-bar-hint">
+                <i class="fa-regular fa-floppy-disk"></i>
+                Thay đổi chưa được lưu · Nhớ bấm <strong style="color:#1e293b;margin:0 3px">Lưu cấu hình</strong> sau khi chỉnh sửa
+            </div>
+            <div class="save-bar-actions">
+                <a asp-action="Index" class="btn-cancel"><i class="fa-solid fa-rotate-left"></i> Hoàn tác</a>
+                <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Lưu cấu hình</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function switchTab(btn, targetId) {
+            document.querySelectorAll('.cfg-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            ['tab-general','tab-display','tab-advanced'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = (id === targetId) ? 'block' : 'none';
+            });
+        }
+    </script>
+}

@@ -1,0 +1,204 @@
+@model IEnumerable<ITPRO_CRM.Models.LichSuTuVan>
+
+@{
+    ViewData["Title"] = "Lịch sử Tư vấn";
+    var total = Model.Count();
+    var today = Model.Count(x => x.NgayTuVan.Date == DateTime.Today);
+    var chot = Model.Count(x => x.KetQua != null && x.KetQua.ToLower().Contains("chốt"));
+    var henGoi = Model.Count(x => x.KetQua != null && x.KetQua.ToLower().Contains("hẹn"));
+}
+
+<style>
+    .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
+    .page-title { font-size:20px; font-weight:700; color:var(--text); }
+    .page-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+    .stat-strip { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+    .stat-chip { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; flex:1; min-width:130px; }
+    .stat-chip-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+    .stat-chip-val { font-size:20px; font-weight:700; font-family:'DM Mono',monospace; line-height:1; }
+    .stat-chip-lbl { font-size:11px; color:var(--text2); margin-top:2px; }
+    .filter-bar { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+    .filter-bar input,.filter-bar select { background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:7px 12px; font-size:12.5px; outline:none; transition:border-color .15s; }
+    .filter-bar input:focus,.filter-bar select:focus { border-color:var(--accent); }
+    .filter-bar input::placeholder { color:var(--text3); }
+    .filter-bar input { width:220px; }
+    .filter-bar select { cursor:pointer; }
+    /* Timeline */
+    .timeline { display:flex; flex-direction:column; gap:0; }
+    .tl-date-group { margin-bottom:4px; }
+    .tl-date-label { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+    .tl-date-label span { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--text3); white-space:nowrap; }
+    .tl-date-label::after { content:''; flex:1; height:1px; background:var(--border); }
+    .tl-item { display:flex; gap:14px; margin-bottom:10px; align-items:flex-start; }
+    .tl-icon { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; margin-top:2px; }
+    .tl-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; flex:1; transition:border-color .15s,box-shadow .15s; }
+    .tl-card:hover { border-color:var(--border2); box-shadow:0 2px 12px rgba(0,0,0,.12); }
+    .tl-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
+    .tl-name { font-weight:700; font-size:13px; color:var(--text); text-decoration:none; }
+    .tl-name:hover { color:var(--accent); }
+    .tl-hinhthuc { font-size:11px; padding:2px 8px; border-radius:6px; font-weight:600; background:var(--accent-dim); color:var(--accent); }
+    .tl-time { font-size:11px; color:var(--text3); margin-left:auto; font-family:'DM Mono',monospace; }
+    .tl-content { font-size:12.5px; color:var(--text2); line-height:1.6; margin-bottom:8px; }
+    .tl-footer { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .tl-result { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; }
+    .result-chot { background:var(--success-dim); color:var(--success); }
+    .result-hen { background:var(--warning-dim); color:var(--warning); }
+    .result-lien { background:var(--danger-dim); color:var(--danger); }
+    .result-other { background:var(--surface2); color:var(--text2); border:1px solid var(--border); }
+    .tl-advisor { font-size:11px; color:var(--text3); display:flex; align-items:center; gap:4px; }
+    .tl-actions { display:flex; gap:6px; margin-left:auto; }
+    .act-btn { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; border:1px solid var(--border); background:var(--surface2); color:var(--text2); text-decoration:none; cursor:pointer; transition:all .12s; }
+    .act-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .act-btn.del:hover { background:var(--danger-dim); color:var(--danger); border-color:var(--danger); }
+    .add-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:var(--accent); color:#fff; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; border:none; cursor:pointer; transition:background .13s; }
+    .add-btn:hover { background:var(--accent-h); color:#fff; }
+    .empty-state { text-align:center; padding:60px 20px; color:var(--text2); }
+    .empty-state i { font-size:48px; color:var(--text3); display:block; margin-bottom:16px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <div class="page-title"><i class="fa-solid fa-comments me-2" style="color:var(--accent)"></i>Lịch sử Tư vấn</div>
+        <div class="page-sub">Toàn bộ lịch sử cuộc gọi & tư vấn với học viên</div>
+    </div>
+    <a asp-action="Create" class="add-btn">
+        <i class="fa-solid fa-plus"></i> Thêm ghi chú tư vấn
+    </a>
+</div>
+
+<!-- Stats -->
+<div class="stat-strip">
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--accent-dim);color:var(--accent)"><i class="fa-solid fa-list"></i></div>
+        <div><div class="stat-chip-val">@total</div><div class="stat-chip-lbl">Tổng tư vấn</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--warning-dim);color:var(--warning)"><i class="fa-solid fa-calendar-day"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--warning)">@today</div><div class="stat-chip-lbl">Hôm nay</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--success-dim);color:var(--success)"><i class="fa-solid fa-handshake"></i></div>
+        <div><div class="stat-chip-val" style="color:var(--success)">@chot</div><div class="stat-chip-lbl">Đã chốt</div></div>
+    </div>
+    <div class="stat-chip">
+        <div class="stat-chip-icon" style="background:var(--accent-dim);color:var(--accent)"><i class="fa-solid fa-phone-volume"></i></div>
+        <div><div class="stat-chip-val">@henGoi</div><div class="stat-chip-lbl">Hẹn gọi lại</div></div>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên học viên..." oninput="filterTimeline()">
+    <select id="hinhThucFilter" onchange="filterTimeline()">
+        <option value="">Tất cả hình thức</option>
+        <option value="gọi điện">Gọi điện</option>
+        <option value="gặp mặt">Gặp mặt</option>
+        <option value="zalo">Zalo</option>
+        <option value="email">Email</option>
+        <option value="facebook">Facebook</option>
+    </select>
+    <select id="ketQuaFilter" onchange="filterTimeline()">
+        <option value="">Tất cả kết quả</option>
+        <option value="chốt">Đã chốt</option>
+        <option value="hẹn">Hẹn gọi lại</option>
+        <option value="không">Không liên lạc được</option>
+    </select>
+</div>
+
+<!-- Timeline -->
+@if (Model.Any())
+{
+    var grouped = Model.OrderByDescending(x => x.NgayTuVan).GroupBy(x => x.NgayTuVan.Date);
+    <div class="timeline" id="timelineContainer">
+        @foreach (var group in grouped)
+        {
+            string dateLabel = group.Key.Date == DateTime.Today ? "Hôm nay" :
+                               group.Key.Date == DateTime.Today.AddDays(-1) ? "Hôm qua" :
+                               group.Key.ToString("dd/MM/yyyy - dddd");
+            <div class="tl-date-group">
+                <div class="tl-date-label"><span>@dateLabel</span></div>
+                @foreach (var item in group)
+                {
+                    // Icon by hinhThuc
+                    string iconHt = item.HinhThuc?.ToLower() switch {
+                        var s when s != null && s.Contains("gọi") => "fa-phone",
+                        var s when s != null && s.Contains("gặp") => "fa-handshake",
+                        var s when s != null && s.Contains("zalo") => "fa-comment",
+                        var s when s != null && s.Contains("email") => "fa-envelope",
+                        _ => "fa-comments"
+                    };
+                    // Color by result
+                    string resultClass = "result-other";
+                    if (item.KetQua?.ToLower().Contains("chốt") == true) resultClass = "result-chot";
+                    else if (item.KetQua?.ToLower().Contains("hẹn") == true) resultClass = "result-hen";
+                    else if (item.KetQua?.ToLower().Contains("không") == true || item.KetQua?.ToLower().Contains("thuê") == true) resultClass = "result-lien";
+
+                    <div class="tl-item"
+                         data-name="@(item.HocVien?.HoTen?.ToLower() ?? "")"
+                         data-hinhthuc="@(item.HinhThuc?.ToLower() ?? "")"
+                         data-ketqua="@(item.KetQua?.ToLower() ?? "")">
+                        <div class="tl-icon" style="background:var(--accent-dim);color:var(--accent)">
+                            <i class="fa-solid @iconHt"></i>
+                        </div>
+                        <div class="tl-card">
+                            <div class="tl-header">
+                                <a asp-controller="HocViens" asp-action="Details" asp-route-id="@item.HocVienId" class="tl-name">
+                                    @(item.HocVien?.HoTen ?? "Học viên #" + item.HocVienId)
+                                </a>
+                                @if (!string.IsNullOrEmpty(item.HinhThuc))
+                                {
+                                    <span class="tl-hinhthuc"><i class="fa-solid @iconHt me-1"></i>@item.HinhThuc</span>
+                                }
+                                <span class="tl-time">@item.NgayTuVan.ToString("HH:mm")</span>
+                            </div>
+                            <div class="tl-content">@item.NoiDung</div>
+                            <div class="tl-footer">
+                                @if (!string.IsNullOrEmpty(item.KetQua))
+                                {
+                                    <span class="tl-result @resultClass">@item.KetQua</span>
+                                }
+                                @if (!string.IsNullOrEmpty(item.NguoiTuVan))
+                                {
+                                    <span class="tl-advisor"><i class="fa-solid fa-user"></i>@item.NguoiTuVan</span>
+                                }
+                                <div class="tl-actions">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="act-btn"><i class="fa-solid fa-pen"></i> Sửa</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="act-btn"><i class="fa-solid fa-eye"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="act-btn del"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-comments"></i>
+        <div style="font-size:15px;font-weight:600;margin-bottom:8px">Chưa có lịch sử tư vấn</div>
+        <div style="font-size:13px;margin-bottom:20px">Bắt đầu ghi lại cuộc gọi và tư vấn đầu tiên</div>
+        <a asp-action="Create" class="add-btn" style="display:inline-flex">Thêm ghi chú tư vấn</a>
+    </div>
+}
+
+<script>
+    function filterTimeline() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const ht = document.getElementById('hinhThucFilter').value.toLowerCase();
+        const kq = document.getElementById('ketQuaFilter').value.toLowerCase();
+        document.querySelectorAll('.tl-item').forEach(item => {
+            const nameOk = !q || (item.dataset.name || '').includes(q);
+            const htOk = !ht || (item.dataset.hinhthuc || '').includes(ht);
+            const kqOk = !kq || (item.dataset.ketqua || '').includes(kq);
+            item.style.display = (nameOk && htOk && kqOk) ? '' : 'none';
+        });
+        // Hide empty date groups
+        document.querySelectorAll('.tl-date-group').forEach(g => {
+            const visible = g.querySelectorAll('.tl-item:not([style*="none"])').length;
+            g.style.display = visible > 0 ? '' : 'none';
+        });
+    }
+</script>

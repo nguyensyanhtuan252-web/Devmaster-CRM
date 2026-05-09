@@ -1,0 +1,524 @@
+﻿@model ITPRO_CRM.Models.MauEmail
+
+@{
+    ViewData["Title"] = "Thiết kế mẫu Email";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap');
+
+    .email-page {
+        font-family: 'Sora', sans-serif;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 28px;
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin: 0 0 4px;
+        letter-spacing: -0.3px;
+    }
+
+    .page-subtitle {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .btn-back {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 9px;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.09);
+            color: #e2e8f0;
+        }
+
+    .create-grid {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        align-items: start;
+    }
+
+    @@media (max-width: 900px) {
+        .create-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .card-dark {
+        background: #1a1d2e;
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 14px;
+        padding: 28px;
+    }
+
+    .card-section-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin: 0 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .card-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+        }
+
+    .mau-label {
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 7px;
+        display: block;
+    }
+
+        .mau-label .required {
+            color: #f87171;
+            margin-left: 3px;
+        }
+
+    .mau-input, .mau-select {
+        width: 100%;
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.09) !important;
+        color: #e2e8f0 !important;
+        border-radius: 9px;
+        padding: 10px 14px;
+        font-size: 0.84rem;
+        outline: none;
+        transition: .2s;
+    }
+
+        .mau-input::placeholder {
+            color: #334155;
+        }
+
+        .mau-input:focus, .mau-select:focus {
+            border-color: #3b82f6 !important;
+            background: rgba(59,130,246,0.05) !important;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+    .field-hint {
+        font-size: 0.73rem;
+        color: #475569;
+        margin-top: 5px;
+    }
+
+        .field-hint code {
+            background: rgba(255,255,255,0.07);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-family: 'IBM Plex Mono', monospace;
+            color: #93c5fd;
+        }
+
+    .loai-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .loai-card {
+        position: relative;
+        cursor: pointer;
+    }
+
+        .loai-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .loai-card label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: center;
+            transition: .18s;
+        }
+
+        .loai-card input:checked + label {
+            border-color: currentColor;
+            color: var(--ac);
+            background: rgba(var(--ac-rgb), 0.08);
+        }
+
+    .loai-marketing {
+        --ac: #34d399;
+        --ac-rgb: 52,211,153;
+    }
+
+    .loai-taichinh {
+        --ac: #fbbf24;
+        --ac-rgb: 251,191,36;
+    }
+
+    .loai-thongbao {
+        --ac: #60a5fa;
+        --ac-rgb: 96,165,250;
+    }
+
+    .loai-khac {
+        --ac: #a78bfa;
+        --ac-rgb: 167,139,250;
+    }
+
+    .var-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+    }
+
+    .var-tag {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.71rem;
+        background: rgba(99,102,241,0.12);
+        color: #a5b4fc;
+        border: 1px solid rgba(99,102,241,0.2);
+        border-radius: 5px;
+        padding: 3px 8px;
+        cursor: pointer;
+        transition: .15s;
+        user-select: none;
+    }
+
+        .var-tag:hover {
+            background: rgba(99,102,241,0.22);
+        }
+
+    /* ĐÃ SỬA: Xóa overflow: hidden để Editor hiển thị Toolbar Tooltip không bị cắt */
+    .editor-wrap {
+        border-radius: 9px;
+        border: 1px solid rgba(255,255,255,0.09);
+        min-height: 200px;
+    }
+
+        .editor-wrap:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+    .cke_chrome {
+        border: none !important;
+        border-radius: 0 !important;
+    }
+
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 0.87rem;
+        font-weight: 700;
+        padding: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        transition: .2s;
+        margin-top: 4px;
+    }
+
+        .btn-submit:hover {
+            opacity: .88;
+            transform: translateY(-1px);
+        }
+
+    .preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
+    .preview-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: .4;
+        }
+    }
+
+    .preview-box {
+        background: #0f1117;
+        border-radius: 9px;
+        padding: 16px;
+        min-height: 120px;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .preview-subject {
+        font-weight: 600;
+        color: #e2e8f0;
+        font-size: 0.83rem;
+        margin-bottom: 4px;
+        word-break: break-all;
+    }
+
+    .preview-from {
+        font-size: 0.72rem;
+        color: #475569;
+        margin-bottom: 12px;
+        font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .preview-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.05);
+        margin: 10px 0;
+    }
+
+    .tip-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+        .tip-list li {
+            font-size: 0.78rem;
+            color: #64748b;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            line-height: 1.5;
+        }
+
+            .tip-list li i {
+                color: #3b82f6;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+</style>
+
+<div class="email-page container-fluid mt-4">
+
+    <div class="page-header">
+        <div>
+            <h5 class="page-title"><i class="fa-solid fa-wand-magic-sparkles text-info me-2"></i>Thiết kế mẫu Email mới</h5>
+            <p class="page-subtitle">Tạo kịch bản email có biến động để gửi hàng loạt nhanh chóng</p>
+        </div>
+        <a asp-action="Index" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Danh sách mẫu</a>
+    </div>
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+        <input type="hidden" asp-for="NgayTao" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+
+        <div class="create-grid">
+
+            <div style="display:flex;flex-direction:column;gap:18px;">
+                <div class="card-dark">
+                    <p class="card-section-title"><i class="fa-solid fa-circle-info" style="color:#60a5fa;"></i> Thông tin cơ bản</p>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                        <div>
+                            <label class="mau-label">Tên gợi nhớ <span class="required">*</span></label>
+                            <input asp-for="TenMau" class="mau-input" placeholder="VD: Mau_Chao_Mung" />
+                            <span asp-validation-for="TenMau" class="text-danger small"></span>
+                            <p class="field-hint">Không dấu, không khoảng cách.<br />VD: <code>Mau_Nhac_Hoc_Phi</code></p>
+                        </div>
+                        <div>
+                            <label class="mau-label">Loại mẫu</label>
+                            <input asp-for="LoaiMau" type="hidden" id="loaiMauInput" value="Marketing" />
+                            <div class="loai-grid">
+                                <div class="loai-card loai-marketing">
+                                    <input type="radio" name="_loai" id="r_mkt" value="Marketing" checked />
+                                    <label for="r_mkt" style="color:var(--ac)"><i class="fa-solid fa-tag"></i> Marketing</label>
+                                </div>
+                                <div class="loai-card loai-taichinh">
+                                    <input type="radio" name="_loai" id="r_tc" value="Tài chính" />
+                                    <label for="r_tc" style="color:var(--ac)"><i class="fa-solid fa-circle-dollar-to-slot"></i> Tài chính</label>
+                                </div>
+                                <div class="loai-card loai-thongbao">
+                                    <input type="radio" name="_loai" id="r_tb" value="Thông báo" />
+                                    <label for="r_tb" style="color:var(--ac)"><i class="fa-solid fa-bell"></i> Thông báo</label>
+                                </div>
+                                <div class="loai-card loai-khac">
+                                    <input type="radio" name="_loai" id="r_kh" value="Khác" />
+                                    <label for="r_kh" style="color:var(--ac)"><i class="fa-solid fa-circle"></i> Khác</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="mau-label">Tiêu đề Email mặc định <span class="required">*</span></label>
+                        <input asp-for="TieuDe" class="mau-input" id="subjectInput" placeholder="VD: [Devmaster] Chào mừng {{TenHocVien}}..." />
+                        <span asp-validation-for="TieuDe" class="text-danger small"></span>
+                        <p class="field-hint">Có thể dùng biến: <code>{{TenHocVien}}</code> <code>{{Thang}}</code> <code>{{NgayHetHan}}</code></p>
+                    </div>
+                </div>
+
+                <div class="card-dark">
+                    <p class="card-section-title"><i class="fa-solid fa-code" style="color:#a78bfa;"></i> Nội dung mẫu</p>
+
+                    <div style="margin-bottom:12px;">
+                        <label class="mau-label">Chèn biến nhanh</label>
+                        <div class="var-tags" id="varTags">
+                            <span class="var-tag" data-var="{{TenHocVien}}">{{TenHocVien}}</span>
+                            <span class="var-tag" data-var="{{Thang}}">{{Thang}}</span>
+                            <span class="var-tag" data-var="{{SoTien}}">{{SoTien}}</span>
+                            <span class="var-tag" data-var="{{NgayHetHan}}">{{NgayHetHan}}</span>
+                            <span class="var-tag" data-var="{{TenKhoaHoc}}">{{TenKhoaHoc}}</span>
+                            <span class="var-tag" data-var="{{LienHe}}">{{LienHe}}</span>
+                        </div>
+                    </div>
+
+                    <div class="editor-wrap">
+                        <textarea asp-for="NoiDung" id="editor_template" class="form-control" style="width: 100%;"></textarea>
+                    </div>
+                    <span asp-validation-for="NoiDung" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-floppy-disk"></i> LƯU MẪU EMAIL</button>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:18px;">
+                <div class="card-dark">
+                    <div class="preview-header">
+                        <p class="card-section-title" style="margin:0;flex:1"><i class="fa-solid fa-eye" style="color:#34d399;"></i> Xem trước</p>
+                        <span class="preview-dot"></span>
+                    </div>
+                    <div class="preview-box">
+                        <div class="preview-subject" id="prevSubject">Tiêu đề email...</div>
+                        <div class="preview-from">from: no-reply@devmaster.vn</div>
+                        <div class="preview-divider"></div>
+                        <div style="font-size:0.78rem;color:#475569;font-style:italic;">Nội dung HTML sẽ hiển thị sau khi soạn thảo...</div>
+                    </div>
+                </div>
+
+                <div class="card-dark">
+                    <p class="card-section-title"><i class="fa-solid fa-lightbulb" style="color:#fbbf24;"></i> Hướng dẫn</p>
+                    <ul class="tip-list">
+                        <li><i class="fa-solid fa-check-circle"></i> Dùng <strong style="color:#a5b4fc;">{{BiếnTên}}</strong> để hệ thống tự điền khi gửi email.</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Tên mẫu không dấu, không dùng ký tự đặc biệt ngoài dấu <code style="color:#93c5fd;font-size:.7rem;">_</code>.</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Tiêu đề nên ngắn gọn, dưới 60 ký tự để hiển thị đầy đủ trên mobile.</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Click vào tag biến để copy nhanh vào clipboard.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Khởi tạo CKEditor FULL Option
+            if (typeof CKEDITOR !== 'undefined') {
+                CKEDITOR.config.versionCheck = false;
+                CKEDITOR.replace('editor_template', {
+                    height: 450,
+                    toolbar: [
+                        { name: 'document', items: ['Source'] },
+                        { name: 'clipboard', items: ['Undo', 'Redo'] },
+                        { name: 'styles', items: ['Font', 'FontSize', 'Format'] },
+                        { name: 'colors', items: ['TextColor', 'BGColor'] },
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+                        { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                        { name: 'links', items: ['Link', 'Unlink'] },
+                        { name: 'insert', items: ['Image', 'Table', 'HorizontalRule'] }
+                    ],
+                    removeDialogTabs: 'image:advanced;link:advanced',
+                    placeholder: 'Soạn thảo nội dung mẫu email tại đây...'
+                });
+
+                // Cập nhật textarea khi submit form
+                document.querySelector('form').addEventListener('submit', function() {
+                    for (var instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+                });
+            }
+
+            // Sync loại mẫu radio → hidden input
+            document.querySelectorAll('input[name="_loai"]').forEach(function (r) {
+                r.addEventListener('change', function () {
+                    document.getElementById('loaiMauInput').value = this.value;
+                });
+            });
+
+            // Live preview tiêu đề
+            var subjectInput = document.getElementById('subjectInput');
+            var prevSubject  = document.getElementById('prevSubject');
+            subjectInput.addEventListener('input', function () {
+                prevSubject.textContent = this.value || 'Tiêu đề email...';
+            });
+
+            // Click var tag → copy
+            document.querySelectorAll('.var-tag').forEach(function (tag) {
+                tag.addEventListener('click', function () {
+                    var v = this.dataset.var;
+                    navigator.clipboard.writeText(v).catch(function () {});
+
+                    tag.style.background = 'rgba(99,102,241,0.35)';
+                    setTimeout(function () {
+                        tag.style.background = '';
+                    }, 600);
+                });
+            });
+        });
+    </script>
+}

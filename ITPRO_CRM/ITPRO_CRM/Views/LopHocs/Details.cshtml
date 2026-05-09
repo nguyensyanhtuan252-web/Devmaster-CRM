@@ -1,0 +1,476 @@
+@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Chi tiết lớp: " + Model.TenLop;
+    string statusColor = Model.TrangThai == 1 ? "var(--success)" : (Model.TrangThai == 0 ? "var(--warning)" : "var(--text3)");
+    string bgBadge = Model.TrangThai == 1 ? "rgba(34,197,94,0.1)" : (Model.TrangThai == 0 ? "rgba(245,158,11,0.1)" : "var(--surface2)");
+    string statusText = Model.TrangThai == 1 ? "Đang học" : (Model.TrangThai == 0 ? "Sắp mở" : "Đã kết thúc");
+
+    int percent = Model.SiSoToiDa > 0 ? Math.Min((Model.SiSoHienTai * 100) / Model.SiSoToiDa, 100) : 0;
+    string barColor = percent >= 90 ? "var(--danger)" : (percent >= 70 ? "var(--warning)" : "var(--success)");
+
+    int tongBuoi = ViewBag.TongBuoiDiemDanh ?? 0;
+    int tyLeCoMat = ViewBag.TyLeCoMat ?? 0;
+    decimal doanhThu = ViewBag.DoanhThuUocTinh ?? 0;
+}
+
+<style>
+    /* CSS chuẩn hệ thống */
+    .dm-hero-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+        border-top: 4px solid @statusColor;
+    }
+
+    .dm-hero-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .dm-mini-stat-grid {
+        display: flex;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--surface);
+        margin-top: 24px;
+    }
+
+    .dm-mini-stat {
+        flex: 1;
+        text-align: center;
+        padding: 16px;
+        border-right: 1px solid var(--border);
+    }
+
+        .dm-mini-stat:last-child {
+            border-right: none;
+        }
+
+    .dm-mini-stat-val {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--text);
+        font-family: 'JetBrains Mono', 'DM Mono', monospace;
+        line-height: 1;
+    }
+
+    .dm-mini-stat-lbl {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        margin-top: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .dm-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .dm-card-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        letter-spacing: 0.5px;
+    }
+
+    .dm-info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+    }
+
+        .dm-info-row:last-child {
+            border-bottom: none;
+        }
+
+    .dm-info-lbl {
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dm-info-val {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .dm-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .dm-table th {
+            background: var(--surface);
+            color: var(--text3);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            padding: 12px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dm-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text2);
+            vertical-align: middle;
+        }
+
+        .dm-table tr:hover td {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+    .dm-att-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        transition: 0.2s;
+    }
+
+        .dm-att-row:hover {
+            background: var(--surface2);
+        }
+
+    .dm-att-stat {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .dm-btn {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        cursor: pointer;
+    }
+
+        .dm-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-btn-pri {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+    }
+
+        .dm-btn-pri:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+
+    .dm-btn-suc {
+        background: var(--success);
+        color: #fff;
+        border-color: var(--success);
+    }
+
+        .dm-btn-suc:hover {
+            background: #16a34a;
+            color: #fff;
+        }
+
+    .av-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text3);
+    }
+</style>
+
+<div class="container-fluid px-4 py-4">
+    <div class="mb-3" style="font-size: 12px; color: var(--text3);">
+        <a asp-action="Index" style="color: var(--accent); text-decoration: none;">Lớp học</a>
+        <span class="mx-2">›</span>
+        <span style="color: var(--text);">@Model.TenLop</span>
+    </div>
+
+    <div class="dm-hero-card">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span style="font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; background: @bgBadge; color: @statusColor; border: 1px solid @statusColor;">@statusText</span>
+                    @if (Model.KhoaHoc != null)
+                    {
+                        <span style="font-size: 10px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px;">@Model.KhoaHoc.TenKhoaHoc</span>
+                    }
+                </div>
+                <h2 class="dm-hero-title">@Model.TenLop</h2>
+                @if (!string.IsNullOrEmpty(Model.MoTa))
+                {
+                    <p style="font-size: 13px; color: var(--text3); margin: 0; max-width: 600px;">@Model.MoTa</p>
+                }
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                @if (Model.CoLichHocHomNay && Model.TrangThai == 1)
+                {
+                    <a asp-controller="DiemDanhs" asp-action="Index" asp-route-lopId="@Model.Id" class="dm-btn dm-btn-suc shadow-sm">
+                        <i class="fa-solid fa-clipboard-user me-2"></i> ĐIỂM DANH HÔM NAY
+                    </a>
+                }
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="dm-btn" style="border-color: var(--warning); color: var(--warning); background: rgba(245,158,11,0.1);">
+                    <i class="fa-solid fa-pen me-2"></i> Sửa lớp
+                </a>
+                <a asp-action="Index" class="dm-btn"><i class="fa-solid fa-arrow-left me-2"></i> Quay lại</a>
+            </div>
+        </div>
+
+        <div class="dm-mini-stat-grid">
+            <div class="dm-mini-stat">
+                <div class="dm-mini-stat-val">@Model.SiSoHienTai/@Model.SiSoToiDa</div>
+                <div class="dm-mini-stat-lbl">Sĩ số hiện tại</div>
+            </div>
+            <div class="dm-mini-stat">
+                <div class="dm-mini-stat-val">@tongBuoi</div>
+                <div class="dm-mini-stat-lbl">Tổng buổi học</div>
+            </div>
+            <div class="dm-mini-stat">
+                <div class="dm-mini-stat-val" style="color: @(tyLeCoMat >= 80 ? "var(--success)" : "var(--warning)");">@tyLeCoMat%</div>
+                <div class="dm-mini-stat-lbl">Tỷ lệ đến lớp</div>
+            </div>
+            <div class="dm-mini-stat">
+                <div class="dm-mini-stat-val" style="color: var(--success);">@doanhThu.ToString("#,##0") đ</div>
+                <div class="dm-mini-stat-lbl">Doanh thu dự kiến</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="dm-card">
+                <div class="dm-card-header">Thông tin chi tiết</div>
+                <div class="dm-info-row">
+                    <span class="dm-info-lbl"><i class="fa-regular fa-calendar" style="color: var(--accent);"></i> Khai giảng</span>
+                    <span class="dm-info-val">@Model.NgayKhaiGiang.ToString("dd/MM/yyyy")</span>
+                </div>
+                <div class="dm-info-row">
+                    <span class="dm-info-lbl"><i class="fa-regular fa-calendar-check" style="color: var(--success);"></i> Kết thúc</span>
+                    <span class="dm-info-val">@(Model.NgayKetThuc?.ToString("dd/MM/yyyy") ?? "—")</span>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.LichHoc))
+                {
+                    <div class="dm-info-row">
+                        <span class="dm-info-lbl"><i class="fa-solid fa-clock" style="color: var(--warning);"></i> Lịch học</span>
+                        <span class="dm-info-val">@Model.LichHoc</span>
+                    </div>
+                }
+                @if (Model.GioBatDau.HasValue)
+                {
+                    <div class="dm-info-row">
+                        <span class="dm-info-lbl"><i class="fa-solid fa-hourglass-half" style="color: var(--text3);"></i> Giờ học</span>
+                        <span class="dm-info-val">@Model.GioBatDau.Value.ToString(@"hh\:mm") – @Model.GioKetThuc?.ToString(@"hh\:mm")</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.PhongHoc))
+                {
+                    <div class="dm-info-row">
+                        <span class="dm-info-lbl"><i class="fa-solid fa-door-open" style="color: var(--text2);"></i> Phòng học</span>
+                        <span class="dm-info-val">@Model.PhongHoc</span>
+                    </div>
+                }
+                <div class="dm-info-row">
+                    <span class="dm-info-lbl"><i class="fa-solid fa-money-bill" style="color: var(--success);"></i> Học phí</span>
+                    <span class="dm-info-val" style="color: var(--success);">@Model.HocPhi.ToString("#,##0") đ</span>
+                </div>
+
+                <div style="padding: 16px 20px;">
+                    <div class="d-flex justify-content-between mb-2" style="font-size: 11px; font-weight: 600; color: var(--text2);">
+                        <span>SĨ SỐ LỚP</span>
+                        <span style="color: @barColor;">@percent%</span>
+                    </div>
+                    <div style="height: 6px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); overflow: hidden;">
+                        <div style="height: 100%; width: @percent%; background: @barColor;"></div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.GiangVien != null)
+            {
+                <div class="dm-card">
+                    <div class="dm-card-header">Giảng viên phụ trách</div>
+                    <div style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                        <div class="av-circle" style="width: 48px; height: 48px; font-size: 16px;">@Model.GiangVien.HoTen.Substring(0, 1).ToUpper()</div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: var(--text);">@Model.GiangVien.HoTen</div>
+                            @if (!string.IsNullOrEmpty(Model.GiangVien.ChuyenMon))
+                            {
+                                <div style="font-size: 11px; color: var(--text3); margin-top: 2px;">@Model.GiangVien.ChuyenMon</div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.GiangVien.SoDienThoai))
+                            {
+                                <div style="font-size: 11px; color: var(--text2); margin-top: 4px;"><i class="fa-solid fa-phone me-1"></i> @Model.GiangVien.SoDienThoai</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-8">
+            <div class="dm-card">
+                <div class="dm-card-header">
+                    <span><i class="fa-solid fa-users me-2"></i>Danh sách Học viên</span>
+                    <span style="background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 20px; font-size: 10px;">@(Model.HocViens?.Count ?? 0)</span>
+                </div>
+
+                @if (Model.HocViens != null && Model.HocViens.Any())
+                {
+                    <div style="max-height: 350px; overflow-y: auto;">
+                        <table class="dm-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>Họ tên</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Ngày sinh</th>
+                                    <th class="text-end">Hồ sơ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int stt = 1;
+                                }
+                                @foreach (var hv in Model.HocViens.OrderBy(h => h.HoTen))
+                                {
+                                    <tr>
+                                        <td style="color: var(--text3);">@(stt++)</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="av-circle" style="width:24px; height:24px; font-size:10px;">@hv.HoTen.Substring(0, 1).ToUpper()</div>
+                                                <span style="font-weight: 600; color: var(--text);">@hv.HoTen</span>
+                                            </div>
+                                        </td>
+                                        <td style="font-family: 'DM Mono', monospace;">@(hv.SoDienThoai ?? "—")</td>
+                                        <td>@hv.NgaySinh.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-end">
+                                            <a asp-controller="HocViens" asp-action="Details" asp-route-id="@hv.Id" class="dm-btn" style="padding: 4px 10px; font-size: 11px;">
+                                                <i class="fa-solid fa-eye"></i> Xem
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="fa-solid fa-users-slash"></i>
+                        <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Chưa có học viên nào</div>
+                        <div style="font-size: 12px;">Thêm học viên vào lớp từ trang quản lý hồ sơ.</div>
+                    </div>
+                }
+            </div>
+
+            <div class="dm-card">
+                <div class="dm-card-header">
+                    <span><i class="fa-solid fa-clock-rotate-left me-2"></i>Lịch sử Điểm danh (10 buổi gần nhất)</span>
+                    @if (Model.TrangThai == 1)
+                    {
+                        <a asp-controller="DiemDanhs" asp-action="Index" asp-route-lopId="@Model.Id" class="dm-btn dm-btn-suc" style="padding: 4px 12px; font-size: 10px;">
+                            <i class="fa-solid fa-plus me-1"></i> ĐIỂM DANH
+                        </a>
+                    }
+                </div>
+
+                @if (Model.DiemDanhs != null && Model.DiemDanhs.Any())
+                {
+                    var lichSu = Model.DiemDanhs.GroupBy(d => d.NgayDiemDanh.Date).OrderByDescending(g => g.Key).Take(10).ToList();
+                    <div>
+                        @foreach (var ngay in lichSu)
+                        {
+                            int coMat = ngay.Count(x => x.TrangThai == 1);
+                            int muon = ngay.Count(x => x.TrangThai == 2);
+                            int vang = ngay.Count(x => x.TrangThai == 0);
+                            int tongNgay = ngay.Count();
+                            int tyLeNgay = tongNgay > 0 ? (coMat * 100) / tongNgay : 0;
+
+                            <div class="dm-att-row">
+                                <div>
+                                    <div style="font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 6px;"><i class="fa-regular fa-calendar me-2" style="color: var(--text3);"></i>@ngay.Key.ToString("dd/MM/yyyy")</div>
+                                    <div class="d-flex gap-2">
+                                        <span class="dm-att-stat" style="background: rgba(34,197,94,0.1); color: var(--success);"><i class="fa-solid fa-check"></i>@coMat có mặt</span>
+                                        @if (muon > 0)
+                                        {
+                                            <span class="dm-att-stat" style="background: rgba(245,158,11,0.1); color: var(--warning);"><i class="fa-solid fa-person-walking"></i>@muon muộn</span>
+                                        }
+                                        @if (vang > 0)
+                                        {
+                                            <span class="dm-att-stat" style="background: rgba(239,68,68,0.1); color: var(--danger);"><i class="fa-solid fa-xmark"></i>@vang vắng</span>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div style="font-weight: 800; font-size: 16px; color: @(tyLeNgay >= 80 ? "var(--success)" : "var(--warning)");">@tyLeNgay%</div>
+                                    <a asp-controller="DiemDanhs" asp-action="Index" asp-route-lopId="@Model.Id" class="dm-btn" style="padding: 2px 8px; font-size: 10px; margin-top: 4px;">Chi tiết</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <div style="font-weight: 600; color: var(--text);">Chưa có dữ liệu điểm danh</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

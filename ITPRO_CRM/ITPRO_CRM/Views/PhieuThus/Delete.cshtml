@@ -1,0 +1,124 @@
+﻿@model ITPRO_CRM.Models.PhieuThu
+@{
+    ViewData["Title"] = "Xóa Phiếu Thu";
+}
+
+<style>
+    .dm-card-del {
+        background-color: var(--surface);
+        border: 1px solid var(--danger);
+        border-radius: 12px;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+
+    .dm-del-icon {
+        font-size: 40px;
+        color: var(--danger);
+        margin-bottom: 15px;
+    }
+
+    .dm-del-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 5px;
+    }
+
+    .dm-del-desc {
+        font-size: 12px;
+        color: var(--text2);
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .dm-del-info {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    .dm-del-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+
+        .dm-del-row:last-child {
+            margin-bottom: 0;
+        }
+
+    .dm-del-lbl {
+        color: var(--text3);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 10px;
+    }
+
+    .dm-btn-del {
+        background: var(--danger);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px;
+        border-radius: 6px;
+        border: none;
+        width: 100%;
+        margin-bottom: 10px;
+        transition: 0.2s;
+    }
+
+        .dm-btn-del:hover {
+            background: #dc2626;
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid var(--border);
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+</style>
+
+<div class="container py-5 text-center">
+    <div class="dm-card-del p-4 p-md-5 shadow-sm">
+        <i class="fa-solid fa-triangle-exclamation dm-del-icon"></i>
+        <h4 class="dm-del-title">Xác nhận xóa phiếu thu?</h4>
+        <p class="dm-del-desc">Hành động này sẽ xóa vĩnh viễn dữ liệu tài chính. Tổng thu của học viên sẽ bị giảm đi tương ứng.</p>
+
+        <div class="dm-del-info">
+            <div class="dm-del-row">
+                <span class="dm-del-lbl">Mã phiếu:</span>
+                <span class="fw-bold" style="color: var(--text); font-family: 'DM Mono', monospace;">@Model.MaPhieu</span>
+            </div>
+            <div class="dm-del-row">
+                <span class="dm-del-lbl">Học viên:</span>
+                <span class="fw-bold" style="color: var(--text);">@Model.HocVien?.HoTen</span>
+            </div>
+            <div class="dm-del-row">
+                <span class="dm-del-lbl">Số tiền:</span>
+                <span class="fw-bold" style="color: var(--danger); font-family: 'DM Mono', monospace;">@string.Format("{0:N0}", Model.SoTien) đ</span>
+            </div>
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="dm-btn-del">ĐỒNG Ý XÓA VĨNH VIỄN</button>
+            <button type="button" onclick="window.history.back()" class="dm-btn-cancel">Quay lại</button>
+        </form>
+    </div>
+</div>

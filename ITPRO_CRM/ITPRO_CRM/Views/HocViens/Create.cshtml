@@ -1,0 +1,258 @@
+﻿@model ITPRO_CRM.Models.HocVien
+@{
+    ViewData["Title"] = "Thêm Học viên mới";
+}
+
+<style>
+    /* CSS chuẩn hệ thống: Tối giản, hỗ trợ Dark Mode tuyệt đối */
+    .dm-card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+
+    .dm-header {
+        background-color: rgba(59,130,246,0.08);
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        border-radius: 12px 12px 0 0;
+    }
+
+    .dm-header-title {
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+
+    .dm-section-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dm-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: none !important;
+        transition: 0.2s;
+    }
+
+        .dm-input:focus {
+            border-color: var(--accent) !important;
+        }
+
+        .dm-input::placeholder {
+            color: var(--text3) !important;
+            font-size: 12px;
+        }
+
+    .dm-btn-back {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: 0.2s;
+    }
+
+        .dm-btn-back:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-btn-submit {
+        background: var(--accent);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 6px;
+        border: none;
+        transition: 0.2s;
+    }
+
+        .dm-btn-submit:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 6px;
+        transition: 0.2s;
+        text-decoration: none;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+    .dm-icon-muted {
+        color: var(--text3);
+    }
+
+    .dm-icon-fb {
+        color: #1877f2;
+    }
+
+    .dm-icon-zl {
+        color: #0068ff;
+    }
+</style>
+
+<div class="container py-4" style="max-width: 900px;">
+    <button type="button" onclick="window.history.back();"
+            class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+            style="color: var(--text); border-color: var(--border); background: transparent;">
+        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+    </button>
+
+    <div class="dm-card shadow-sm">
+        <div class="dm-header">
+            <h5 class="dm-header-title"><i class="fa-solid fa-user-plus me-2"></i>THÊM HỒ SƠ HỌC VIÊN</h5>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Create">
+                <div asp-validation-summary="All" class="text-danger small mb-4 fw-bold"></div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="dm-section-title"><i class="fa-solid fa-address-card dm-icon-muted"></i> Thông tin cơ bản</div>
+                        <div class="mb-3">
+                            <label asp-for="HoTen" class="dm-label">Họ và Tên <span class="text-danger">*</span></label>
+                            <input asp-for="HoTen" class="form-control dm-input" placeholder="Nhập họ tên..." required />
+                            <span asp-validation-for="HoTen" class="text-danger small"></span>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-sm-6">
+                                <label asp-for="GioiTinh" class="dm-label">Giới tính</label>
+                                <select asp-for="GioiTinh" class="form-select dm-input">
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label asp-for="NgaySinh" class="dm-label">Ngày sinh</label>
+                                <input asp-for="NgaySinh" class="form-control dm-input" type="date" />
+                                <span asp-validation-for="NgaySinh" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="DiaChi" class="dm-label">Địa chỉ</label>
+                            <input asp-for="DiaChi" class="form-control dm-input" placeholder="Số nhà, Quận/Huyện, Tỉnh/TP..." />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="dm-section-title"><i class="fa-solid fa-address-book dm-icon-muted"></i> Liên hệ & Mạng xã hội</div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-sm-6">
+                                <label asp-for="SoDienThoai" class="dm-label">Số điện thoại</label>
+                                <input asp-for="SoDienThoai" class="form-control dm-input" placeholder="09xxxxxxxx" />
+                                <span asp-validation-for="SoDienThoai" class="text-danger small"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <label asp-for="Email" class="dm-label">Email</label>
+                                <input asp-for="Email" class="form-control dm-input" type="email" placeholder="example@gmail.com" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FacebookLink" class="dm-label"><i class="fa-brands fa-facebook dm-icon-fb"></i> Link Facebook</label>
+                            <input asp-for="FacebookLink" class="form-control dm-input" placeholder="https://facebook.com/..." />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ZaloLink" class="dm-label"><i class="fa-solid fa-comment-dots dm-icon-zl"></i> Link Zalo</label>
+                            <input asp-for="ZaloLink" class="form-control dm-input" placeholder="https://zalo.me/..." />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dm-section-title mt-2"><i class="fa-solid fa-briefcase dm-icon-muted"></i> Học vấn & Hệ thống</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label asp-for="TruongHoc" class="dm-label">Trường học</label>
+                        <input asp-for="TruongHoc" class="form-control dm-input" placeholder="Nhập tên trường..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="NganhHoc" class="dm-label">Chuyên ngành</label>
+                        <input asp-for="NganhHoc" class="form-control dm-input" placeholder="VD: CNTT, Kinh tế..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="CongViecHienTai" class="dm-label">Nơi làm việc</label>
+                        <input asp-for="CongViecHienTai" class="form-control dm-input" placeholder="Công ty hiện tại..." />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="MucTieuHocTap" class="dm-label">Mục tiêu / Ghi chú</label>
+                    <textarea asp-for="MucTieuHocTap" class="form-control dm-input" rows="2" placeholder="Ghi chú thêm về định hướng, nhu cầu của học viên..."></textarea>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="ChienDichId" class="dm-label">Nguồn khách hàng</label>
+                        <select asp-for="ChienDichId" class="form-select dm-input" asp-items="ViewBag.ChienDichId">
+                            <option value="">-- Tự nhiên (Không thuộc chiến dịch) --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="TrangThai" class="dm-label">Phân loại đầu vào</label>
+                        <select asp-for="TrangThai" class="form-select dm-input" style="font-weight: 600; color: var(--accent) !important;">
+                            <option value="0">⭐ Tiềm năng (Chưa tư vấn)</option>
+                            <option value="1">📞 Đang tư vấn (Đã liên hệ)</option>
+                            <option value="2">✅ Đã nhập học</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 pt-4" style="border-top: 1px solid var(--border);">
+                    <button type="button" onclick="window.history.back();" class="dm-btn-cancel">Hủy</button>
+                    <button type="submit" class="dm-btn-submit"><i class="fa-solid fa-save me-2"></i> XÁC NHẬN LƯU</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

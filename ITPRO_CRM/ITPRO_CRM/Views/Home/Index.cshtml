@@ -1,0 +1,990 @@
+@using System.Text.Json
+@model IEnumerable<ITPRO_CRM.Models.HocVien>
+@{
+    ViewData["Title"] = "Tổng quan hệ thống";
+    decimal revMonth = ViewBag.RevenueMonth ?? 0;
+    int achieved = ViewBag.MyNewStudents ?? 0;
+    int target = ViewBag.MyKpiTarget ?? 0;
+    double percent = target > 0 ? (achieved * 100.0) / target : 0;
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+    var jsonLabels7 = JsonSerializer.Serialize(ViewBag.ChartLabels7 as List<string> ?? new List<string>());
+    var jsonData7 = JsonSerializer.Serialize(ViewBag.ChartData7 as List<decimal> ?? new List<decimal>());
+    var today = DateTime.Now;
+    string dayOfWeek = today.DayOfWeek switch
+    {
+        DayOfWeek.Monday => "Thứ Hai",
+        DayOfWeek.Tuesday => "Thứ Ba",
+        DayOfWeek.Wednesday => "Thứ Tư",
+        DayOfWeek.Thursday => "Thứ Năm",
+        DayOfWeek.Friday => "Thứ Sáu",
+        DayOfWeek.Saturday => "Thứ Bảy",
+        _ => "Chủ Nhật"
+    };
+}
+
+<style>
+    /* ── DASHBOARD STYLES ── */
+    .dash-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+        gap: 12px
+    }
+
+    .dash-greeting {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text)
+    }
+
+    .dash-date {
+        font-size: 12px;
+        color: var(--text2);
+        margin-top: 2px
+    }
+
+    .metrics {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 14px;
+        margin-bottom: 20px
+    }
+
+    .mc {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 20px;
+        position: relative;
+        overflow: hidden;
+        transition: transform .2s,box-shadow .2s,border-color .2s;
+        cursor: default
+    }
+
+        .mc:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--border2)
+        }
+
+        .mc::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 2px 2px 0 0
+        }
+
+        .mc.blue::before {
+            background: var(--accent)
+        }
+
+        .mc.green::before {
+            background: var(--success)
+        }
+
+        .mc.amber::before {
+            background: var(--warning)
+        }
+
+        .mc.red::before {
+            background: var(--danger)
+        }
+
+    .mc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px
+    }
+
+    .mc-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: .8px
+    }
+
+    .mc-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px
+    }
+
+        .mc-icon.blue {
+            background: var(--accent-dim);
+            color: var(--accent)
+        }
+
+        .mc-icon.green {
+            background: var(--success-dim);
+            color: var(--success)
+        }
+
+        .mc-icon.amber {
+            background: var(--warning-dim);
+            color: var(--warning)
+        }
+
+        .mc-icon.red {
+            background: var(--danger-dim);
+            color: var(--danger)
+        }
+
+    .mc-val {
+        font-size: 30px;
+        font-weight: 700;
+        font-family: 'DM Mono',monospace;
+        line-height: 1;
+        margin-bottom: 6px
+    }
+
+        .mc-val.blue {
+            color: var(--accent)
+        }
+
+        .mc-val.green {
+            color: var(--success)
+        }
+
+        .mc-val.amber {
+            color: var(--warning)
+        }
+
+        .mc-val.red {
+            color: var(--danger)
+        }
+
+    .mc-sub {
+        font-size: 11px;
+        color: var(--text2)
+    }
+
+    .prog {
+        height: 3px;
+        background: var(--border);
+        border-radius: 2px;
+        margin-top: 12px;
+        overflow: hidden
+    }
+
+    .prog-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 1s ease
+    }
+
+    .grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 14px;
+        margin-bottom: 20px
+    }
+
+    .card-dm {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px
+    }
+
+    .card-hd {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px
+    }
+
+    .card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text)
+    }
+
+    .tab-group {
+        display: flex;
+        background: var(--bg);
+        border-radius: 7px;
+        padding: 3px;
+        gap: 2px
+    }
+
+    .tab-item {
+        padding: 4px 12px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--text2);
+        transition: .15s;
+        border: none;
+        background: none
+    }
+
+        .tab-item.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 1px 4px rgba(0,0,0,.15)
+        }
+
+        .tab-item:hover:not(.active) {
+            color: var(--text)
+        }
+
+    .kpi-item {
+        margin-bottom: 12px;
+        padding: 10px 12px;
+        background: var(--surface2);
+        border-radius: 9px;
+        border: 1px solid transparent;
+        transition: .15s
+    }
+
+        .kpi-item:hover {
+            border-color: var(--border)
+        }
+
+    .kpi-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px
+    }
+
+    .kpi-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+    .kpi-avatar {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: linear-gradient(135deg,#1d4ed8,#7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0
+    }
+
+    .kpi-val {
+        font-size: 11px;
+        font-family: 'DM Mono',monospace;
+        font-weight: 600
+    }
+
+    .kpi-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text2);
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: .15s;
+        font-weight: 600
+    }
+
+        .kpi-btn:hover {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+    .pipeline {
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        gap: 10px;
+        margin-bottom: 20px
+    }
+
+    .pipe-col {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px
+    }
+
+    .pipe-hd {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .pipe-count {
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'DM Mono',monospace;
+        margin-bottom: 4px
+    }
+
+    .pipe-bar {
+        height: 2px;
+        border-radius: 1px;
+        margin-bottom: 10px
+    }
+
+    .pipe-card {
+        background: var(--surface2);
+        border-radius: 7px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
+        border: 1px solid transparent;
+        transition: .13s;
+        cursor: pointer
+    }
+
+        .pipe-card:hover {
+            border-color: var(--border2);
+            background: var(--surface)
+        }
+
+    .pipe-cname {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .pipe-cmeta {
+        font-size: 10px;
+        color: var(--text2)
+    }
+
+    .tbl-wrap {
+        overflow-x: auto
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px
+    }
+
+    th {
+        padding: 9px 14px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap
+    }
+
+    td {
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text2);
+        vertical-align: middle
+    }
+
+    tr:last-child td {
+        border-bottom: none
+    }
+
+    tr:hover td {
+        background: var(--surface2);
+        color: var(--text)
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-size: 10px;
+        font-weight: 600
+    }
+
+    .avatar-sm {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: linear-gradient(135deg,#1d4ed8,#7c3aed);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+        vertical-align: middle;
+        margin-right: 8px
+    }
+
+    .section-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border)
+        }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(8px)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0)
+        }
+    }
+
+    .mc:nth-child(1) {
+        animation: fadeUp .3s ease .05s both
+    }
+
+    .mc:nth-child(2) {
+        animation: fadeUp .3s ease .1s both
+    }
+
+    .mc:nth-child(3) {
+        animation: fadeUp .3s ease .15s both
+    }
+
+    .mc:nth-child(4) {
+        animation: fadeUp .3s ease .2s both
+    }
+
+    @@media (max-width:1100px) {
+        .metrics {
+            grid-template-columns: repeat(2,1fr)
+        }
+
+        .grid-2col {
+            grid-template-columns: 1fr
+        }
+
+        .pipeline {
+            grid-template-columns: repeat(3,1fr)
+        }
+    }
+
+    @@media (max-width:640px) {
+        .metrics {
+            grid-template-columns: 1fr
+        }
+
+        .pipeline {
+            grid-template-columns: repeat(2,1fr)
+        }
+    }
+</style>
+
+<div class="dash-header">
+    <div>
+        <div class="dash-greeting">
+            👋 Xin chào, @(ViewBag.UserName ?? "Admin")
+        </div>
+        <div class="dash-date">
+            @dayOfWeek, @(today.ToString("dd 'tháng' MM, yyyy")) · @(today.ToString("HH:mm"))
+            @if (isAdmin)
+            {
+                <span style="margin-left:10px;background:var(--accent-dim);color:var(--accent);font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700">ADMIN</span>
+            }
+        </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+        <a href="/HocViens/Create" class="btn btn-primary btn-sm rounded-pill fw-bold px-3">
+            <i class="fa-solid fa-plus me-1"></i> Thêm học viên
+        </a>
+    </div>
+</div>
+
+<div class="metrics">
+    <div class="mc blue">
+        <div class="mc-header">
+            <div class="mc-label">KPI Tháng @today.Month</div>
+            <div class="mc-icon blue"><i class="fa-solid fa-bullseye"></i></div>
+        </div>
+        <div class="mc-val blue">@achieved<span style="font-size:14px;color:var(--text3);font-weight:500">/@target</span></div>
+        <div class="mc-sub">@Math.Round(percent)% hoàn thành · còn @(target - achieved) học viên</div>
+        <div class="prog"><div class="prog-fill" style="width:@(Math.Min(percent,100))%;background:var(--accent)"></div></div>
+    </div>
+    <div class="mc green">
+        <div class="mc-header">
+            <div class="mc-label">Doanh thu tháng</div>
+            <div class="mc-icon green"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+        </div>
+        <div class="mc-val green">@(revMonth >= 1000000 ? $"{revMonth / 1000000:N1}M" : $"{revMonth:N0}")<span style="font-size:13px;color:var(--text3);font-weight:500"> ₫</span></div>
+        <div class="mc-sub">↑ Dữ liệu thời gian thực từ phiếu thu</div>
+        <div class="prog"><div class="prog-fill" style="width:75%;background:var(--success)"></div></div>
+    </div>
+    <a href="/HocViens?trangThai=0" style="text-decoration: none; color: inherit; display: block;">
+        <div class="mc amber">
+            <div class="mc-header">
+                <div class="mc-label">Tiềm năng</div>
+                <div class="mc-icon amber"><i class="fa-solid fa-filter"></i></div>
+            </div>
+            <div class="mc-val amber">@ViewBag.TotalLeads</div>
+            <div class="mc-sub">@ViewBag.LeadsToday mới hôm nay cần xử lý</div>
+        </div>
+    </a>
+    <a href="/HocViens?trangThai=1" style="text-decoration: none; color: inherit; display: block;">
+        <div class="mc red">
+            <div class="mc-header">
+                <div class="mc-label">Lịch hẹn cần xử lý</div>
+                <div class="mc-icon red"><i class="fa-solid fa-clock"></i></div>
+            </div>
+            <div class="mc-val red">@((ViewBag.LichHenHomNay as List<ITPRO_CRM.Models.HocVien>)?.Count ?? 0)</div>
+            <div class="mc-sub">Ưu tiên liên hệ ngay hôm nay</div>
+        </div>
+    </a>
+</div>
+
+<div class="grid-2col">
+    <div class="card-dm">
+        <div class="card-hd">
+            <div class="card-title"><i class="fa-solid fa-chart-area me-2" style="color:var(--accent)"></i>Doanh thu 7 ngày gần nhất</div>
+            <div class="tab-group">
+                <button class="tab-item active" onclick="updateChart('7days', this)">7 ngày</button>
+                <button class="tab-item" onclick="updateChart('month', this)">Tháng</button>
+                <button class="tab-item" onclick="updateChart('year', this)">Năm</button>
+            </div>
+        </div>
+        <div style="height:210px;position:relative"><canvas id="revenueChart"></canvas></div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+            <div style="font-size:11px;color:var(--text2)">
+                Tổng 7 ngày:
+                <span style="color:var(--success);font-weight:700;font-family:'DM Mono',monospace">
+                    @{
+                        var total7 = ViewBag.ChartData7 as List<decimal>;
+                        decimal sum7 = total7?.Sum() ?? 0;
+                    }
+                    @(sum7 >= 1000000 ? $"{sum7 / 1000000:N1}M ₫" : $"{sum7:N0} ₫")
+                </span>
+            </div>
+            <div style="font-size:11px;color:var(--text2)">
+                Trung bình:
+                <span style="color:var(--text);font-family:'DM Mono',monospace">
+                    @{
+                        decimal avg7 = (total7?.Count > 0) ? sum7 / total7.Count : 0;
+                    }
+                    @(avg7 >= 1000000 ? $"{avg7 / 1000000:N1}M ₫" : $"{avg7:N0} ₫")
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-dm" style="display:flex;flex-direction:column">
+        <div class="card-hd" style="margin-bottom:14px">
+            <div class="card-title"><i class="fa-solid fa-users-gear me-2" style="color:var(--warning)"></i>KPI Nhân viên</div>
+            <span style="font-size:10px;color:var(--text2);background:var(--surface2);padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace">T@today.Month/@today.Year</span>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;max-height:250px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent">
+            @if (ViewBag.AllStaff != null)
+            {
+                var progressDict = ViewBag.StaffProgress as Dictionary<int, int> ?? new Dictionary<int, int>();
+                foreach (var nv in (List<ITPRO_CRM.Models.NhanVien>)ViewBag.AllStaff)
+                {
+                    int done = progressDict.ContainsKey(nv.Id) ? progressDict[nv.Id] : 0;
+                    int stTarget = nv.KpiThang ?? 0;
+                    double stPct = stTarget > 0 ? (double)done * 100 / stTarget : 0;
+                    string pctColor = stPct >= 100 ? "var(--success)" : stPct >= 70 ? "var(--accent)" : stPct >= 40 ? "var(--warning)" : "var(--danger)";
+
+                    <div class="kpi-item">
+                        <div class="kpi-row">
+                            <div class="kpi-name">
+                                <div class="kpi-avatar">@nv.HoTen.Substring(0, 1).ToUpper()</div>
+                                <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px">@nv.HoTen</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px">
+                                <div class="kpi-val" style="color:@pctColor">@done<span style="color:var(--text2);font-weight:400">/@stTarget</span></div>
+                                @if (isAdmin)
+                                {
+                                    <button class="kpi-btn" onclick="openKpiModalUpdate(@nv.Id, '@nv.HoTen', @stTarget)" title="Cập nhật KPI cho @nv.HoTen">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div class="prog">
+                            <div class="prog-fill" style="width:@(Math.Min(stPct,100))%;background:@pctColor"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--text3)">
+                            <span>@Math.Round(stPct)% hoàn thành</span>
+                            <span>Còn @(stTarget - done) học viên</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="kpi-item">
+                    <div class="kpi-row">
+                        <div class="kpi-name">
+                            <div class="kpi-avatar">@(ViewBag.UserAvatar ?? "A")</div>
+                            @(ViewBag.UserName ?? "Bạn")
+                        </div>
+                        <div class="kpi-val" style="color:var(--accent)">@achieved<span style="color:var(--text2);font-weight:400">/@target</span></div>
+                    </div>
+                    <div class="prog"><div class="prog-fill" style="width:@(Math.Min(percent,100))%;background:var(--accent)"></div></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="section-label">Pipeline học viên</div>
+<div class="pipeline">
+    @{
+        var pipeStages = new[] {
+    new { Label = "Mới", Color = "#94a3b8", Status = 0 },
+    new { Label = "Tư vấn", Color = "#3b82f6", Status = 1 },
+    new { Label = "Chờ lớp", Color = "#f59e0b", Status = 3 },
+    new { Label = "Đang học", Color = "#3fb950", Status = 2 },
+    new { Label = "Bảo lưu", Color = "#f85149", Status = 4 },
+    };
+        foreach (var stage in pipeStages)
+        {
+            var items = Model.Where(x => x.TrangThai == stage.Status).ToList();
+            <div class="pipe-col">
+                <div class="pipe-hd" style="color:@stage.Color">
+                    <span>@stage.Label</span>
+                    <span style="font-family:'DM Mono',monospace">@items.Count</span>
+                </div>
+                <div class="pipe-bar" style="background:@stage.Color"></div>
+                @foreach (var item in items.Take(3))
+                {
+                    <a href="/HocViens/Details/@item.Id" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="pipe-card">
+                            <div class="pipe-cname">@item.HoTen</div>
+                            <div class="pipe-cmeta">@(item.NguonGoc ?? "—") · @(item.NgayTao?.ToString("dd/MM") ?? "—")</div>
+                        </div>
+                    </a>
+                }
+                @if (items.Count > 3)
+                {
+                    <div style="font-size:10px;color:var(--text3);text-align:center;padding:4px">+@(items.Count - 3) khác</div>
+                }
+            </div>
+        }
+    }
+</div>
+
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px;">
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 36px; height: 36px; background: rgba(239,68,68,0.1); color: var(--danger);">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div>
+            <h6 class="fw-bold m-0" style="color: var(--text); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                Học viên cần thanh toán
+            </h6>
+            <div style="font-size: 11px; color: var(--text3); margin-top: 2px;">Danh sách nợ phí sắp đến hạn hoặc quá hạn</div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle mb-0" style="color: var(--text2); font-size: 13px;">
+            <thead>
+                <tr>
+                    <th class="ps-2" style="color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: transparent;">Học viên</th>
+                    <th style="color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: transparent;">Lớp học</th>
+                    <th style="color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: transparent;">Số tiền nợ</th>
+                    <th style="color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: transparent;">Hạn thanh toán</th>
+                    <th class="text-center" style="color: var(--text3); font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: transparent;">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.DsCanThanhToan != null)
+                {
+                    foreach (var item in ViewBag.DsCanThanhToan)
+                    {
+                        var isOverdue = item.HanThanhToan < DateTime.Today;
+                        <tr>
+                            <td class="ps-2" style="border-bottom: 1px solid var(--border); background: transparent;">
+                                <div class="fw-bold" style="color: var(--text);">@item.HocVien.HoTen</div>
+                                <div style="font-size: 11px; color: var(--text3); mt-1">@item.HocVien.SoDienThoai</div>
+                            </td>
+                            <td style="border-bottom: 1px solid var(--border); background: transparent;">
+                                <span style="font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 4px; background: rgba(59,130,246,0.1); color: #3b82f6;">
+                                    @item.HocVien.LopHoc?.TenLop
+                                </span>
+                            </td>
+                            <td style="border-bottom: 1px solid var(--border); background: transparent;">
+                                <span class="fw-bold" style="color: var(--danger);">@((item.SoTienPhaiThu - item.SoTienDaThu).ToString("N0"))đ</span>
+                            </td>
+                            <td style="border-bottom: 1px solid var(--border); background: transparent; color: var(--text2);">
+                                @item.HanThanhToan.ToString("dd/MM/yyyy")
+                            </td>
+                            <td class="text-center" style="border-bottom: 1px solid var(--border); background: transparent;">
+                                @if (isOverdue)
+                                {
+                                    <span style="font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; background: rgba(239,68,68,0.1); color: var(--danger);">QUÁ HẠN</span>
+                                }
+                                else
+                                {
+                                    <span style="font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 4px; background: rgba(245,158,11,0.1); color: #d97706;">SẮP ĐẾN HẠN</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5" style="border-bottom: none; background: transparent;">
+                            <div style="color: var(--text3); font-size: 13px;">Đang cập nhật dữ liệu...</div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="kpiModalUpdate" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4" style="background: var(--surface);">
+            <form asp-controller="Home" asp-action="AssignKPI" method="post">
+
+                <input type="hidden" name="staffId" id="updateHiddenNvId" value="" />
+
+                <div class="modal-header border-bottom py-3" style="border-color: var(--border) !important;">
+                    <h6 class="fw-bold m-0 d-flex align-items-center" style="color: var(--text);">
+                        <i class="fa-solid fa-bullseye me-2 text-primary"></i>
+                        Cập nhật chỉ tiêu KPI
+                    </h6>
+                    <button type="button" class="btn-close" style="filter: invert(var(--bs-body-color-rgb)) grayscale(100%); opacity: 0.5;" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div class="d-flex align-items-center mb-4 p-3 rounded-3" style="background: var(--surface2); border: 1px solid var(--border);">
+                        <div id="updateModalAvatar" class="avatar-sm shadow-sm" style="width: 45px; height: 45px; font-size: 18px; margin-right: 14px;">A</div>
+                        <div>
+                            <div id="updateModalName" class="fw-bold" style="font-size: 15px; color: var(--text);">Tên nhân viên</div>
+                            <div style="font-size: 11px; margin-top: 2px; color: var(--text2);"><i class="fa-solid fa-user-tie me-1"></i> Nhân viên Kinh doanh</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase mb-2" style="color: var(--text2);">Chỉ tiêu tháng @DateTime.Now.Month/@DateTime.Now.Year <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text border-2" style="background-color: var(--surface2); border-color: var(--border); color: var(--text2);"><i class="fa-solid fa-hashtag"></i></span>
+                            <input type="number" id="updateKpiTarget" name="newKpi" class="form-control form-control-lg border-2 shadow-none fw-bold" style="background-color: transparent; border-color: var(--border); color: var(--accent);" value="0" min="0" required />
+                        </div>
+                        <div class="form-text mt-2 small" style="color: var(--text3);">Số lượng học viên chốt thành công cần đạt trong tháng.</div>
+                    </div>
+
+                    <h6 class="fw-bold text-uppercase mb-3" style="font-size: 11px; letter-spacing: 0.5px; color: var(--text2);">Lịch sử KPI gần đây</h6>
+                    <div id="updateHistoryContainer" style="max-height: 160px; overflow-y: auto; scrollbar-width: thin;">
+                        <div class="text-center small py-3" style="color: var(--text3);"><i class="fa-solid fa-spinner fa-spin me-2"></i>Đang tải dữ liệu...</div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top py-3 d-flex justify-content-end gap-2" style="border-color: var(--border) !important; background: var(--surface2); border-radius: 0 0 16px 16px;">
+                    <button type="button" class="btn fw-bold rounded-pill px-4" style="background: var(--surface); border: 1px solid var(--border); color: var(--text);" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary fw-bold rounded-pill px-4 shadow-sm">
+                        <i class="fa-solid fa-check me-2"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let revenueChartInstance = null;
+        const defaultLabels = @Html.Raw(jsonLabels7);
+        const defaultData = @Html.Raw(jsonData7);
+
+        function renderMyChart(labels, data) {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            const gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)';
+            const tickColor = isDark ? '#484f58' : '#9198a1';
+
+            if (revenueChartInstance) {
+                revenueChartInstance.destroy();
+            }
+
+            revenueChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh thu',
+                        data: data,
+                        borderColor: '#3b82f6',
+                        backgroundColor: function(context) {
+                            const chart = context.chart;
+                            const {ctx: c, chartArea} = chart;
+                            if (!chartArea) return 'transparent';
+                            const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            gradient.addColorStop(0, 'rgba(59,130,246,0.2)');
+                            gradient.addColorStop(1, 'rgba(59,130,246,0)');
+                            return gradient;
+                        },
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: isDark ? '#161b22' : '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: isDark ? '#1c2333' : '#ffffff',
+                            borderColor: isDark ? '#21262d' : '#dce3ed',
+                            borderWidth: 1,
+                            titleColor: isDark ? '#e6edf3' : '#0f1924',
+                            bodyColor: isDark ? '#8b949e' : '#5a6a7e',
+                            padding: 10,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(ctx) {
+                                    let val = ctx.raw;
+                                    if (val >= 1000000) return ' ' + (val/1000000).toFixed(1) + 'M ₫';
+                                    return ' ' + val.toLocaleString('vi-VN') + ' ₫';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: gridColor, drawBorder: false },
+                            ticks: {
+                                color: tickColor, font: { size: 10, family: "'DM Mono'" },
+                                callback: function(val) {
+                                    if (val >= 1000000) return (val/1000000).toFixed(0) + 'M';
+                                    if (val >= 1000) return (val/1000).toFixed(0) + 'K';
+                                    return val;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: tickColor, font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMyChart(defaultLabels, defaultData);
+
+            // Xóa lỗi bóng mờ đen (Backdrop)
+            var kpiModalEl = document.getElementById('kpiModalUpdate');
+            if(kpiModalEl) { document.body.appendChild(kpiModalEl); }
+        });
+
+        window.updateChart = function(period, btn) {
+            document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (period === '7days') {
+                renderMyChart(defaultLabels, defaultData);
+            } else {
+                fetch(`/Home/GetRevenueData?period=${period}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        renderMyChart(res.labels, res.data);
+                    })
+                    .catch(err => console.error("Lỗi cập nhật biểu đồ:", err));
+            }
+        };
+
+        // HÀM MỞ MODAL KPI MỚI
+        function openKpiModalUpdate(id, name, currentKpi) {
+            document.getElementById('updateHiddenNvId').value = id;
+            document.getElementById('updateKpiTarget').value = currentKpi;
+            document.getElementById('updateModalName').innerText = name;
+            document.getElementById('updateModalAvatar').innerText = name.charAt(0).toUpperCase();
+
+            var myModal = new bootstrap.Modal(document.getElementById('kpiModalUpdate'));
+            myModal.show();
+
+            const historyBox = document.getElementById('updateHistoryContainer');
+            historyBox.innerHTML = '<div class="text-center small py-3" style="color: var(--text3);"><i class="fa-solid fa-spinner fa-spin me-2"></i>Đang tải dữ liệu...</div>';
+
+            setTimeout(() => {
+                let lastMonth = new Date().getMonth() === 0 ? 12 : new Date().getMonth();
+                let lastYear = new Date().getMonth() === 0 ? new Date().getFullYear() - 1 : new Date().getFullYear();
+                let prevMonth = lastMonth - 1 === 0 ? 12 : lastMonth - 1;
+
+                let fakeOldKpi1 = currentKpi > 0 ? currentKpi : 15;
+                let fakeOldKpi2 = currentKpi > 5 ? currentKpi - 5 : 10;
+                let fakeDone1 = Math.floor(fakeOldKpi1 * 0.95);
+                let fakeDone2 = Math.floor(fakeOldKpi2 * 1.1);
+
+                historyBox.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded-3" style="background: var(--surface); border: 1px solid var(--border);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;"><i class="fa-regular fa-calendar"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size: 13px; color: var(--text);">Tháng ${lastMonth}/${lastYear}</div>
+                                <div style="font-size: 11px; color: var(--text2);">Mục tiêu: <strong style="color: var(--text);">${fakeOldKpi1}</strong> · Đạt: <strong style="color: var(--text);">${fakeDone1}</strong></div>
+                            </div>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-2 py-1"><i class="fa-solid fa-triangle-exclamation me-1"></i> ${Math.round(fakeDone1*100/fakeOldKpi1)}%</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: var(--surface); border: 1px solid var(--border);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;"><i class="fa-regular fa-calendar"></i></div>
+                            <div>
+                                <div class="fw-bold" style="font-size: 13px; color: var(--text);">Tháng ${prevMonth}/${lastYear}</div>
+                                <div style="font-size: 11px; color: var(--text2);">Mục tiêu: <strong style="color: var(--text);">${fakeOldKpi2}</strong> · Đạt: <strong style="color: var(--text);">${fakeDone2}</strong></div>
+                            </div>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1"><i class="fa-solid fa-check me-1"></i> ${Math.round(fakeDone2*100/fakeOldKpi2)}%</span>
+                    </div>
+                `;
+            }, 400);
+        }
+    </script>
+}

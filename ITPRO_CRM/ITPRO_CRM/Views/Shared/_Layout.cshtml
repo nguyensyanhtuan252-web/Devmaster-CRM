@@ -1,0 +1,802 @@
+﻿<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Devmaster CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* [TOÀN BỘ CSS GỐC CỦA BẠN ĐƯỢC GIỮ NGUYÊN 100%] */
+        [data-theme="dark"] {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface2: #1c2333;
+            --border: #21262d;
+            --border2: #30363d;
+            --accent: #3b82f6;
+            --accent-h: #2563eb;
+            --accent-dim: rgba(59,130,246,.15);
+            --text: #e6edf3;
+            --text2: #8b949e;
+            --text3: #484f58;
+            --danger: #f85149;
+            --danger-dim: rgba(248,81,73,.15);
+            --success: #3fb950;
+            --success-dim: rgba(63,185,80,.15);
+            --warning: #f59e0b;
+            --warning-dim: rgba(245,158,11,.15);
+            --shadow: 0 8px 32px rgba(0,0,0,.5)
+        }
+
+        [data-theme="light"] {
+            --bg: #f3f6fb;
+            --surface: #fff;
+            --surface2: #f3f6fb;
+            --border: #dce3ed;
+            --border2: #c5d0df;
+            --accent: #2563eb;
+            --accent-h: #1d4ed8;
+            --accent-dim: rgba(37,99,235,.1);
+            --text: #0f1924;
+            --text2: #5a6a7e;
+            --text3: #a3b3c5;
+            --danger: #dc2626;
+            --danger-dim: rgba(220,38,38,.1);
+            --success: #16a34a;
+            --success-dim: rgba(22,163,74,.1);
+            --warning: #d97706;
+            --warning-dim: rgba(217,119,6,.1);
+            --shadow: 0 4px 20px rgba(30,60,100,.1)
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-y: scroll;
+            transition: background .2s,color .2s;
+            /* Thêm thuộc tính này để font chữ trên màn hình hiển thị mượt và sắc nét hơn */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            --sw: 232px;
+            --th: 54px
+        }
+
+        .sidebar {
+            width: var(--sw);
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform .25s ease
+        }
+
+        .sb-brand {
+            height: var(--th);
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            text-decoration: none
+        }
+
+        .sb-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg,#1d4ed8,#3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(59,130,246,.4)
+        }
+
+        .sb-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -.2px
+        }
+
+        .sb-sub {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: -1px;
+            font-family: 'JetBrains Mono',monospace
+        }
+
+        .sb-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border2) transparent
+        }
+
+        .sb-section {
+            padding: 14px 10px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 1.2px
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text2);
+            text-decoration: none;
+            transition: all .13s;
+            margin-bottom: 1px;
+            position: relative
+        }
+
+            .nav-link:hover {
+                background: var(--surface2);
+                color: var(--text)
+            }
+
+            .nav-link.active {
+                background: var(--accent-dim);
+                color: var(--accent);
+                font-weight: 600
+            }
+
+            .nav-link i {
+                width: 16px;
+                font-size: 13px;
+                flex-shrink: 0;
+                opacity: .85
+            }
+
+            .nav-link.active i {
+                opacity: 1
+            }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono',monospace
+        }
+
+        .sb-footer {
+            padding: 10px;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0
+        }
+
+        .sb-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: .15s;
+            text-decoration: none
+        }
+
+            .sb-user:hover {
+                background: var(--surface2)
+            }
+
+        .sb-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(135deg,#1d4ed8,#7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0
+        }
+
+        .sb-uname {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .sb-urole {
+            font-size: 10px;
+            color: var(--text2)
+        }
+
+        .sb-status {
+            width: 7px;
+            height: 7px;
+            background: var(--success);
+            border-radius: 50%;
+            margin-left: auto;
+            flex-shrink: 0
+        }
+
+        .main-wrap {
+            margin-left: var(--sw);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left .25s ease
+        }
+
+        body.sb-hidden .sidebar {
+            transform: translateX(calc(-1 * var(--sw)))
+        }
+
+        body.sb-hidden .main-wrap {
+            margin-left: 0
+        }
+
+        .topbar {
+            height: var(--th);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 900
+        }
+
+        .tb-left {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .tb-right {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .tb-toggle {
+            background: none;
+            border: none;
+            color: var(--text2);
+            font-size: 15px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: .15s;
+            display: flex;
+            align-items: center
+        }
+
+            .tb-toggle:hover {
+                background: var(--surface2);
+                color: var(--text)
+            }
+
+        .tb-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .tb-sub {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: -1px
+        }
+
+        /* CSS MỚI: Định dạng cho thanh Tìm kiếm Form */
+        .tb-search-form {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .tb-search-input {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 45px 6px 32px;
+            font-size: 12px;
+            color: var(--text);
+            transition: .15s;
+            width: 250px;
+            outline: none;
+        }
+
+            .tb-search-input:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 2px var(--accent-dim);
+            }
+
+        .tb-search-icon {
+            position: absolute;
+            left: 10px;
+            color: var(--text2);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .tb-search-kbd {
+            position: absolute;
+            right: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono',monospace;
+            color: var(--text2);
+            pointer-events: none;
+        }
+
+        .tb-btn {
+            width: 34px;
+            height: 34px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text2);
+            font-size: 14px;
+            transition: .15s;
+            position: relative
+        }
+
+            .tb-btn:hover {
+                background: var(--surface2);
+                color: var(--text)
+            }
+
+        .tb-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 6px;
+            height: 6px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 1.5px solid var(--surface)
+        }
+
+        .tb-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: .15s;
+            text-decoration: none;
+            color: inherit
+        }
+
+            .tb-user:hover {
+                background: var(--surface2);
+                color: inherit
+            }
+
+        .tb-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(135deg,#1d4ed8,#7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0
+        }
+
+        .tb-uname {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .tb-urole {
+            font-size: 10px;
+            color: var(--text2)
+        }
+
+        .tb-chevron {
+            font-size: 10px;
+            color: var(--text3);
+            margin-left: 2px
+        }
+
+        .page-content {
+            padding: 22px 24px;
+            flex: 1
+        }
+
+        main {
+            animation: fadeUp .2s ease both
+        }
+
+        @@keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(5px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .dropdown-menu {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 6px;
+            min-width: 180px
+        }
+
+        .dropdown-item {
+            color: var(--text2);
+            font-size: 12.5px;
+            font-weight: 500;
+            border-radius: 6px;
+            padding: 7px 10px;
+            transition: .1s
+        }
+
+            .dropdown-item:hover {
+                background: var(--surface2);
+                color: var(--text)
+            }
+
+        .dropdown-divider {
+            border-color: var(--border);
+            margin: 4px 0
+        }
+
+        .dropdown-header {
+            color: var(--text3);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            padding: 4px 10px
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            z-index: 999
+        }
+
+            .overlay.show {
+                display: block
+            }
+
+        @@media (max-width:768px) {
+            .sidebar {
+                transform: translateX(calc(-1 * var(--sw)))
+            }
+
+                .sidebar.show {
+                    transform: translateX(0)
+                }
+
+            .main-wrap {
+                margin-left: 0 !important
+            }
+        }
+
+        .btn-primary-dm {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: .15s;
+            text-decoration: none
+        }
+
+            .btn-primary-dm:hover {
+                background: var(--accent-h);
+                color: #fff
+            }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <a asp-controller="Home" asp-action="Index" class="sb-brand">
+            <div class="sb-logo">D</div>
+            <div>
+                <div class="sb-name">Devmaster CRM</div>
+                <div class="sb-sub">v2.1 · ITPRO Academy</div>
+            </div>
+        </a>
+
+        <div class="sb-body" id="sbMenu">
+            @{
+                var ctrl = ViewContext.RouteData.Values["Controller"]?.ToString();
+                var action = ViewContext.RouteData.Values["Action"]?.ToString();
+            }
+            <a asp-controller="Home" asp-action="Index" class="nav-link @(ctrl=="Home"?"active":"")">
+                <i class="fa-solid fa-chart-pie fa-fw"></i> Tổng quan
+            </a>
+
+            <div class="sb-section">Kinh doanh</div>
+            <!-- BẢN SỬA: Đổi tên Lead tiềm năng thành Tiềm năng -->
+            <a asp-controller="HocViens" asp-action="Index" asp-route-trangThai="0" class="nav-link @(action=="Index" && Context.Request.Query["trangThai"] == "0"?"active":"")">
+                <i class="fa-solid fa-filter fa-fw"></i> Tiềm năng
+                @if (ViewBag.TotalLeads is int tl && tl > 0)
+                {
+                    <span class="nav-badge">@tl</span>
+                }
+            </a>
+            <a asp-controller="HocViens" asp-action="Pipeline" class="nav-link @(action=="Pipeline"?"active":"")">
+                <i class="fa-solid fa-comments-dollar fa-fw"></i> Đang tư vấn
+            </a>
+            <a asp-controller="HocViens" asp-action="Index" class="nav-link @(ctrl=="HocViens"&&action=="Index"&&Context.Request.Query["trangThai"] != "0"?"active":"")">
+                <i class="fa-solid fa-users fa-fw"></i> Học viên
+            </a>
+            <a asp-controller="PhieuThus" asp-action="Index" class="nav-link @(ctrl=="PhieuThus"?"active":"")">
+                <i class="fa-solid fa-file-invoice-dollar fa-fw"></i> Phiếu thu
+            </a>
+
+            <!-- [CÁC MENU CÒN LẠI GIỮ NGUYÊN] -->
+            <div class="sb-section">Marketing</div>
+            <a asp-controller="ChienDichs" asp-action="Index" class="nav-link @(ctrl=="ChienDichs"?"active":"")">
+                <i class="fa-solid fa-bullhorn fa-fw"></i> Chiến dịch
+            </a>
+            <a asp-controller="EmailMarketing" asp-action="Index" class="nav-link @(ctrl=="EmailMarketing"?"active":"")">
+                <i class="fa-solid fa-envelope fa-fw"></i> Email Marketing
+            </a>
+
+            <div class="sb-section">Đào tạo</div>
+            <a asp-controller="LopHocs" asp-action="Index" class="nav-link @(ctrl=="LopHocs"?"active":"")">
+                <i class="fa-solid fa-chalkboard-user fa-fw"></i> Lớp học
+            </a>
+            <a asp-controller="GiangViens" asp-action="Index" class="nav-link @(ctrl=="GiangViens"?"active":"")">
+                <i class="fa-solid fa-user-tie fa-fw"></i> Giảng viên
+            </a>
+
+            <div class="sb-section">Hệ thống</div>
+            <a asp-controller="BaoCaos" asp-action="Index" class="nav-link @(ctrl=="BaoCaos"?"active":"")">
+                <i class="fa-solid fa-chart-line fa-fw"></i> Báo cáo
+            </a>
+            <a asp-controller="CauHinhs" asp-action="Index" class="nav-link @(ctrl=="CauHinhs"?"active":"")">
+                <i class="fa-solid fa-gear fa-fw"></i> Thiết lập
+            </a>
+        </div>
+
+        <div class="sb-footer">
+            <div class="dropdown">
+                <div class="sb-user dropdown-toggle" data-bs-toggle="dropdown">
+                    <div class="sb-avatar">@(ViewBag.UserAvatar ?? "A")</div>
+                    <div style="flex:1;overflow:hidden">
+                        <div class="sb-uname text-truncate">@(ViewBag.UserName ?? "Admin")</div>
+                        <div class="sb-urole">@(ViewBag.UserRole ?? "Quản trị viên")</div>
+                    </div>
+                    <div class="sb-status"></div>
+                </div>
+                <ul class="dropdown-menu mb-1">
+                    <li><span class="dropdown-header">Tài khoản</span></li>
+                    <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-user me-2" style="color:var(--text3)"></i>Hồ sơ cá nhân</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" asp-controller="Access" asp-action="Logout" style="color:var(--danger)"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrap">
+        <header class="topbar">
+            <div class="tb-left">
+                <button class="tb-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                <div class="d-none d-md-block">
+                    <div class="tb-title">@(ViewData["Title"] ?? "Tổng quan")</div>
+                    <div class="tb-sub">Devmaster CRM · ITPRO Academy</div>
+                </div>
+            </div>
+            <div class="tb-right">
+                <!-- BẢN SỬA: Kích hoạt Form Tìm Kiếm -->
+                <form class="tb-search-form d-none d-lg-flex" asp-controller="HocViens" asp-action="Index" method="get">
+                    <i class="fa-solid fa-magnifying-glass tb-search-icon"></i>
+                    <input type="text" name="searchString" id="searchInput" class="tb-search-input" placeholder="Tìm kiếm nhanh..." />
+                    <kbd class="tb-search-kbd">Ctrl+K</kbd>
+                </form>
+
+                <div class="tb-btn" style="position:relative">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="tb-dot"></span>
+                </div>
+                <button class="tb-btn" id="themeToggle" onclick="toggleTheme()" title="Đổi giao diện">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <div class="dropdown">
+                    <div class="tb-user dropdown-toggle" data-bs-toggle="dropdown">
+                        <div class="tb-avatar">@(ViewBag.UserAvatar ?? "A")</div>
+                        <div class="d-none d-sm-block">
+                            <div class="tb-uname">@(ViewBag.UserName ?? "Admin")</div>
+                            <div class="tb-urole">@(ViewBag.UserRole ?? "Quản trị viên")</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down tb-chevron"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end mt-2">
+                        <li><span class="dropdown-header">Tài khoản</span></li>
+                        <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i class="fa-solid fa-user me-2" style="color:var(--text3)"></i>Hồ sơ cá nhân</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" asp-controller="Access" asp-action="Logout" style="color:var(--danger)"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <main class="page-content">
+            <div class="container-fluid px-0">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <!-- KPI Modal (Giữ nguyên) -->
+    <div class="modal fade" id="kpiModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width:420px">
+            <div class="modal-content" style="background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden">
+                <div style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(124,58,237,.1));padding:20px 22px;border-bottom:1px solid var(--border)">
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                        <div>
+                            <div style="font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px">
+                                <span style="width:28px;height:28px;background:var(--accent-dim);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:12px"><i class="fa-solid fa-bullseye"></i></span>
+                                Đặt chỉ tiêu KPI
+                            </div>
+                            <div style="font-size:11px;color:var(--text2);margin-top:3px">Tháng @DateTime.Now.Month/@DateTime.Now.Year</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter:var(--bs-btn-close-white-filter,invert(1));opacity:.5"></button>
+                    </div>
+                </div>
+                <div style="padding:22px">
+                    <form method="post" action="/Home/AssignKPI">
+                        <input type="hidden" name="staffId" id="kpiStaffId" />
+                        <div style="margin-bottom:18px">
+                            <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Nhân viên</div>
+                            <div style="display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 14px">
+                                <div id="kpiAvatarModal" style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1d4ed8,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0"></div>
+                                <div id="kpiStaffName" style="font-weight:600;font-size:14px;color:var(--text)"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:22px">
+                            <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Chỉ tiêu học viên / tháng</div>
+                            <div style="position:relative">
+                                <input type="number" name="newKpi" id="kpiValue" min="0" max="500"
+                                       style="width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:9px;padding:12px 14px 12px 44px;color:var(--text);font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .15s"
+                                       onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'" />
+                                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:16px"><i class="fa-solid fa-hashtag"></i></span>
+                            </div>
+                            <div style="font-size:11px;color:var(--text2);margin-top:6px">Số học viên chốt thành công cần đạt trong tháng</div>
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <button type="submit" class="btn-primary-dm" style="flex:1;justify-content:center;padding:11px">
+                                <i class="fa-solid fa-check"></i> Lưu KPI
+                            </button>
+                            <button type="button" data-bs-dismiss="modal"
+                                    style="background:var(--surface2);color:var(--text2);border:1px solid var(--border2);padding:11px 18px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s"
+                                    onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--surface2)'">
+                                Hủy
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const html = document.documentElement;
+        const TKEY = 'dm_theme';
+        function applyTheme(t) {
+            html.setAttribute('data-theme', t);
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = t === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            localStorage.setItem(TKEY, t);
+        }
+        function toggleTheme() { applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+        applyTheme(localStorage.getItem(TKEY) || 'dark');
+
+        function toggleSidebar() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.toggle('show');
+                document.getElementById('overlay').classList.toggle('show');
+            } else {
+                document.body.classList.toggle('sb-hidden');
+                sessionStorage.setItem('sbHidden', document.body.classList.contains('sb-hidden'));
+            }
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+        if (sessionStorage.getItem('sbHidden') === 'true' && window.innerWidth > 768)
+            document.body.classList.add('sb-hidden');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const m = document.getElementById('sbMenu');
+            const p = sessionStorage.getItem('sbScroll');
+            if (p) m.scrollTop = +p;
+            m.querySelectorAll('.nav-link').forEach(l =>
+                l.addEventListener('click', () => sessionStorage.setItem('sbScroll', m.scrollTop))
+            );
+        });
+
+        // BẢN SỬA: Focus vào ô tìm kiếm khi nhấn Ctrl+K
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+
+        function openKpiModal(staffId, staffName, currentKpi) {
+            document.getElementById('kpiStaffId').value = staffId;
+            document.getElementById('kpiStaffName').textContent = staffName;
+            document.getElementById('kpiAvatarModal').textContent = staffName.charAt(0).toUpperCase();
+            document.getElementById('kpiValue').value = currentKpi || 0;
+            new bootstrap.Modal(document.getElementById('kpiModal')).show();
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

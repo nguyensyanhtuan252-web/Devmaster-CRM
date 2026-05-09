@@ -1,0 +1,108 @@
+﻿@model ITPRO_CRM.Models.EmailMarketing
+
+<style>
+    /* PHƯƠNG PHÁP CHAMELEON */
+    .crm-wrapper {
+        color: inherit;
+    }
+
+    .detail-card, .sidebar-card {
+        background: rgba(128, 128, 128, 0.06);
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .sidebar-card {
+        padding: 1.25rem;
+    }
+
+    .preview-box {
+        background: rgba(128, 128, 128, 0.03);
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        min-height: 300px;
+        font-size: 13px;
+    }
+
+    .progress-custom {
+        height: 6px;
+        background: rgba(128, 128, 128, 0.2);
+        border-radius: 100px;
+        overflow: hidden;
+        margin: 8px 0;
+    }
+
+    .crm-text-sub {
+        opacity: 0.7;
+        font-size: 12px;
+    }
+
+    .crm-btn-outline {
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        background: transparent;
+        color: inherit;
+        transition: 0.2s;
+        font-size: 12px;
+    }
+
+        .crm-btn-outline:hover {
+            background: rgba(128, 128, 128, 0.1);
+            color: inherit;
+        }
+
+    .crm-btn-danger:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.5);
+        color: #ef4444;
+    }
+</style>
+
+<div class="container-fluid mt-4 crm-wrapper">
+    <a asp-action="Index" class="crm-text-sub text-decoration-none mb-3 d-inline-block">&larr; Quay lại danh sách</a>
+
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="detail-card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">@Model.TieuDe</h5>
+                        <div class="crm-text-sub"><i class="fa-regular fa-calendar me-1"></i> Gửi ngày: @Model.NgayGui.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+                    <span class="badge bg-primary px-3 py-2" style="font-weight: 500;">Hoàn thành</span>
+                </div>
+
+                <label class="text-uppercase fw-bold mb-3" style="font-size: 11px; opacity: 0.6; letter-spacing: 1px;">Nội dung bản xem trước</label>
+                <div class="preview-box">
+                    @Html.Raw(Model.NoiDung)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="sidebar-card mb-3">
+                <h6 class="fw-bold mb-3" style="font-size: 13px;">Kết quả gửi</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1" style="font-size: 12px;">
+                        <span class="crm-text-sub">Thành công</span>
+                        <span class="text-success fw-bold">100%</span>
+                    </div>
+                    <div class="progress-custom"><div class="progress-bar bg-success" style="width: 100%"></div></div>
+                </div>
+                <div class="crm-text-sub border-top pt-2 mt-2" style="border-color: rgba(128,128,128,0.15) !important;">
+                    <div class="d-flex justify-content-between">
+                        <span>Đối tượng nhận:</span>
+                        <span class="fw-bold" style="opacity: 1;">@Model.DoiTuongGui</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <h6 class="fw-bold mb-3" style="font-size: 13px;">Hành động</h6>
+                <button class="btn crm-btn-outline w-100 mb-2">Gửi lại thư này</button>
+                <button class="btn crm-btn-outline crm-btn-danger w-100">Xóa lịch sử</button>
+            </div>
+        </div>
+    </div>
+</div>

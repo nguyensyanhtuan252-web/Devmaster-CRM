@@ -1,0 +1,376 @@
+@model ITPRO_CRM.Models.ChienDich
+@{
+    ViewData["Title"] = "Chi tiết: " + Model.TenChienDich;
+    var ns = Model.NganSach;
+    var nsDK = Model.NganSachDuKien;
+    var kv = Model.DoanhThuKyVong;
+    var roi = ns > 0 ? Math.Round(((kv - ns) / ns) * 100, 1) : 0;
+    var tongNgay = (Model.NgayKetThuc - Model.NgayBatDau).TotalDays;
+    var daTroi = Math.Max(0, (DateTime.Today - Model.NgayBatDau).TotalDays);
+    var tienDo = tongNgay > 0 ? Math.Min(100, (int)(daTroi / tongNgay * 100)) : 0;
+    bool isQuaHan = Model.NgayKetThuc < DateTime.Today && Model.DangHoatDong;
+    string iconClass = "fa-bullseye"; string iconColor = "var(--text2)"; string iconBg = "var(--surface2)";
+    if (Model.LoaiChienDich != null)
+    {
+        if (Model.LoaiChienDich.Contains("Facebook")) { iconClass = "fa-brands fa-facebook"; iconColor = "#1877f2"; iconBg = "rgba(24,119,242,.12)"; }
+        else if (Model.LoaiChienDich.Contains("Google")) { iconClass = "fa-brands fa-google"; iconColor = "#ea4335"; iconBg = "rgba(234,67,53,.12)"; }
+        else if (Model.LoaiChienDich.Contains("Tiktok")) { iconClass = "fa-brands fa-tiktok"; iconColor = "var(--text)"; iconBg = "var(--surface2)"; }
+        else if (Model.LoaiChienDich.Contains("Email")) { iconClass = "fa-solid fa-envelope"; iconColor = "var(--accent)"; iconBg = "var(--accent-dim)"; }
+        else if (Model.LoaiChienDich.Contains("kiện")) { iconClass = "fa-solid fa-calendar-days"; iconColor = "var(--warning)"; iconBg = "var(--warning-dim)"; }
+        else if (Model.LoaiChienDich.Contains("thiệu")) { iconClass = "fa-solid fa-handshake"; iconColor = "var(--success)"; iconBg = "var(--success-dim)"; }
+    }
+}
+<style>
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 18px;
+        margin-top: 20px;
+    }
+
+    .detail-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 22px;
+    }
+
+        .detail-card.full {
+            grid-column: 1/-1;
+        }
+
+    .dc-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .dc-title i {
+            color: var(--accent);
+        }
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--border);
+        gap: 12px;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-lbl {
+        font-size: 12px;
+        color: var(--text2);
+        flex-shrink: 0;
+    }
+
+    .info-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: right;
+    }
+
+    .stat-big {
+        text-align: center;
+        padding: 16px 0;
+    }
+
+    .stat-num {
+        font-size: 28px;
+        font-weight: 700;
+        font-family: 'DM Mono',monospace;
+        line-height: 1;
+    }
+
+    .stat-lbl {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 4px;
+    }
+
+    .stat-sep {
+        width: 1px;
+        background: var(--border);
+        align-self: stretch;
+        margin: 0 8px;
+    }
+
+    .prog-bar {
+        height: 8px;
+        background: var(--border2);
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 10px 0 6px;
+    }
+
+    .prog-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width .5s;
+    }
+
+    .status-big {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+        .status-big.live {
+            background: var(--success-dim);
+            color: var(--success);
+            border: 1px solid rgba(63,185,80,.3);
+        }
+
+        .status-big.paused {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border2);
+        }
+
+        .status-big.warn {
+            background: var(--warning-dim);
+            color: var(--warning);
+            border: 1px solid rgba(245,158,11,.3);
+        }
+    @@keyframes pulse {
+        0%,100%
+
+    {
+        opacity: 1;
+        transform: scale(1)
+    }
+
+    50% {
+        opacity: .5;
+        transform: scale(.8)
+    }
+
+    }
+
+    .dot-pulse {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 1.4s infinite;
+        display: inline-block;
+    }
+
+    .btn-dm {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 18px;
+        border-radius: 9px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .15s;
+        text-decoration: none;
+        border: none;
+    }
+
+        .btn-dm.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+            .btn-dm.primary:hover {
+                background: var(--accent-h);
+                color: #fff;
+            }
+
+        .btn-dm.ghost {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border);
+        }
+
+            .btn-dm.ghost:hover {
+                background: var(--border);
+                color: var(--text);
+            }
+
+        .btn-dm.danger {
+            background: var(--danger-dim);
+            color: var(--danger);
+            border: 1px solid rgba(248,81,73,.3);
+        }
+
+            .btn-dm.danger:hover {
+                background: var(--danger);
+                color: #fff;
+            }
+
+    @@media (max-width:768px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- BREADCRUMB & ACTIONS -->
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+    <div style="display:flex;align-items:center;gap:10px">
+        <a asp-action="Index" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--text2);text-decoration:none;font-size:13px;transition:.15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <div style="font-size:13px;color:var(--text2)">
+            <a asp-action="Index" style="color:var(--accent);text-decoration:none">Chiến dịch</a>
+            <i class="fa-solid fa-chevron-right" style="font-size:9px;margin:0 6px;color:var(--text3)"></i>
+            <span style="color:var(--text)">@Model.TenChienDich</span>
+        </div>
+    </div>
+    <div style="display:flex;gap:8px">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-dm primary"><i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-dm danger"><i class="fa-solid fa-trash-can"></i> Xóa</a>
+    </div>
+</div>
+
+<!-- HERO ROW -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:22px;margin-bottom:6px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+    <div style="width:56px;height:56px;border-radius:14px;background:@iconBg;color:@iconColor;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">
+        <i class="@iconClass"></i>
+    </div>
+    <div style="flex:1;min-width:200px">
+        <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">@Model.TenChienDich</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            @if (isQuaHan)
+            {
+                <span class="status-big warn"><i class="fa-solid fa-triangle-exclamation"></i> Quá hạn</span>
+            }
+            else if (Model.DangHoatDong)
+            {
+                <span class="status-big live"><span class="dot-pulse"></span> Đang chạy</span>
+            }
+            else
+            {
+                <span class="status-big paused"><i class="fa-solid fa-pause"></i> Tạm dừng</span>
+            }
+            <span style="background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--text2)">@(Model.LoaiChienDich ?? "Khác")</span>
+        </div>
+    </div>
+    <!-- MINI STATS -->
+    <div style="display:flex;align-items:center;gap:0;background:var(--surface2);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div class="stat-big" style="padding:14px 20px">
+            <div class="stat-num" style="color:var(--danger);font-size:20px">@string.Format("{0:N0}", ns)<span style="font-size:12px">đ</span></div>
+            <div class="stat-lbl">Chi phí</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat-big" style="padding:14px 20px">
+            <div class="stat-num" style="color:var(--success);font-size:20px">@string.Format("{0:N0}", kv)<span style="font-size:12px">đ</span></div>
+            <div class="stat-lbl">Kỳ vọng</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat-big" style="padding:14px 20px">
+            <div class="stat-num" style="color:@(roi>=0?"var(--success)":"var(--danger)");font-size:22px">@(roi >= 0 ? "+" : "")@roi%</div>
+            <div class="stat-lbl">ROI</div>
+        </div>
+    </div>
+</div>
+
+<div class="detail-grid">
+    <!-- LEFT: Info -->
+    <div>
+        <div class="detail-card">
+            <div class="dc-title"><i class="fa-solid fa-calendar-days"></i> Thời gian chiến dịch</div>
+
+            <div class="info-row">
+                <span class="info-lbl"><i class="fa-solid fa-play" style="color:var(--success);margin-right:5px"></i>Ngày bắt đầu</span>
+                <span class="info-val">@Model.NgayBatDau.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="info-row">
+                <span class="info-lbl"><i class="fa-solid fa-flag-checkered" style="color:var(--danger);margin-right:5px"></i>Ngày kết thúc</span>
+                <span class="info-val">@Model.NgayKetThuc.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="info-row">
+                <span class="info-lbl"><i class="fa-regular fa-clock" style="margin-right:5px"></i>Tổng thời gian</span>
+                <span class="info-val">@((int)tongNgay) ngày</span>
+            </div>
+
+            <div style="margin-top:12px">
+                <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text2);margin-bottom:6px">
+                    <span>Tiến độ thời gian</span>
+                    <span style="font-weight:700;color:var(--text)">@tienDo%</span>
+                </div>
+                <div class="prog-bar">
+                    <div class="prog-fill" style="width:@tienDo%;background:@(isQuaHan?"var(--danger)":Model.DangHoatDong?"var(--accent)":"var(--border2)")"></div>
+                </div>
+                <div style="font-size:11px;color:var(--text3)">Đã trôi @((int)daTroi) / @((int)tongNgay) ngày</div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.MoTa))
+        {
+            <div class="detail-card" style="margin-top:14px">
+                <div class="dc-title"><i class="fa-solid fa-file-lines"></i> Mô tả / Ghi chú</div>
+                <div style="font-size:13px;color:var(--text);line-height:1.7;white-space:pre-line">@Model.MoTa</div>
+            </div>
+        }
+    </div>
+
+    <!-- RIGHT: Finance -->
+    <div>
+        <div class="detail-card">
+            <div class="dc-title"><i class="fa-solid fa-coins"></i> Tài chính</div>
+            <div class="info-row">
+                <span class="info-lbl">Chi phí thực tế</span>
+                <span class="info-val" style="color:var(--danger);font-family:'DM Mono',monospace">@string.Format("{0:N0}", ns)đ</span>
+            </div>
+            <div class="info-row">
+                <span class="info-lbl">Ngân sách phê duyệt</span>
+                <span class="info-val" style="color:var(--warning);font-family:'DM Mono',monospace">@string.Format("{0:N0}", nsDK)đ</span>
+            </div>
+            <div class="info-row">
+                <span class="info-lbl">Doanh thu kỳ vọng</span>
+                <span class="info-val" style="color:var(--success);font-family:'DM Mono',monospace">@string.Format("{0:N0}", kv)đ</span>
+            </div>
+            <div class="info-row">
+                <span class="info-lbl">Lợi nhuận kỳ vọng</span>
+                @{
+                    var loiNhuan = kv - ns;
+                }
+                <span class="info-val" style="color:@(loiNhuan>=0?"var(--success)":"var(--danger)");font-family:'DM Mono',monospace">
+                    @(loiNhuan >= 0 ? "+" : "")@string.Format("{0:N0}", loiNhuan)đ
+                </span>
+            </div>
+            <div class="info-row" style="border-top:2px solid var(--border2);margin-top:6px;padding-top:12px">
+                <span class="info-lbl" style="font-weight:700;color:var(--text)">ROI ước tính</span>
+                <span class="info-val" style="font-size:20px;color:@(roi>=0?"var(--success)":"var(--danger)");font-family:'DM Mono',monospace">@(roi >= 0 ? "+" : "")@roi%</span>
+            </div>
+        </div>
+
+        <div class="detail-card" style="margin-top:14px">
+            <div class="dc-title"><i class="fa-solid fa-gear"></i> Thao tác nhanh</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-dm primary" style="justify-content:center;width:100%">
+                    <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa chiến dịch
+                </a>
+                <a asp-action="Index" class="btn-dm ghost" style="justify-content:center;width:100%">
+                    <i class="fa-solid fa-list"></i> Về danh sách
+                </a>
+                <a asp-action="Create" class="btn-dm ghost" style="justify-content:center;width:100%">
+                    <i class="fa-solid fa-copy"></i> Tạo chiến dịch tương tự
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn-dm danger" style="justify-content:center;width:100%">
+                    <i class="fa-solid fa-trash-can"></i> Xóa chiến dịch này
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

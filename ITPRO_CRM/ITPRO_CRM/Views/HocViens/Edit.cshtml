@@ -1,0 +1,202 @@
+﻿@model ITPRO_CRM.Models.HocVien
+@{
+    ViewData["Title"] = "Cập nhật hồ sơ";
+}
+
+<style>
+    /* CSS chuẩn hệ thống */
+    .dm-card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .dm-header {
+        background-color: rgba(245,158,11,0.08);
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        border-radius: 12px 12px 0 0;
+    }
+
+    .dm-header-title {
+        color: var(--warning);
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+
+    .dm-section-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        margin-top: 24px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .dm-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: none !important;
+        transition: 0.2s;
+    }
+
+        .dm-input:focus {
+            border-color: var(--warning) !important;
+        }
+
+    .dm-btn {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 6px;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        cursor: pointer;
+    }
+
+        .dm-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-btn-warn {
+        background: var(--warning);
+        color: #000;
+        border: none;
+    }
+
+        .dm-btn-warn:hover {
+            opacity: 0.9;
+        }
+</style>
+
+<div class="container py-4" style="max-width: 800px;">
+    <a href="@(Model.TrangThai == 0 ? Url.Action("Leads") : Model.TrangThai == 1 ? Url.Action("Pipeline") : Url.Action("Index"))"
+       class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+       style="color: var(--text); border-color: var(--border);">
+        <i class="fa-solid fa-arrow-left me-1"></i> Quay lại
+    </a>
+
+    <div class="dm-card">
+        <div class="dm-header">
+            <h5 class="dm-header-title"><i class="fa-solid fa-user-pen me-2"></i>CẬP NHẬT HỒ SƠ: @Model.HoTen</h5>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="Id" /><input type="hidden" asp-for="NgayTao" />
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="HoTen" class="dm-label">Họ tên <span class="text-danger">*</span></label>
+                        <input asp-for="HoTen" class="form-control dm-input" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SoDienThoai" class="dm-label">Số điện thoại</label>
+                        <input asp-for="SoDienThoai" class="form-control dm-input" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="NgaySinh" class="dm-label">Ngày sinh</label>
+                        <input asp-for="NgaySinh" class="form-control dm-input" type="date" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="GioiTinh" class="dm-label">Giới tính</label>
+                        <select asp-for="GioiTinh" class="form-select dm-input">
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="DiaChi" class="dm-label">Địa chỉ</label>
+                        <input asp-for="DiaChi" class="form-control dm-input" />
+                    </div>
+                </div>
+
+                <div class="dm-section-title">Thông tin mở rộng</div>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="TruongHoc" class="dm-label">Trường học</label>
+                        <input asp-for="TruongHoc" class="form-control dm-input" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="NganhHoc" class="dm-label">Chuyên ngành</label>
+                        <input asp-for="NganhHoc" class="form-control dm-input" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="CongViecHienTai" class="dm-label">Nơi làm việc</label>
+                        <input asp-for="CongViecHienTai" class="form-control dm-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="FacebookLink" class="dm-label">Facebook</label>
+                        <input asp-for="FacebookLink" class="form-control dm-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ZaloLink" class="dm-label">Zalo</label>
+                        <input asp-for="ZaloLink" class="form-control dm-input" />
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="MucTieuHocTap" class="dm-label">Mục tiêu học tập</label>
+                        <textarea asp-for="MucTieuHocTap" class="form-control dm-input" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="LopHocId" class="dm-label">Lớp học</label>
+                        <select asp-for="LopHocId" class="form-select dm-input" asp-items="ViewBag.LopHocId">
+                            <option value="">-- Chưa xếp lớp --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="TrangThai" class="dm-label">Trạng thái hệ thống</label>
+                        <select asp-for="TrangThai" class="form-select dm-input" style="color: var(--accent) !important; font-weight: 600;">
+                            <option value="0">⭐ Tiềm năng</option>
+                            <option value="1">📞 Đang tư vấn</option>
+                            <option value="2">✅ Đã nhập học</option>
+                            <option value="3">⛔ Dừng/Hủy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 pt-4" style="border-top: 1px solid var(--border);">
+                    <a asp-action="Index" class="dm-btn rounded-pill">Hủy bỏ</a>
+                    <button type="submit" class="dm-btn dm-btn-warn rounded-pill"><i class="fa-solid fa-save me-2"></i> LƯU THAY ĐỔI</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

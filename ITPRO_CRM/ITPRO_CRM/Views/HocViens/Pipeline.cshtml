@@ -1,0 +1,185 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.HocVien>
+
+@{
+    ViewData["Title"] = "Cơ hội bán hàng (Pipeline)";
+}
+
+<style>
+    /* Thanh cuộn ngang cho bảng Kanban */
+    .kanban-board {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding-bottom: 20px;
+        min-height: 80vh;
+    }
+
+    /* Một cột trạng thái */
+    .kanban-col {
+        min-width: 300px;
+        width: 300px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        border-top: 5px solid #ccc;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Màu sắc riêng cho từng cột */
+    .col-new {
+        border-top-color: #6c757d;
+        background: #f0f2f5;
+    }
+
+    .col-advise {
+        border-top-color: #0dcaf0;
+        background: #e0f7fa;
+    }
+
+    .col-test {
+        border-top-color: #ffc107;
+        background: #fff3cd;
+    }
+
+    .col-won {
+        border-top-color: #198754;
+        background: #d1e7dd;
+    }
+
+    /* Header của cột */
+    .kanban-header {
+        padding: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255,255,255,0.5);
+        border-radius: 10px 10px 0 0;
+    }
+
+    /* Body chứa các thẻ Card */
+    .kanban-body {
+        padding: 10px;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    /* Thẻ Học viên (Card) */
+    .kanban-card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        border-left: 3px solid transparent;
+    }
+
+        .kanban-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+    .card-meta {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+    }
+
+    .card-price {
+        font-weight: bold;
+        color: #198754;
+        float: right;
+    }
+</style>
+
+<div class="container-fluid px-4 mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-dark"><i class="fa-solid fa-bullseye text-danger"></i> Cơ hội Tuyển sinh</h4>
+        <a asp-action="Create" class="btn btn-primary btn-sm fw-bold"><i class="fa-solid fa-plus"></i> Thêm nhanh</a>
+    </div>
+
+    <div class="kanban-board">
+
+        <div class="kanban-col col-new shadow-sm">
+            <div class="kanban-header text-secondary">
+                <span><i class="fa-solid fa-star"></i> Mới (Lead)</span>
+                <span class="badge bg-secondary rounded-pill">@Model.Count(x => x.TrangThai == 0)</span>
+            </div>
+            <div class="kanban-body">
+                @foreach (var item in Model.Where(x => x.TrangThai == 0))
+                {
+                    <div class="kanban-card border-secondary" onclick="location.href='@Url.Action("Details", new { id = item.Id })'">
+                        <div class="fw-bold text-dark">@item.HoTen</div>
+                        <div class="small text-muted">@item.SoDienThoai</div>
+                        <div class="card-meta">
+                            <i class="fa-solid fa-clock"></i> @(item.NgayTao?.ToString("dd/MM") ?? "—")
+                            <span class="float-end text-danger fw-bold">Hot</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="kanban-col col-advise shadow-sm">
+            <div class="kanban-header text-info">
+                <span><i class="fa-solid fa-headset"></i> Đang tư vấn</span>
+                <span class="badge bg-info text-dark rounded-pill">@Model.Count(x => x.TrangThai == 1)</span>
+            </div>
+            <div class="kanban-body">
+                @foreach (var item in Model.Where(x => x.TrangThai == 1))
+                {
+                    <div class="kanban-card" style="border-left-color: #0dcaf0" onclick="location.href='@Url.Action("Details", new { id = item.Id })'">
+                        <div class="fw-bold text-dark">@item.HoTen</div>
+                        <div class="small text-muted">Sale: @(item.NhanVien?.HoTen ?? "---")</div>
+                        <div class="card-meta">
+                            <i class="fa-solid fa-bullhorn text-warning"></i> @(item.TrinhDoHienTai ?? "Quan tâm")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="kanban-col col-test shadow-sm">
+            <div class="kanban-header text-warning">
+                <span><i class="fa-solid fa-calendar-check"></i> Hẹn Test</span>
+                <span class="badge bg-warning text-dark rounded-pill">@Model.Count(x => x.TrangThai == 2)</span>
+            </div>
+            <div class="kanban-body">
+                @foreach (var item in Model.Where(x => x.TrangThai == 2))
+                {
+                    <div class="kanban-card" style="border-left-color: #ffc107" onclick="location.href='@Url.Action("Details", new { id = item.Id })'">
+                        <div class="fw-bold text-dark">@item.HoTen</div>
+                        <div class="small text-muted">Target: @item.MucTieu</div>
+                        <div class="card-meta">
+                            <span class="badge bg-warning text-dark">Cần gọi nhắc</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="kanban-col col-won shadow-sm">
+            <div class="kanban-header text-success">
+                <span><i class="fa-solid fa-sack-dollar"></i> Đã chốt</span>
+                <span class="badge bg-success rounded-pill">@Model.Count(x => x.TrangThai >= 3)</span>
+            </div>
+            <div class="kanban-body">
+                @foreach (var item in Model.Where(x => x.TrangThai >= 3))
+                {
+                    <div class="kanban-card" style="border-left-color: #198754" onclick="location.href='@Url.Action("Details", new { id = item.Id })'">
+                        <div class="fw-bold text-dark">@item.HoTen</div>
+                        <div class="small text-success fw-bold"><i class="fa-solid fa-check"></i> Đã nhập học</div>
+                        <div class="card-meta mt-2 border-top pt-2">
+                            Lớp: @(item.LopHoc?.TenLop ?? "Chờ xếp")
+                            <span class="card-price">3.000k</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

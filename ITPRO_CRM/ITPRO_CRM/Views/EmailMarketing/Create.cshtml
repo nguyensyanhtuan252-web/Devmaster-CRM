@@ -1,0 +1,190 @@
+﻿@model ITPRO_CRM.Models.EmailMarketing
+
+<style>
+    /* PHƯƠNG PHÁP CHAMELEON */
+    .crm-wrapper {
+        color: inherit;
+    }
+
+    .create-card {
+        background: rgba(128, 128, 128, 0.06);
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .template-bar {
+        background: rgba(79, 110, 247, 0.05);
+        border: 1px dashed rgba(79, 110, 247, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .pro-pill {
+        padding: 6px 16px;
+        border-radius: 100px;
+        font-size: 12px;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        background: transparent;
+        color: inherit;
+        opacity: 0.7;
+        transition: 0.2s;
+        cursor: pointer;
+    }
+
+        .pro-pill:hover {
+            background: rgba(128, 128, 128, 0.1);
+            opacity: 1;
+        }
+
+        .pro-pill.active {
+            background: #4f6ef7;
+            border-color: #4f6ef7;
+            color: #fff;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
+        }
+
+    .pro-label {
+        font-size: 11px;
+        font-weight: 600;
+        opacity: 0.7;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .pro-input {
+        background: transparent !important;
+        border: 1px solid rgba(128, 128, 128, 0.25) !important;
+        color: inherit !important;
+        border-radius: 6px;
+        font-size: 13px;
+        padding: 8px 12px;
+        transition: 0.2s;
+    }
+
+        .pro-input:focus {
+            border-color: #4f6ef7 !important;
+            background: rgba(128, 128, 128, 0.05) !important;
+            box-shadow: none !important;
+        }
+
+    /* Tương thích Select2 với Chameleon */
+    .select2-container--default .select2-selection--multiple {
+        background: transparent;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        border-radius: 6px;
+    }
+
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        border-color: #4f6ef7;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: rgba(79, 110, 247, 0.1);
+        border: 1px solid rgba(79, 110, 247, 0.2);
+        color: #4f6ef7;
+    }
+</style>
+
+<div class="container-fluid mt-3 crm-wrapper">
+    <div class="create-card mx-auto" style="max-width: 900px;">
+        <div class="mb-4">
+            <h5 class="fw-bold mb-1"><i class="fa-solid fa-feather-pointed text-primary me-2"></i>Soạn thư mới</h5>
+            <p class="small" style="opacity: 0.6;">Cá nhân hóa nội dung thư cho từng học viên</p>
+        </div>
+
+        <div class="template-bar">
+            <i class="fa-solid fa-wand-magic-sparkles text-primary"></i>
+            <span class="small fw-bold">Sử dụng mẫu:</span>
+            <select id="SelectMauEmail" class="form-select form-select-sm pro-input" onchange="applyTemplate()" style="max-width: 300px;">
+                <option value="">-- Chọn mẫu soạn sẵn --</option>
+                @foreach (var m in (IEnumerable<SelectListItem>)ViewBag.MauEmailId)
+                {
+                    <option value="@m.Value">@m.Text</option>
+                }
+            </select>
+        </div>
+
+        <form asp-action="Create">
+            <input type="hidden" name="LoaiDoiTuong" id="LoaiDoiTuong" value="ALL" />
+            <div class="row g-4">
+                <div class="col-12">
+                    <label class="pro-label">Tiêu đề thư</label>
+                    <input asp-for="TieuDe" id="TieuDe" class="form-control pro-input" placeholder="Vd: Thông báo lịch thi cuối kỳ cho học viên..." required />
+                </div>
+
+                <div class="col-12">
+                    <label class="pro-label">Nhóm đối tượng nhận</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div class="pro-pill active" onclick="selectTarget(this, 'ALL')">Tất cả học viên</div>
+                        <div class="pro-pill" onclick="selectTarget(this, 'CLASS')">Theo lớp học</div>
+                        <div class="pro-pill" onclick="selectTarget(this, 'STATUS')">Theo trạng thái</div>
+                        <div class="pro-pill" onclick="selectTarget(this, 'CUSTOM')">Chọn đích danh</div>
+                    </div>
+                </div>
+
+                <div id="filter-box" class="col-12" style="display:none;">
+                    <label class="pro-label" id="filter-label">Lọc cụ thể</label>
+                    <div id="box-class" class="f-item" style="display:none;">
+                        <select name="LopHocId" class="form-select pro-input" asp-items="ViewBag.LopHocId"><option value="">-- Chọn lớp --</option></select>
+                    </div>
+                    <div id="box-status" class="f-item" style="display:none;">
+                        <select name="TrangThaiHocVien" class="form-select pro-input">
+                            <option value="0">Tiềm năng</option>
+                            <option value="1">Đang học</option>
+                            <option value="2">Tốt nghiệp</option>
+                        </select>
+                    </div>
+                    <div id="box-custom" class="f-item" style="display:none;">
+                        <select name="SelectedHocVienIds" id="SelectedHocVienIds" class="form-control" multiple="multiple" asp-items="ViewBag.HocVienId"></select>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex justify-content-between mb-2">
+                        <label class="pro-label mb-0">Nội dung thư</label>
+                        <span class="badge" style="background: rgba(128,128,128,0.1); color: inherit; font-family: monospace; font-size: 11px; border: 1px solid rgba(128,128,128,0.2);">{"{{"} TenHocVien {"}}"}</span>
+                    </div>
+                    <textarea asp-for="NoiDung" id="editor"></textarea>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end gap-3 mt-4 pt-4" style="border-top: 1px solid rgba(128, 128, 128, 0.15);">
+                    <a asp-action="Index" class="btn btn-link text-decoration-none" style="color: inherit; opacity: 0.7; font-size: 13px;">Hủy bỏ</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold" style="font-size: 13px; border-radius: 6px;">Gửi thư ngay</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var emailTemplates = @Html.Raw(ViewBag.TemplatesJson ?? "[]");
+        $(document).ready(function() {
+            CKEDITOR.replace('editor', { height: 300, versionCheck: false });
+            $('#SelectedHocVienIds').select2({ width: '100%' });
+        });
+        function selectTarget(el, type) {
+            $('.pro-pill').removeClass('active'); $(el).addClass('active'); $('#LoaiDoiTuong').val(type);
+            $('#filter-box, .f-item').hide();
+            if(type === 'CLASS') { $('#filter-box, #box-class').fadeIn(); $('#filter-label').text('Chọn lớp học cụ thể'); }
+            else if(type === 'STATUS') { $('#filter-box, #box-status').fadeIn(); $('#filter-label').text('Chọn tệp trạng thái'); }
+            else if(type === 'CUSTOM') { $('#filter-box, #box-custom').fadeIn(); $('#filter-label').text('Tìm học viên đích danh'); }
+        }
+        function applyTemplate() {
+            var id = $('#SelectMauEmail').val();
+            var tmpl = emailTemplates.find(x => x.Id == id);
+            if(tmpl) { $('#TieuDe').val(tmpl.TieuDe); CKEDITOR.instances['editor'].setData(tmpl.NoiDung); }
+        }
+    </script>
+}

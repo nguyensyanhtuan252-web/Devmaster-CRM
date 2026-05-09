@@ -1,0 +1,243 @@
+﻿@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Cập nhật: " + Model.TenLop;
+}
+
+<style>
+    .dm-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .dm-header {
+        background: rgba(245,158,11,0.08);
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        border-radius: 12px 12px 0 0;
+    }
+
+    .dm-header-title {
+        color: var(--warning);
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+
+    .dm-section-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 24px;
+    }
+
+    .dm-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: none !important;
+        transition: 0.2s;
+    }
+
+        .dm-input:focus {
+            border-color: var(--warning) !important;
+        }
+
+    .dm-btn {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 24px;
+        border-radius: 6px;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        cursor: pointer;
+    }
+
+        .dm-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-btn-warn {
+        background: var(--warning);
+        color: #000;
+        border: none;
+    }
+
+        .dm-btn-warn:hover {
+            opacity: 0.9;
+        }
+
+    .dm-info-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+        .dm-info-row:last-child {
+            border-bottom: none;
+        }
+</style>
+
+<div class="container-fluid px-4 py-4">
+    <div class="mb-3">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="dm-btn rounded-pill"><i class="fa-solid fa-arrow-left me-2"></i> Quay lại chi tiết</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-9">
+            <div class="dm-card">
+                <div class="dm-header">
+                    <h5 class="dm-header-title"><i class="fa-solid fa-pen-to-square me-2"></i>CẬP NHẬT LỚP: @Model.TenLop</h5>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="NgayTao" />
+
+                        <div class="dm-section-title mt-0">Thông tin cơ bản</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="TenLop" class="dm-label">Tên lớp học <span class="text-danger">*</span></label>
+                                <input asp-for="TenLop" class="form-control dm-input" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="KhoaHocId" class="dm-label">Khóa học / Chương trình</label>
+                                <select asp-for="KhoaHocId" class="form-select dm-input" asp-items="ViewBag.KhoaHocId">
+                                    <option value="">-- Chọn khóa học --</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="MoTa" class="dm-label">Mô tả lớp học</label>
+                                <textarea asp-for="MoTa" class="form-control dm-input" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="dm-section-title">Nhân sự & Địa điểm</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="GiangVienId" class="dm-label">Giảng viên phụ trách</label>
+                                <select asp-for="GiangVienId" class="form-select dm-input" asp-items="ViewBag.GiangVienId">
+                                    <option value="">-- Chọn giảng viên --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PhongHoc" class="dm-label">Phòng học</label>
+                                <input asp-for="PhongHoc" class="form-control dm-input" />
+                            </div>
+                        </div>
+
+                        <div class="dm-section-title">Thời gian & Lịch học</div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="NgayKhaiGiang" class="dm-label">Khai giảng <span class="text-danger">*</span></label>
+                                <input asp-for="NgayKhaiGiang" type="date" class="form-control dm-input" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="NgayKetThuc" class="dm-label">Kết thúc (dự kiến)</label>
+                                <input asp-for="NgayKetThuc" type="date" class="form-control dm-input" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="LichHoc" class="dm-label">Lịch học (ngày)</label>
+                                <input asp-for="LichHoc" class="form-control dm-input" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="GioBatDau" class="dm-label">Giờ bắt đầu</label>
+                                <input asp-for="GioBatDau" type="time" class="form-control dm-input" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="GioKetThuc" class="dm-label">Giờ kết thúc</label>
+                                <input asp-for="GioKetThuc" type="time" class="form-control dm-input" />
+                            </div>
+                        </div>
+
+                        <div class="dm-section-title">Học phí & Vận hành</div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="HocPhi" class="dm-label">Học phí (VNĐ) <span class="text-danger">*</span></label>
+                                <input asp-for="HocPhi" type="number" class="form-control dm-input text-end fw-bold" style="color: var(--success) !important;" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SiSoToiDa" class="dm-label">Sĩ số tối đa</label>
+                                <input asp-for="SiSoToiDa" type="number" class="form-control dm-input" min="1" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="TrangThai" class="dm-label">Trạng thái hệ thống</label>
+                                <select asp-for="TrangThai" class="form-select dm-input" style="color: var(--warning) !important; font-weight: 600;">
+                                    <option value="0">⏳ Sắp mở</option>
+                                    <option value="1">▶️ Đang hoạt động</option>
+                                    <option value="2">✅ Đã kết thúc</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-4 mt-4" style="border-top: 1px solid var(--border);">
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="dm-btn rounded-pill">Hủy bỏ</a>
+                            <button type="submit" class="dm-btn dm-btn-warn rounded-pill"><i class="fa-solid fa-save me-2"></i> LƯU THAY ĐỔI</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="dm-card p-4">
+                <div class="dm-section-title mt-0">Trạng thái hiện tại</div>
+                <div class="dm-info-row">
+                    <span style="color: var(--text3);">Sĩ số</span>
+                    <span style="color: var(--text); font-weight: 700;">@Model.SiSoHienTai / @Model.SiSoToiDa</span>
+                </div>
+                <div class="dm-info-row">
+                    <span style="color: var(--text3);">Chỗ còn</span>
+                    <span style="font-weight: 700; color: @(Model.SoChoConLai <= 3 ? "var(--danger)" : "var(--success)");">@Model.SoChoConLai</span>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between mb-1" style="font-size: 11px; color: var(--text2);">
+                        <span>Tỷ lệ lấp đầy</span><span>@Model.PhanTramSiSo%</span>
+                    </div>
+                    <div style="height: 6px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); overflow: hidden;">
+                        <div style="height: 100%; width: @Model.PhanTramSiSo%; background: @(Model.PhanTramSiSo >= 90 ? "var(--danger)" : "var(--success)");"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

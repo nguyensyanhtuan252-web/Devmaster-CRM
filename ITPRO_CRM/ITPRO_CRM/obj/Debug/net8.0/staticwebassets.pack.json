@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\TT Đồ án\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ITPRO_CRM.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ITPRO_CRM.1jdv5yqbuv.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\TT Đồ án\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\TT Đồ án\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\TT Đồ án\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
+      "Id": "C:\\TT Đồ án\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ITPRO_CRM.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ITPRO_CRM.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ITPRO_CRM.props",
+      "PackagePath": "build\\ITPRO_CRM.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ITPRO_CRM.props",
+      "PackagePath": "buildMultiTargeting\\ITPRO_CRM.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ITPRO_CRM.props",
+      "PackagePath": "buildTransitive\\ITPRO_CRM.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

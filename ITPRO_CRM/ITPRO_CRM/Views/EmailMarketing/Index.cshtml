@@ -1,0 +1,325 @@
+@model IEnumerable<ITPRO_CRM.Models.EmailMarketing>
+
+@{
+    ViewData["Title"] = "Quản lý Email";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+<style>
+    /* PHƯƠNG PHÁP CHAMELEON: Tự động thích ứng mọi giao diện
+           Bỏ qua các class bị lỗi của Template, tự xây dựng khối giao diện độc lập
+        */
+    .crm-wrapper {
+        color: inherit;
+        /* Tự động kế thừa màu chữ đen/trắng của thẻ body */
+    }
+
+    /* Các khối Card dùng màu xám bán trong suốt để hòa quyện với nền */
+    .crm-card {
+        background: rgba(128, 128, 128, 0.06);
+        border: 1px solid rgba(128, 128, 128, 0.15);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        /* Đổ bóng giúp giao diện Sáng không bị "bệch" */
+        overflow: hidden;
+    }
+
+    /* Text mờ phụ */
+    .crm-text-sub {
+        opacity: 0.65;
+        font-size: 11px;
+    }
+
+    /* Navigation Tabs */
+    .crm-tabs {
+        display: flex;
+        gap: 8px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+        margin-bottom: 1.5rem;
+    }
+
+    .crm-tab {
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: inherit;
+        opacity: 0.6;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .crm-tab:hover {
+            opacity: 1;
+            background: rgba(128, 128, 128, 0.05);
+            border-radius: 6px 6px 0 0;
+            color: inherit;
+        }
+
+        .crm-tab.active {
+            opacity: 1;
+            border-bottom-color: #4f6ef7;
+            color: #4f6ef7;
+        }
+
+    /* Page Header */
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    /* Stats Grid */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-box {
+        padding: 16px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 600;
+        opacity: 0.7;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    /* Toolbar & Search */
+    .crm-toolbar {
+        display: flex;
+        gap: 10px;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+        background: rgba(128, 128, 128, 0.03);
+    }
+
+    .crm-search {
+        flex: 1;
+        position: relative;
+    }
+
+        .crm-search input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border-radius: 6px;
+            border: 1px solid rgba(128, 128, 128, 0.25);
+            background: transparent;
+            color: inherit;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+            .crm-search input:focus {
+                outline: none;
+                border-color: #4f6ef7;
+                background: rgba(128, 128, 128, 0.05);
+            }
+
+        .crm-search i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+    /* Table */
+    .crm-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .crm-table th {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: left;
+            opacity: 0.7;
+            background: rgba(128, 128, 128, 0.05);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+        }
+
+        .crm-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+            vertical-align: middle;
+        }
+
+        .crm-table tr:hover td {
+            background: rgba(128, 128, 128, 0.04);
+        }
+
+    /* Buttons & Badges */
+    .crm-btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        border: 1px solid rgba(128, 128, 128, 0.25);
+        background: transparent;
+        color: inherit;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: 0.2s;
+    }
+
+        .crm-btn:hover {
+            background: rgba(128, 128, 128, 0.1);
+            color: inherit;
+        }
+
+    .crm-badge-success {
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+        padding: 4px 10px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+</style>
+
+<div class="container-fluid px-4 mt-3 crm-wrapper">
+
+    <div class="crm-tabs">
+        <a asp-action="Index" class="crm-tab active"><i class="ti ti-layout-list me-1"></i> Danh sách</a>
+        <a asp-action="Create" class="crm-tab"><i class="ti ti-send me-1"></i> Soạn thư mới</a>
+        <a href="/MauEmails" class="crm-tab"><i class="ti ti-template me-1"></i> Kho mẫu email</a>
+    </div>
+
+    <div class="mb-4">
+        <div class="page-title">Quản lý Email</div>
+        <div class="crm-text-sub" style="font-size: 13px;">Lịch sử gửi và nội dung lưu trữ</div>
+    </div>
+
+    <div class="stats-row">
+        <div class="crm-card stat-box">
+            <div class="stat-label"><i class="ti ti-mail text-primary"></i> Tổng thư</div>
+            <div class="stat-value" id="countDisplay">@Model.Count()</div>
+            <div class="crm-text-sub mt-1">Đang hiển thị trên bảng</div>
+        </div>
+        <div class="crm-card stat-box">
+            <div class="stat-label"><i class="ti ti-users text-info"></i> Lượt nhận</div>
+            <div class="stat-value">@Model.Count()</div>
+            <div class="crm-text-sub mt-1">Học viên tiếp cận</div>
+        </div>
+        <div class="crm-card stat-box">
+            <div class="stat-label"><i class="ti ti-circle-check text-success"></i> Thành công</div>
+            <div class="stat-value text-success">100%</div>
+            <div class="crm-text-sub mt-1">Hệ thống thông suốt</div>
+        </div>
+        <div class="crm-card stat-box">
+            <div class="stat-label"><i class="ti ti-calendar-event text-warning"></i> Gần nhất</div>
+            <div class="stat-value">@(Model.FirstOrDefault()?.NgayGui.ToString("dd/MM") ?? "--/--")</div>
+            <div class="crm-text-sub mt-1">Ngày gửi gần đây</div>
+        </div>
+    </div>
+
+    <div class="crm-card">
+        <div class="crm-toolbar">
+            <div class="crm-search">
+                <i class="ti ti-search"></i>
+                <input type="text" id="txtSearch" placeholder="Tìm theo tiêu đề hoặc người nhận..." onkeyup="applyFilters()">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="crm-table">
+                <thead>
+                    <tr>
+                        <th style="width: 38%;">Tiêu đề thư</th>
+                        <th style="width: 25%;">Đối tượng nhận</th>
+                        <th style="width: 15%;">Thời gian</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-end">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="tblBody">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="email-row">
+                            <td>
+                                <div class="fw-bold">@item.TieuDe</div>
+                            </td>
+                            <td>
+                                <div class="crm-text-sub d-flex align-items-center gap-1">
+                                    <i class="ti ti-users"></i> @item.DoiTuongGui
+                                </div>
+                            </td>
+                            <td>
+                                <div>@item.NgayGui.ToString("dd/MM/yyyy")</div>
+                                <div class="crm-text-sub">@item.NgayGui.ToString("HH:mm")</div>
+                            </td>
+                            <td class="text-center">
+                                <span class="crm-badge-success">
+                                    <i class="ti ti-check"></i> Đã gửi
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="crm-btn">
+                                    <i class="ti ti-eye"></i> Xem
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm lột sạch dấu Tiếng Việt
+        function removeAccents(str) {
+            if (!str) return '';
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+        }
+
+        // HÀM TÌM KIẾM REAL-TIME
+        function applyFilters() {
+            var q = removeAccents(document.getElementById('txtSearch').value);
+            var rows = document.querySelectorAll('.email-row');
+            var visibleCount = 0;
+
+            rows.forEach(row => {
+                var textContent = removeAccents(row.textContent || row.innerText);
+
+                if (q === '' || textContent.includes(q)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Nhảy số lượng "Tổng thư" đang hiển thị trên bảng thống kê
+            var countDisplay = document.getElementById('countDisplay');
+            if(countDisplay) {
+                countDisplay.innerText = visibleCount;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,713 @@
+@model IEnumerable<ITPRO_CRM.Models.ChienDich>
+@{
+    ViewData["Title"] = "Chiến dịch Marketing";
+    var tongCD = Model.Count();
+    var dangChay = Model.Count(x => x.DangHoatDong);
+    var tamDung = Model.Count(x => !x.DangHoatDong);
+    var tongNganSach = Model.Sum(x => x.NganSachDuKien);
+    var tongKyVong = Model.Sum(x => x.DoanhThuKyVong);
+    var roiPct = tongNganSach > 0 ? Math.Round(((tongKyVong - tongNganSach) / tongNganSach) * 100, 1) : 0;
+
+    // Đã bỏ việc lọc trên Server để load toàn bộ dữ liệu cho Javascript tự động lọc Real-time
+    var displayList = Model.ToList();
+    var loaiList = Model.Where(x => x.LoaiChienDich != null).Select(x => x.LoaiChienDich).Distinct().OrderBy(x => x).ToList();
+}
+<style>
+    .mkt-kpi {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .kpi-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 20px;
+        position: relative;
+        overflow: hidden;
+        transition: transform .18s,box-shadow .18s,border-color .18s;
+    }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--border2);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .kpi-card.blue::before {
+            background: var(--accent);
+        }
+
+        .kpi-card.green::before {
+            background: var(--success);
+        }
+
+        .kpi-card.orange::before {
+            background: var(--warning);
+        }
+
+        .kpi-card.roi::before {
+            background: linear-gradient(90deg,var(--accent),#7c3aed);
+        }
+
+    .kpi-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        margin-bottom: 6px;
+    }
+
+    .kpi-val {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.1;
+    }
+
+        .kpi-val.small {
+            font-size: 18px;
+        }
+
+    .kpi-sub {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 6px;
+    }
+
+    .kpi-icon {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+        .kpi-icon.blue {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .kpi-icon.green {
+            background: var(--success-dim);
+            color: var(--success);
+        }
+
+        .kpi-icon.orange {
+            background: var(--warning-dim);
+            color: var(--warning);
+        }
+
+        .kpi-icon.purple {
+            background: rgba(124,58,237,.15);
+            color: #7c3aed;
+        }
+
+    .filter-bar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .filter-input {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-size: 12.5px;
+        color: var(--text);
+        outline: none;
+        transition: .15s;
+    }
+
+        .filter-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-dim);
+        }
+
+        .filter-input::placeholder {
+            color: var(--text3);
+        }
+
+    .filter-select {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 7px 28px 7px 12px;
+        font-size: 12.5px;
+        color: var(--text);
+        outline: none;
+        cursor: pointer;
+    }
+
+    .filter-pill {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text2);
+        transition: .15s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+    .filter-sep {
+        width: 1px;
+        height: 28px;
+        background: var(--border);
+    }
+
+    .cd-table-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .cd-table-hdr {
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .cd-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .cd-table thead th {
+            padding: 10px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .cd-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background .12s;
+        }
+
+            .cd-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .cd-table tbody tr:hover {
+                background: var(--surface2);
+            }
+
+        .cd-table td {
+            padding: 13px 16px;
+            vertical-align: middle;
+        }
+
+    .camp-icon-sm {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+    }
+
+    .cd-name {
+        font-weight: 600;
+        font-size: 13.5px;
+        color: var(--text);
+    }
+
+    .cd-desc {
+        font-size: 11.5px;
+        color: var(--text2);
+        margin-top: 2px;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .type-badge {
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        color: var(--text2);
+        white-space: nowrap;
+    }
+
+    .date-chip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        color: var(--text2);
+        padding: 2px 0;
+    }
+
+        .date-chip i {
+            font-size: 10px;
+        }
+
+    .roi-bar-bg {
+        height: 5px;
+        background: var(--border2);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .roi-bar-fill {
+        height: 5px;
+        border-radius: 3px;
+        transition: width .4s;
+    }
+
+    .roi-num {
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 3px;
+    }
+
+    .status-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 600;
+    }
+
+        .status-dot.live {
+            background: var(--success-dim);
+            color: var(--success);
+        }
+
+        .status-dot.paused {
+            background: var(--border);
+            color: var(--text2);
+        }
+
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        50% {
+            opacity: .5;
+            transform: scale(.8)
+        }
+    }
+
+    .dot-pulse {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 1.4s ease infinite;
+        display: inline-block;
+    }
+
+    .act-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: var(--text2);
+        transition: .13s;
+        text-decoration: none;
+    }
+
+        .act-btn:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-color: var(--border2);
+        }
+
+        .act-btn.danger:hover {
+            background: var(--danger-dim);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+    .btn-dm {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .15s;
+        text-decoration: none;
+        border: none;
+    }
+
+        .btn-dm.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+            .btn-dm.primary:hover {
+                background: var(--accent-h);
+                color: #fff;
+            }
+
+        .btn-dm.ghost {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border);
+        }
+
+            .btn-dm.ghost:hover {
+                background: var(--border);
+                color: var(--text);
+            }
+
+    .money {
+        font-family: 'DM Mono',monospace;
+        font-weight: 600;
+    }
+
+        .money.red {
+            color: var(--danger);
+        }
+
+        .money.green {
+            color: var(--success);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text2);
+    }
+
+    .empty-icon {
+        font-size: 42px;
+        color: var(--text3);
+        margin-bottom: 12px;
+    }
+
+    @@media (max-width:1024px) {
+        .mkt-kpi {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+</style>
+
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div>
+        <div style="font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:10px">
+            <span style="width:36px;height:36px;border-radius:9px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;color:var(--accent)"><i class="fa-solid fa-bullhorn"></i></span>
+            Chiến dịch Marketing
+        </div>
+        <div style="font-size:12px;color:var(--text2);margin-top:5px">Theo dõi và đo lường hiệu quả các chiến dịch quảng cáo &amp; tuyển sinh</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+        <a asp-action="Create" class="btn-dm primary"><i class="fa-solid fa-plus"></i> Tạo chiến dịch</a>
+    </div>
+</div>
+
+<div class="mkt-kpi">
+    <div class="kpi-card blue">
+        <div class="kpi-icon blue"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="kpi-label">Tổng chiến dịch</div>
+        <div class="kpi-val">@tongCD</div>
+        <div class="kpi-sub"><span style="color:var(--success)">@dangChay đang chạy</span> · @tamDung tạm dừng</div>
+    </div>
+    <div class="kpi-card green">
+        <div class="kpi-icon green"><i class="fa-solid fa-rocket"></i></div>
+        <div class="kpi-label">Đang hoạt động</div>
+        <div class="kpi-val">@dangChay</div>
+        <div class="kpi-sub" style="display:flex;align-items:center;gap:6px">
+            <span class="dot-pulse" style="background:var(--success)"></span> Live &amp; tiêu ngân sách
+        </div>
+    </div>
+    <div class="kpi-card orange">
+        <div class="kpi-icon orange"><i class="fa-solid fa-coins"></i></div>
+        <div class="kpi-label">Tổng ngân sách</div>
+        <div class="kpi-val small money">@string.Format("{0:N0}", tongNganSach)<span style="font-size:13px;font-weight:400;color:var(--text2)"> đ</span></div>
+        <div class="kpi-sub">Kỳ vọng: <span class="money green">@string.Format("{0:N0}", tongKyVong)đ</span></div>
+    </div>
+    <div class="kpi-card roi">
+        <div class="kpi-icon purple"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="kpi-label">ROI kỳ vọng</div>
+        <div class="kpi-val" style="color:@(roiPct >= 0 ? "var(--success)" : "var(--danger)")">@roiPct<span style="font-size:16px">%</span></div>
+        <div class="kpi-sub">Lợi nhuận / Chi phí đầu tư</div>
+    </div>
+</div>
+
+<div class="filter-bar" id="mktFilterBar">
+    <div style="position:relative;flex:1;min-width:200px">
+        <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:12px"></i>
+        <input type="text" id="txtSearch" class="filter-input" placeholder="Nhập tên chiến dịch để tìm nhanh..." style="padding-left:30px;width:100%" onkeyup="applyFilters()">
+    </div>
+
+    <select id="selLoai" class="filter-select" onchange="applyFilters()">
+        <option value="">Tất cả loại</option>
+        @foreach (var loai in loaiList)
+        {
+            <option value="@loai">@loai</option>
+        }
+    </select>
+
+    <div class="filter-sep"></div>
+
+    <input type="hidden" id="txtStatus" value="all" />
+    <div class="filter-pill active" onclick="setStatus(this, 'all')">Tất cả</div>
+    <div class="filter-pill" onclick="setStatus(this, '1')">
+        <i class="fa-solid fa-circle" style="font-size:7px;color:var(--success)"></i> Đang chạy
+    </div>
+    <div class="filter-pill" onclick="setStatus(this, '0')">Tạm dừng</div>
+</div>
+
+<div class="cd-table-wrap">
+    <div class="cd-table-hdr">
+        <div style="font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-list-check" style="color:var(--accent)"></i>
+            Danh sách chiến dịch
+            <span style="background:var(--accent-dim);color:var(--accent);border-radius:20px;padding:2px 9px;font-size:11px;font-family:'DM Mono',monospace" id="lblCountTop">@displayList.Count</span>
+        </div>
+        <div style="font-size:11px;color:var(--text2)">Hiển thị <span id="lblCountDesc">@displayList.Count</span> / @tongCD</div>
+    </div>
+
+    @if (!displayList.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-bullhorn"></i></div>
+            <div style="font-weight:600;color:var(--text);margin-bottom:6px">Không tìm thấy chiến dịch</div>
+            <div style="font-size:12px;margin-bottom:16px">Thử thay đổi bộ lọc hoặc tạo chiến dịch mới</div>
+            <a asp-action="Create" class="btn-dm primary"><i class="fa-solid fa-plus"></i> Tạo chiến dịch đầu tiên</a>
+        </div>
+    }
+    else
+    {
+        <div style="overflow-x:auto">
+            <table class="cd-table">
+                <thead>
+                    <tr>
+                        <th>Chiến dịch</th>
+                        <th>Loại hình</th>
+                        <th>Thời gian</th>
+                        <th>Ngân sách / Kỳ vọng</th>
+                        <th>ROI ước tính</th>
+                        <th>Trạng thái</th>
+                        <th style="text-align:right">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="tblBody">
+                    @foreach (var item in displayList)
+                    {
+                        var ngayBD = item.NgayBatDau;
+                        var ngayKT = item.NgayKetThuc;
+                        var tongNgay = (ngayKT - ngayBD).TotalDays;
+                        var daTroi = Math.Max(0, (DateTime.Today - ngayBD).TotalDays);
+                        var tienDo = tongNgay > 0 ? Math.Min(100, (int)(daTroi / tongNgay * 100)) : 0;
+                        var ns = item.NganSachDuKien;
+                        var kv = item.DoanhThuKyVong;
+                        var itemRoi = ns > 0 ? Math.Round(((kv - ns) / ns) * 100, 0) : 0;
+                        bool isQuaHan = ngayKT < DateTime.Today && item.DangHoatDong;
+
+                        string iconClass = "fa-bullseye"; string iconColor2 = "var(--text2)"; string iconBg = "var(--surface2)";
+                        if (item.LoaiChienDich != null)
+                        {
+                            if (item.LoaiChienDich.Contains("Facebook")) { iconClass = "fa-brands fa-facebook"; iconColor2 = "#1877f2"; iconBg = "rgba(24,119,242,.12)"; }
+                            else if (item.LoaiChienDich.Contains("Google")) { iconClass = "fa-brands fa-google"; iconColor2 = "#ea4335"; iconBg = "rgba(234,67,53,.12)"; }
+                            else if (item.LoaiChienDich.Contains("Tiktok")) { iconClass = "fa-brands fa-tiktok"; iconColor2 = "var(--text)"; iconBg = "var(--surface2)"; }
+                            else if (item.LoaiChienDich.Contains("Email")) { iconClass = "fa-solid fa-envelope"; iconColor2 = "var(--accent)"; iconBg = "var(--accent-dim)"; }
+                            else if (item.LoaiChienDich.Contains("kiện")) { iconClass = "fa-solid fa-calendar-days"; iconColor2 = "var(--warning)"; iconBg = "var(--warning-dim)"; }
+                            else if (item.LoaiChienDich.Contains("thiệu")) { iconClass = "fa-solid fa-handshake"; iconColor2 = "var(--success)"; iconBg = "var(--success-dim)"; }
+                        }
+
+                        <tr class="cd-row"
+                            data-name="@item.TenChienDich"
+                            data-loai="@(item.LoaiChienDich ?? "")"
+                            data-status="@(item.DangHoatDong ? "1" : "0")"
+                            data-chiphi="@item.NganSachDuKien"
+                            data-kyvong="@item.DoanhThuKyVong">
+
+                            <td>
+                                <div style="display:flex;align-items:center;gap:10px">
+                                    <div class="camp-icon-sm" style="background:@iconBg;color:@iconColor2"><i class="@iconClass"></i></div>
+                                    <div>
+                                        <div class="cd-name">@item.TenChienDich</div>
+                                        <div class="cd-desc">@(item.MoTa ?? "Chưa có mô tả")</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="type-badge">@(item.LoaiChienDich ?? "Khác")</span></td>
+                            <td>
+                                <div class="date-chip"><i class="fa-solid fa-play" style="color:var(--success)"></i> @item.NgayBatDau.ToString("dd/MM/yy")</div>
+                                <div class="date-chip"><i class="fa-solid fa-flag-checkered" style="color:var(--danger)"></i> @item.NgayKetThuc.ToString("dd/MM/yy")</div>
+                                <div style="margin-top:5px">
+                                    <div class="roi-bar-bg" style="width:90px">
+                                        <div class="roi-bar-fill" style="width:@tienDo%;background:@(isQuaHan?"var(--danger)":item.DangHoatDong?"var(--accent)":"var(--border2)")"></div>
+                                    </div>
+                                    <div style="font-size:10px;color:var(--text3);margin-top:2px">@tienDo% thời gian</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="money red" style="font-size:13px">@string.Format("{0:N0}", ns)<span style="font-size:10px;font-weight:400">đ</span></div>
+                                <div style="font-size:10px;color:var(--text3);margin:1px 0">Chi phí đầu tư</div>
+                                <div class="money green" style="font-size:12px">@string.Format("{0:N0}", kv)<span style="font-size:10px;font-weight:400">đ</span></div>
+                                <div style="font-size:10px;color:var(--text3)">Doanh thu kỳ vọng</div>
+                            </td>
+                            <td>
+                                <div style="text-align:center;width:90px">
+                                    <div style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:@(itemRoi>=0?"var(--success)":"var(--danger)")">
+                                        @(itemRoi >= 0 ? "+" : "")@itemRoi%
+                                    </div>
+                                    <div class="roi-bar-bg" style="margin-top:4px">
+                                        <div class="roi-bar-fill" style="width:@(Math.Min(100, (int)Math.Abs(itemRoi)))%;background:@(itemRoi>=0?"var(--success)":"var(--danger)")"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (isQuaHan)
+                                {
+                                    <span class="status-dot" style="background:var(--warning-dim);color:var(--warning)">
+                                        <i class="fa-solid fa-triangle-exclamation" style="font-size:9px"></i> Quá hạn
+                                    </span>
+                                }
+                                else if (item.DangHoatDong)
+                                {
+                                    <span class="status-dot live"><span class="dot-pulse"></span> Đang chạy</span>
+                                }
+                                else
+                                {
+                                    <span class="status-dot paused"><i class="fa-solid fa-pause" style="font-size:9px"></i> Tạm dừng</span>
+                                }
+                            </td>
+                            <td>
+                                <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="act-btn" title="Xem chi tiết"><i class="fa-solid fa-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="act-btn" title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="act-btn danger" title="Xóa"><i class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:11.5px;color:var(--text2)">
+                Tổng chi phí: <span class="money red" id="sumChiPhi">@string.Format("{0:N0}", displayList.Sum(x => x.NganSachDuKien))đ</span>
+                &nbsp;·&nbsp;
+                Kỳ vọng: <span class="money green" id="sumKyVong">@string.Format("{0:N0}", displayList.Sum(x => x.DoanhThuKyVong))đ</span>
+            </div>
+            <div style="font-size:11px;color:var(--text3)"><span id="countDisplay">@displayList.Count</span> bản ghi</div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm loại bỏ dấu Tiếng Việt để tìm kiếm
+        function removeAccents(str) {
+            if (!str) return '';
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        // Đổi trạng thái (Tất cả / Đang chạy / Tạm dừng)
+        function setStatus(element, val) {
+            document.querySelectorAll('.filter-pill').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('txtStatus').value = val;
+            applyFilters();
+        }
+
+        // HÀM LỌC CHÍNH VÀ NHẢY SỐ TIỀN REAL-TIME
+        function applyFilters() {
+            var q = removeAccents(document.getElementById('txtSearch').value);
+            var loai = document.getElementById('selLoai').value;
+            var status = document.getElementById('txtStatus').value;
+
+            var rows = document.querySelectorAll('.cd-row');
+            var visibleCount = 0;
+            var sumChiPhi = 0;
+            var sumKyVong = 0;
+
+            rows.forEach(row => {
+                var name = removeAccents(row.getAttribute('data-name'));
+                var rowLoai = row.getAttribute('data-loai');
+                var rowStatus = row.getAttribute('data-status');
+
+                // Khớp điều kiện
+                var matchQ = (q === '' || name.includes(q));
+                var matchLoai = (loai === '' || rowLoai === loai);
+                var matchStatus = (status === 'all' || rowStatus === status);
+
+                if (matchQ && matchLoai && matchStatus) {
+                    row.style.display = '';
+                    visibleCount++;
+                    sumChiPhi += parseFloat(row.getAttribute('data-chiphi')) || 0;
+                    sumKyVong += parseFloat(row.getAttribute('data-kyvong')) || 0;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Ghi số liệu mới vào các bảng tổng kết
+            var countDisplays = document.querySelectorAll('#countDisplay, #lblCountTop, #lblCountDesc');
+            countDisplays.forEach(el => { if(el) el.innerText = visibleCount; });
+
+            document.getElementById('sumChiPhi').innerText = sumChiPhi.toLocaleString('en-US') + " đ";
+            document.getElementById('sumKyVong').innerText = sumKyVong.toLocaleString('en-US') + " đ";
+        }
+    </script>
+}

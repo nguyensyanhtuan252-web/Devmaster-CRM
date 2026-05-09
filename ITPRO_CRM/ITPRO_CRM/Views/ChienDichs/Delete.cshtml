@@ -1,0 +1,36 @@
+﻿@model ITPRO_CRM.Models.ChienDich
+
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg rounded-5 p-5">
+                <div class="mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle shadow-sm" style="width: 100px; height: 100px;">
+                        <i class="fa-solid fa-bullhorn fa-3x"></i>
+                    </div>
+                </div>
+                <h2 class="fw-bold text-dark">Dừng & Gỡ bỏ?</h2>
+                <p class="text-muted">
+                    Bạn đang chuẩn bị xóa chiến dịch <strong>"@Model.TenChienDich"</strong>. <br />
+                    Tất cả dữ liệu về Leads từ chiến dịch này sẽ mất liên kết nguồn.
+                </p>
+
+                <div class="alert alert-warning border-0 rounded-4 text-start mt-3 mb-4">
+                    <i class="fa-solid fa-lightbulb me-2"></i> <strong>Gợi ý:</strong> Bạn có thể chỉ cần chuyển trạng thái sang <b>"Tạm dừng"</b> thay vì xóa vĩnh viễn.
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" onclick="window.history.back()" class="btn btn-light rounded-pill px-4 fw-bold">
+                            HỦY BỎ
+                        </button>
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                            VẪN XÓA CHIẾN DỊCH
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,399 @@
+﻿@model ITPRO_CRM.Models.CauHinh
+
+@{
+    ViewData["Title"] = "Cấu hình hệ thống";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
+    .settings-root {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        background: #f0f4f8;
+        min-height: 100vh;
+        padding: 2rem 1.5rem;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .page-header-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #1e40af, #3b82f6);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(59,130,246,0.4);
+    }
+
+    .page-header h4 {
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        font-size: 1.35rem;
+        letter-spacing: -0.3px;
+    }
+
+    .page-header p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+
+    .btn-edit-main {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+        border-radius: 10px;
+        padding: 0.65rem 1.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(59,130,246,0.35);
+        white-space: nowrap;
+    }
+
+        .btn-edit-main:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            box-shadow: 0 5px 16px rgba(59,130,246,0.45);
+            transform: translateY(-1px);
+        }
+
+    /* ── Config card ── */
+    .config-card {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 2px 20px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+        border: 1px solid rgba(226,232,240,0.7);
+        margin-bottom: 1.5rem;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1.4rem 2rem 1.1rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .section-header-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        flex-shrink: 0;
+    }
+
+    .section-header h6 {
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    .section-header-actions {
+        margin-left: auto;
+    }
+
+    /* ── Info rows ── */
+    .info-body {
+        padding: 0.5rem 2rem 1rem;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: #3b82f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+
+    .info-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .info-label {
+        font-size: 0.73rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        display: block;
+        margin-bottom: 0.15rem;
+    }
+
+    .info-value {
+        font-size: 0.97rem;
+        font-weight: 600;
+        color: #1e293b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+        .info-value.empty {
+            color: #cbd5e1;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+    /* ── Status badge ── */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 0.77rem;
+        font-weight: 700;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        border: 1px solid #bbf7d0;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #22c55e;
+        animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-dot {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.5;
+            transform: scale(0.85);
+        }
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+
+    .empty-state-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: #eff6ff;
+        color: #3b82f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin: 0 auto 1.2rem;
+    }
+
+    .empty-state h6 {
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.4rem;
+    }
+
+    .empty-state p {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-create {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+        border-radius: 10px;
+        padding: 0.65rem 1.5rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        box-shadow: 0 3px 10px rgba(59,130,246,0.35);
+    }
+
+        .btn-create:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    @@media (max-width: 640px) {
+        .info-body {
+            padding: 0.5rem 1rem 1rem;
+        }
+
+        .section-header {
+            padding: 1.1rem 1rem;
+        }
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="settings-root">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+
+            <div class="page-header">
+                <div class="page-header-left">
+                    <div class="page-header-icon">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h4>Cấu hình hệ thống</h4>
+                        <p>Thông tin và cài đặt trung tâm của bạn</p>
+                    </div>
+                </div>
+                @if (Model != null)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit-main">
+                        <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Create" class="btn-edit-main">
+                        <i class="fa-solid fa-plus"></i> Tạo cấu hình
+                    </a>
+                }
+            </div>
+
+            @if (Model == null)
+            {
+                <div class="config-card">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </div>
+                        <h6>Chưa có cấu hình nào</h6>
+                        <p>Hệ thống chưa được thiết lập. Hãy tạo cấu hình để bắt đầu.</p>
+                        <a asp-action="Create" class="btn-create">
+                            <i class="fa-solid fa-plus"></i> Tạo cấu hình ngay
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Card: Nhận diện thương hiệu -->
+                <div class="config-card">
+                    <div class="section-header">
+                        <div class="section-header-dot"></div>
+                        <h6>Nhận diện thương hiệu</h6>
+                        <div class="section-header-actions">
+                            <span class="status-badge">
+                                <span class="status-dot"></span> Đang hoạt động
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info-body">
+
+                        <div class="info-row">
+                            <div class="info-icon"><i class="fa-solid fa-landmark"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Tên trung tâm</span>
+                                <span class="info-value @(string.IsNullOrWhiteSpace(Model.TenTrungTam) ? "empty" : "")">
+                                    @(string.IsNullOrWhiteSpace(Model.TenTrungTam) ? "Chưa cập nhật" : Model.TenTrungTam)
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Địa chỉ trụ sở</span>
+                                <span class="info-value @(string.IsNullOrWhiteSpace(Model.DiaChi) ? "empty" : "")">
+                                    @(string.IsNullOrWhiteSpace(Model.DiaChi) ? "Chưa cập nhật" : Model.DiaChi)
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Card: Liên hệ -->
+                <div class="config-card">
+                    <div class="section-header">
+                        <div class="section-header-dot" style="background: linear-gradient(135deg,#10b981,#06b6d4)"></div>
+                        <h6>Thông tin liên hệ</h6>
+                    </div>
+
+                    <div class="info-body">
+
+                        <div class="info-row">
+                            <div class="info-icon" style="background:#f0fdf4; color:#16a34a;">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <span class="info-label">Hotline liên hệ</span>
+                                <span class="info-value @(string.IsNullOrWhiteSpace(Model.SoDienThoai) ? "empty" : "")">
+                                    @(string.IsNullOrWhiteSpace(Model.SoDienThoai) ? "Chưa cập nhật" : Model.SoDienThoai)
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

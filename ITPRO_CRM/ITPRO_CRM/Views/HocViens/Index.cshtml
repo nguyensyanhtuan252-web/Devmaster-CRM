@@ -1,0 +1,1432 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.HocVien>
+@{
+    // BẢN SỬA LỖI: Ưu tiên bắt trạng thái trực tiếp từ thanh địa chỉ URL (?trangThai=0)
+    int status = 2;
+    if (Context.Request.Query.ContainsKey("trangThai") && int.TryParse(Context.Request.Query["trangThai"], out int queryStatus))
+    {
+        status = queryStatus;
+    }
+    else if (ViewBag.CurrentStatus != null)
+    {
+        status = ViewBag.CurrentStatus;
+    }
+
+    // Lọc lại dữ liệu chuẩn xác ngay tại View
+    var displayModel = status == 2
+        ? Model.Where(x => x.TrangThai >= 2).ToList()
+        : Model.Where(x => x.TrangThai == status).ToList();
+
+    // Tiêu đề & icon theo từng chế độ
+    string pageTitle = status == 0 ? "Tiềm năng" : status == 1 ? "Đang tư vấn" : "Học viên";
+    string pageIcon = status == 0 ? "fa-bolt" : status == 1 ? "fa-comments-dollar" : "fa-users";
+    string iconColor = status == 0 ? "var(--warning)" : status == 1 ? "var(--accent)" : "var(--success)";
+    string iconBg = status == 0 ? "var(--warning-dim)" : status == 1 ? "var(--accent-dim)" : "var(--success-dim)";
+    string pageDesc = status == 0 ? "Danh sách khách hàng tiềm năng — cần liên hệ và chăm sóc"
+                     : status == 1 ? "Theo dõi và chuyển đổi khách hàng đang trong quá trình tư vấn"
+                     : "Quản lý học viên chính thức — lớp học và học phí";
+    ViewData["Title"] = pageTitle;
+
+    // Thống kê chung (Dùng displayModel thay vì Model)
+    var total = displayModel.Count();
+
+    // === Status 0: TIỀM NĂNG ===
+    var homNayLeads = displayModel.Count(x => x.NgayTao.HasValue && x.NgayTao.Value.Date == DateTime.Today);
+    var chuaTuongTac = displayModel.Count(x => x.LichSuTuVans == null || !x.LichSuTuVans.Any());
+    var coSocial = displayModel.Count(x => !string.IsNullOrEmpty(x.FacebookLink) || !string.IsNullOrEmpty(x.ZaloLink));
+
+    // === Status 1: ĐANG TƯ VẤN ===
+    var homNayHen = displayModel.Count(x => x.NgayHen.HasValue && x.NgayHen.Value.Date == DateTime.Today);
+    var quaHan = displayModel.Count(x => x.NgayHen.HasValue && x.NgayHen.Value.Date < DateTime.Today);
+    var chuaHen = displayModel.Count(x => !x.NgayHen.HasValue);
+
+    // === Status 2: HỌC VIÊN ===
+    var dangHoc = displayModel.Count(x => x.LopHocId != null);
+    var coNo = displayModel.Count(x => x.LopHoc != null && (x.LopHoc.HocPhi - (x.PhieuThus?.Sum(p => p.SoTien) ?? 0m)) > 0);
+    var chuaXep = displayModel.Count(x => x.LopHocId == null);
+}
+
+<style>
+    /* ═══════════════════════════════════
+                   SHARED STYLES — dùng đúng CSS vars của Layout
+                   ═══════════════════════════════════ */
+    .page-hdr {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+        .page-hdr h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+        }
+
+        .page-hdr p {
+            font-size: 12px;
+            color: var(--text2);
+            margin: 3px 0 0;
+        }
+
+    .hdr-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    /* Stat cards */
+    .stat-row {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .stat-row-4 {
+        grid-template-columns: repeat(4,1fr);
+    }
+
+    .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        cursor: pointer;
+        transition: all .15s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .stat-card.c-accent::before {
+            background: var(--accent);
+        }
+
+        .stat-card.c-warning::before {
+            background: var(--warning);
+        }
+
+        .stat-card.c-danger::before {
+            background: var(--danger);
+        }
+
+        .stat-card.c-success::before {
+            background: var(--success);
+        }
+
+        .stat-card.c-muted::before {
+            background: var(--text3);
+        }
+
+        .stat-card:hover {
+            border-color: var(--border2);
+            transform: translateY(-1px);
+        }
+
+        .stat-card.active {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+    .stat-lbl {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        margin-bottom: 6px;
+    }
+
+    .stat-val {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+    }
+
+    .stat-sub {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 4px;
+    }
+
+    /* Toolbar */
+    .tb {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .tb-l, .tb-r {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .si {
+        position: relative;
+    }
+
+        .si i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text2);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .si input {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 7px 12px 7px 32px;
+            color: var(--text);
+            font-size: 12.5px;
+            font-family: inherit;
+            width: 210px;
+            outline: none;
+            transition: .15s;
+        }
+
+            .si input:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px var(--accent-dim);
+            }
+
+            .si input::placeholder {
+                color: var(--text3);
+            }
+
+    .sel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 7px 10px;
+        color: var(--text);
+        font-size: 12.5px;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .sel:focus {
+            border-color: var(--accent);
+        }
+
+    .btn-c {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        transition: .12s;
+        background: var(--surface);
+        color: var(--text2);
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+        .btn-c:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .btn-c.pri {
+            background: var(--accent) !important;
+            color: #fff !important;
+            border-color: var(--accent) !important;
+        }
+
+            .btn-c.pri:hover {
+                background: var(--accent-h) !important;
+                border-color: var(--accent-h) !important;
+            }
+
+    /* Table base */
+    .tbl-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .crm-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px;
+    }
+
+        .crm-tbl thead th {
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface2);
+            white-space: nowrap;
+        }
+
+        .crm-tbl tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text2);
+            vertical-align: middle;
+        }
+
+        .crm-tbl tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .crm-tbl tbody tr:hover td {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+    /* Shared components */
+    .av {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+        border-radius: 8px;
+    }
+
+    .av-34 {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .av-28 {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+
+    .act-btn {
+        width: 27px;
+        height: 27px;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text2);
+        font-size: 11px;
+        cursor: pointer;
+        transition: .1s;
+        text-decoration: none;
+    }
+
+        .act-btn:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-color: var(--border2);
+        }
+
+        .act-btn.d:hover {
+            background: var(--danger-dim);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .act-btn.s:hover {
+            background: var(--success-dim);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+    .tbl-foot {
+        padding: 10px 14px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface2);
+    }
+
+        .tbl-foot span {
+            font-size: 11px;
+            color: var(--text2);
+        }
+
+    .empty-st {
+        padding: 48px;
+        text-align: center;
+    }
+
+        .empty-st i {
+            font-size: 28px;
+            color: var(--text3);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .empty-st p {
+            font-size: 13px;
+            color: var(--text2);
+            margin: 0;
+        }
+
+    /* Source badge */
+    .src-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-size: 10.5px;
+        font-weight: 600;
+        background: var(--surface2);
+        color: var(--text2);
+        border: 1px solid var(--border);
+    }
+
+    /* ─── STATUS 1: KANBAN ─── */
+    .kanban-board {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .kanban-col {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        min-height: 420px;
+    }
+
+    .k-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+    }
+
+        .k-head::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .k-head.kh-muted::before {
+            background: var(--text3);
+        }
+
+        .k-head.kh-accent::before {
+            background: var(--accent);
+        }
+
+        .k-head.kh-warn::before {
+            background: var(--warning);
+        }
+
+        .k-head.kh-danger::before {
+            background: var(--danger);
+        }
+
+    .k-head-title {
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .k-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 8px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text2);
+    }
+
+    .k-body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow-y: auto;
+        max-height: 55vh;
+        flex: 1;
+    }
+
+    .k-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        transition: all .15s;
+        text-decoration: none;
+        display: block;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .k-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+        }
+
+        .k-card.lm::before {
+            background: var(--text3);
+        }
+
+        .k-card.la::before {
+            background: var(--accent);
+        }
+
+        .k-card.lt::before {
+            background: var(--warning);
+        }
+
+        .k-card.lo::before {
+            background: var(--danger);
+        }
+
+        .k-card:hover {
+            border-color: var(--border2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        }
+
+    .k-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+    }
+
+    .k-phone {
+        font-size: 11.5px;
+        color: var(--text2);
+    }
+
+    .k-meta {
+        margin-top: 9px;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .k-sale {
+        font-size: 10.5px;
+        color: var(--text2);
+    }
+
+    .k-date {
+        font-size: 10.5px;
+        font-weight: 600;
+    }
+
+    .pill {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .pill-muted {
+        background: var(--surface2);
+        color: var(--text3);
+        border: 1px solid var(--border);
+    }
+
+    .pill-accent {
+        background: var(--accent-dim);
+        color: var(--accent);
+    }
+
+    .pill-warn {
+        background: var(--warning-dim);
+        color: var(--warning);
+    }
+
+    .pill-danger {
+        background: var(--danger-dim);
+        color: var(--danger);
+    }
+
+    .k-empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--text3);
+        font-size: 12px;
+    }
+
+        .k-empty i {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+    /* view toggle */
+    .vt {
+        display: flex;
+        gap: 3px;
+    }
+
+    .vt-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text2);
+        font-size: 12px;
+        transition: .12s;
+    }
+
+        .vt-btn.on, .vt-btn:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-color: var(--border2);
+        }
+
+    /* ─── STATUS 2: DEBT BAR ─── */
+    .debt-bar {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--border);
+        margin-top: 5px;
+        overflow: hidden;
+        width: 90px;
+    }
+
+    .debt-fill {
+        height: 100%;
+        border-radius: 2px;
+    }
+
+    .class-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+        .class-pill.ok {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .class-pill.wa {
+            background: var(--warning-dim);
+            color: var(--warning);
+        }
+
+    /* modal */
+    .modal-content {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 12px;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border);
+        padding: 16px 20px;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border);
+        padding: 12px 20px;
+    }
+
+    .modal-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .btn-close {
+        filter: invert(1) opacity(.5);
+    }
+
+    [data-theme="light"] .btn-close {
+        filter: none;
+    }
+
+    @@media(max-width:900px) {
+        .kanban-board {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .stat-row-4 {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @@media(max-width:576px) {
+        .si input {
+            width: 150px;
+        }
+
+        .kanban-board {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="page-hdr">
+    <div>
+        <h1>
+            <span class="hdr-icon" style="background:@iconBg;color:@iconColor">
+                <i class="fa-solid @pageIcon"></i>
+            </span>
+            @pageTitle
+        </h1>
+        <p>@pageDesc</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+        @if (status == 1)
+        {
+            <div class="vt" id="viewToggle">
+                <button class="vt-btn on" id="btnKanban" onclick="switchView('kanban')" title="Kanban">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </button>
+                <button class="vt-btn" id="btnList" onclick="switchView('list')" title="Danh sách">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+            </div>
+        }
+        @if (status == 0)
+        {
+            <button class="btn-c" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="fa-solid fa-file-import"></i> Nhập Excel
+            </button>
+        }
+        @if (status == 2)
+        {
+            <a href="@Url.Action("ExportExcel","HocViens",new{status=2})" class="btn-c">
+                <i class="fa-solid fa-file-export" style="color:var(--success)"></i> Xuất Excel
+            </a>
+        }
+        <a asp-action="Create" class="btn-c pri">
+            <i class="fa-solid fa-plus"></i>
+            @(status == 0 ? "Thêm tiềm năng" : status == 1 ? "Thêm mới" : "Thêm học viên")
+        </a>
+    </div>
+</div>
+
+<div class="stat-row stat-row-4">
+    @if (status == 0)
+    {
+        <div class="stat-card c-accent active" onclick="setFilter('all',this)">
+            <div class="stat-lbl">Tổng tiềm năng</div>
+            <div class="stat-val">@total</div>
+            <div class="stat-sub">Đang theo dõi</div>
+        </div>
+        <div class="stat-card c-warning" onclick="setFilter('today',this)">
+            <div class="stat-lbl">Mới hôm nay</div>
+            <div class="stat-val" style="color:var(--warning)">@homNayLeads</div>
+            <div class="stat-sub">Cần liên hệ ngay</div>
+        </div>
+        <div class="stat-card c-danger" onclick="setFilter('cold',this)">
+            <div class="stat-lbl">Chưa tương tác</div>
+            <div class="stat-val" style="color:var(--danger)">@chuaTuongTac</div>
+            <div class="stat-sub">Chưa có lịch sử gọi</div>
+        </div>
+        <div class="stat-card c-success" onclick="setFilter('social',this)">
+            <div class="stat-lbl">Có Facebook/Zalo</div>
+            <div class="stat-val" style="color:var(--success)">@coSocial</div>
+            <div class="stat-sub">Có thể nhắn tin</div>
+        </div>
+    }
+    @if (status == 1)
+    {
+        <div class="stat-card c-accent active" onclick="setFilter('all',this)">
+            <div class="stat-lbl">Tổng đang tư vấn</div>
+            <div class="stat-val">@total</div>
+            <div class="stat-sub">Đang theo dõi</div>
+        </div>
+        <div class="stat-card c-warning" onclick="setFilter('today',this)">
+            <div class="stat-lbl">Hẹn hôm nay</div>
+            <div class="stat-val" style="color:var(--warning)">@homNayHen</div>
+            <div class="stat-sub">Cần gọi ngay</div>
+        </div>
+        <div class="stat-card c-danger" onclick="setFilter('overdue',this)">
+            <div class="stat-lbl">Quá hạn</div>
+            <div class="stat-val" style="color:var(--danger)">@quaHan</div>
+            <div class="stat-sub">Cần xử lý gấp</div>
+        </div>
+        <div class="stat-card c-muted" onclick="setFilter('unset',this)">
+            <div class="stat-lbl">Chưa hẹn lịch</div>
+            <div class="stat-val" style="color:var(--text2)">@chuaHen</div>
+            <div class="stat-sub">Cần đặt lịch</div>
+        </div>
+    }
+    @if (status == 2)
+    {
+        <div class="stat-card c-accent @(ViewBag.CurrentFilter == "all" || string.IsNullOrEmpty(ViewBag.CurrentFilter) ? "active" : "")"
+             onclick="window.location.href='@Url.Action("Index", new { filter = "all" })'" style="cursor:pointer;">
+            <div class="stat-lbl">Tổng học viên</div>
+            <div class="stat-val">@ViewBag.CountTong</div>
+            <div class="stat-sub">Đang quản lý</div>
+        </div>
+
+        <div class="stat-card c-success @(ViewBag.CurrentFilter == "co-lop" ? "active" : "")"
+             onclick="window.location.href='@Url.Action("Index", new { filter = "co-lop" })'" style="cursor:pointer;">
+            <div class="stat-lbl">Đang có lớp</div>
+            <div class="stat-val" style="color:var(--success)">@ViewBag.CountCoLop</div>
+            <div class="stat-sub">Đã xếp lớp học</div>
+        </div>
+
+        <div class="stat-card c-danger @(ViewBag.CurrentFilter == "no-phi" ? "active" : "")"
+             onclick="window.location.href='@Url.Action("Index", new { filter = "no-phi" })'" style="cursor:pointer;">
+            <div class="stat-lbl">Còn nợ học phí</div>
+            <div class="stat-val" style="color:var(--danger)">@ViewBag.CountNoPhi</div>
+            <div class="stat-sub">Cần thu tiền</div>
+        </div>
+
+        <div class="stat-card c-warning @(ViewBag.CurrentFilter == "chua-lop" ? "active" : "")"
+             onclick="window.location.href='@Url.Action("Index", new { filter = "chua-lop" })'" style="cursor:pointer;">
+            <div class="stat-lbl">Chưa xếp lớp</div>
+            <div class="stat-val" style="color:var(--warning)">@ViewBag.CountChuaLop</div>
+            <div class="stat-sub">Cần sắp xếp</div>
+        </div>
+    }
+</div>
+
+<div class="tb" id="mainToolbar">
+    <div class="tb-l">
+        <div class="si">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="@(status==0?"Tên, SĐT, nguồn...":status==1?"Tên, SĐT...":"Tên, SĐT, mã HV...")" oninput="applyFilters()">
+        </div>
+        @if (status == 0)
+        {
+            <select class="sel" id="filterSource" onchange="applyFilters()">
+                <option value="">Tất cả nguồn</option>
+                <option>Facebook</option>
+                <option>Google</option>
+                <option>Giới thiệu</option>
+                <option>Hội thảo</option>
+                <option>Website</option>
+                <option>Zalo</option>
+            </select>
+        }
+        @if (status == 2)
+        {
+            <select class="sel" id="filterLop" onchange="applyFilters()">
+                <option value="">Tất cả lớp</option>
+                @foreach (var lopName in displayModel.Where(x => x.LopHoc != null).Select(x => x.LopHoc!.TenLop).Distinct().OrderBy(x => x))
+                {
+                    <option>@lopName</option>
+                }
+            </select>
+        }
+    </div>
+    <div class="tb-r">
+        <span style="font-size:11px;color:var(--text2)" id="countTxt">@total bản ghi</span>
+    </div>
+</div>
+
+@if (status == 0)
+{
+    <div class="tbl-wrap">
+        <div style="overflow-x:auto">
+            <table class="crm-tbl">
+                <thead>
+                    <tr>
+                        <th style="width:36px"><input type="checkbox" id="checkAll" onchange="toggleAll(this)" style="accent-color:var(--accent)"></th>
+                        <th>Khách hàng</th>
+                        <th>Liên hệ</th>
+                        <th>Nguồn</th>
+                        <th>Sale phụ trách</th>
+                        <th>Ngày tạo</th>
+                        <th>Tình trạng</th>
+                        <th style="text-align:right">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    @if (!displayModel.Any())
+                    {
+                        <tr><td colspan="8"><div class="empty-st"><i class="fa-solid fa-bolt"></i><p>Chưa có tiềm năng nào. Nhấn "Thêm tiềm năng" để bắt đầu.</p></div></td></tr>
+                    }
+                    @foreach (var item in displayModel)
+                    {
+                        bool isNew = item.NgayTao.HasValue && item.NgayTao.Value.Date == DateTime.Today;
+                        bool isCold = item.LichSuTuVans == null || !item.LichSuTuVans.Any();
+                        bool hasSoc = !string.IsNullOrEmpty(item.FacebookLink) || !string.IsNullOrEmpty(item.ZaloLink);
+                        var avColors = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
+                        var avc = avColors[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avColors.Length];
+                        string src = item.NguonGoc ?? item.ChienDich?.TenChienDich ?? "Tự nhiên";
+                        string srcLower = src.ToLower();
+
+                        string rowCls = "tbl-row all";
+                        if (isNew) rowCls += " today";
+                        if (isCold) rowCls += " cold";
+                        if (hasSoc) rowCls += " social";
+
+                        <tr class="@rowCls"
+                            data-name="@(item.HoTen?.ToLower())"
+                            data-phone="@(item.SoDienThoai?.ToLower() ?? "")"
+                            data-email="@(item.Email?.ToLower() ?? "")"
+                            data-source="@srcLower">
+                            <td><input type="checkbox" class="row-chk" style="accent-color:var(--accent)"></td>
+                            <td>
+                                <div style="display:flex;align-items:center;gap:10px">
+                                    <div class="av av-34" style="background:@avc">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div>
+                                        <div style="font-size:13px;font-weight:600;color:var(--text)">@item.HoTen</div>
+                                        <div style="font-size:10px;color:var(--text3);margin-top:1px">
+                                            @if (isNew)
+                                            {
+                                                <span style="color:var(--warning)">● Mới hôm nay</span>
+                                            }
+                                            else if (isCold)
+                                            {
+                                                <span style="color:var(--danger)">● Chưa gọi</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:var(--success)">● Đã tương tác</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size:12.5px;font-weight:500;color:var(--text)">@(item.SoDienThoai ?? "—")</div>
+                                <div style="font-size:11px;color:var(--text2)">@(item.Email ?? "—")</div>
+                            </td>
+                            <td>
+                                <span class="src-badge">
+                                    @if (srcLower.Contains("facebook"))
+                                    {
+                                        <i class="fa-brands fa-facebook" style="color:#1877f2"></i>
+                                    }
+                                    else if (srcLower.Contains("google"))
+                                    {
+                                        <i class="fa-brands fa-google" style="color:#ea4335"></i>
+                                    }
+                                    else if (srcLower.Contains("zalo"))
+                                    {
+                                        <i class="fa-solid fa-comment" style="color:#0068ff"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-link" style="color:var(--text3)"></i>
+                                    }
+                                    @src
+                                </span>
+                            </td>
+                            <td style="font-size:12px;color:var(--text)">@(item.NhanVien?.HoTen ?? "Chưa phân")</td>
+                            <td>
+                                <div style="font-size:12px;color:var(--text)">@(item.NgayTao?.ToString("dd/MM/yyyy") ?? "—")</div>
+                                <div style="font-size:10px;color:var(--text3)">@(item.NgayTao?.ToString("HH:mm") ?? "")</div>
+                            </td>
+                            <td>
+                                @if (isCold)
+                                {
+                                    <span style="font-size:11px;color:var(--danger)"><i class="fa-solid fa-triangle-exclamation"></i> Chưa gọi</span>
+                                }
+                                else
+                                {
+                                    <span style="font-size:11px;color:var(--success)"><i class="fa-solid fa-check"></i> Đã liên hệ</span>
+                                }
+                            </td>
+                            <td style="text-align:right">
+                                <div style="display:flex;justify-content:flex-end;gap:4px">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="act-btn" title="Xem & Tư vấn"><i class="fa-solid fa-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="act-btn" title="Sửa"><i class="fa-solid fa-pen"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="act-btn d" title="Xóa"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="tbl-foot">
+            <span id="visibleCount">@total tiềm năng</span>
+            <span style="color:var(--text3)"><strong>Tiềm năng</strong> → Tư vấn → Học viên</span>
+        </div>
+    </div>
+}
+
+@if (status == 1)
+{
+    <div id="kanbanView">
+        <div class="kanban-board">
+            @{
+                var cols = new[] {
+        new { title="Mới nhận", icon="fa-inbox", cls="kh-muted", cardCls="lm", pillCls="pill-muted", pillTxt="Mới",
+        items=displayModel.Where(x=>!x.NgayHen.HasValue).ToList(), dateColor="var(--text3)" },
+        new { title="Đã hẹn",   icon="fa-calendar-check", cls="kh-accent", cardCls="la", pillCls="pill-accent", pillTxt="Đã hẹn",
+        items=displayModel.Where(x=>x.NgayHen.HasValue&&x.NgayHen.Value.Date>DateTime.Today).ToList(), dateColor="var(--accent)" },
+        new { title="Hôm nay",  icon="fa-fire", cls="kh-warn", cardCls="lt", pillCls="pill-warn", pillTxt="Hôm nay",
+        items=displayModel.Where(x=>x.NgayHen.HasValue&&x.NgayHen.Value.Date==DateTime.Today).ToList(), dateColor="var(--warning)" },
+        new { title="Quá hạn",  icon="fa-triangle-exclamation", cls="kh-danger", cardCls="lo", pillCls="pill-danger", pillTxt="Quá hạn",
+        items=displayModel.Where(x=>x.NgayHen.HasValue&&x.NgayHen.Value.Date<DateTime.Today).ToList(), dateColor="var(--danger)" },
+        };
+                var avColors2 = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
+            }
+            @foreach (var col in cols)
+            {
+                <div class="kanban-col">
+                    <div class="k-head @col.cls">
+                        <div class="k-head-title" style="color:@col.dateColor">
+                            <i class="fa-solid @col.icon"></i> @col.title
+                        </div>
+                        <span class="k-badge">@col.items.Count</span>
+                    </div>
+                    <div class="k-body">
+                        @if (!col.items.Any())
+                        {
+                            <div class="k-empty"><i class="fa-solid @col.icon"></i>Trống</div>
+                        }
+                        @foreach (var item in col.items)
+                        {
+                            var avc2 = avColors2[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avColors2.Length];
+                            var dayLate = col.cardCls == "lo" ? (int)(DateTime.Today - (item.NgayHen?.Date ?? DateTime.Today)).TotalDays : 0;
+                            <a href="@Url.Action("Details",new{id=item.Id})" class="k-card @col.cardCls">
+                                <div style="display:flex;gap:8px;align-items:flex-start">
+                                    <div class="av av-28" style="background:@avc2">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div style="flex:1;min-width:0">
+                                        <div class="k-name">@item.HoTen</div>
+                                        <div class="k-phone">@item.SoDienThoai</div>
+                                    </div>
+                                    <span class="pill @col.pillCls">@(dayLate > 0 ? $"+{dayLate}d" : col.pillTxt)</span>
+                                </div>
+                                <div class="k-meta">
+                                    <div class="k-sale"><i class="fa-solid fa-user" style="margin-right:3px"></i>@(item.NhanVien?.HoTen ?? "Chưa phân")</div>
+                                    <div class="k-date" style="color:@col.dateColor">
+                                        @if (col.cardCls == "lm")
+                                        {
+                                            <span>@(item.NgayTao?.ToString("dd/MM") ?? "—")</span>
+                                        }
+                                        else if (col.cardCls == "lt")
+                                        {
+                                            <span><i class="fa-solid fa-clock"></i> @(item.NgayHen?.ToString("HH:mm"))</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@(item.NgayHen?.ToString("dd/MM HH:mm") ?? "—")</span>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div id="listView" style="display:none">
+        <div class="tbl-wrap">
+            <div style="overflow-x:auto">
+                <table class="crm-tbl">
+                    <thead>
+                        <tr>
+                            <th>Khách hàng</th>
+                            <th>Liên hệ</th>
+                            <th>Sale</th>
+                            <th>Lịch hẹn</th>
+                            <th>Trạng thái</th>
+                            <th style="text-align:right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listBody">
+                        @foreach (var item in displayModel)
+                        {
+                            bool isToday2 = item.NgayHen?.Date == DateTime.Today;
+                            bool isOverdue2 = item.NgayHen.HasValue && item.NgayHen.Value.Date < DateTime.Today;
+                            var avc3 = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" }[Math.Abs((item.HoTen ?? "A").GetHashCode()) % 6];
+                            string lrCls = "list-row all " + (isToday2 ? "today" : "") + (isOverdue2 ? " overdue" : "") + (!item.NgayHen.HasValue ? " unset" : "");
+                            <tr class="@lrCls" data-name="@(item.HoTen?.ToLower())" data-phone="@(item.SoDienThoai?.ToLower() ?? "")">
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:9px">
+                                        <div class="av av-28" style="background:@avc3">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                        <div>
+                                            <div style="font-weight:600;color:var(--text);font-size:13px">@item.HoTen</div>
+                                            <div style="font-size:10px;color:var(--text3);font-family:monospace">@(item.NguonGoc ?? "Tự nhiên")</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="font-size:12.5px;font-weight:500;color:var(--text)">@item.SoDienThoai</div>
+                                    <div style="font-size:11px;color:var(--text2)">@(item.Email ?? "—")</div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text)">@(item.NhanVien?.HoTen ?? "Chưa phân")</td>
+                                <td>
+                                    @if (!item.NgayHen.HasValue)
+                                    {
+                                        <span style="font-size:11px;color:var(--text3)">Chưa hẹn</span>
+                                    }
+                                    else if (isToday2)
+                                    {
+                                        <span style="font-size:12px;font-weight:600;color:var(--warning)"><i class="fa-solid fa-clock"></i> @item.NgayHen?.ToString("HH:mm") — Hôm nay</span>
+                                    }
+                                    else if (isOverdue2)
+                                    {
+                                        <span style="font-size:12px;font-weight:600;color:var(--danger)"><i class="fa-solid fa-calendar-xmark"></i> @item.NgayHen?.ToString("dd/MM/yyyy")</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size:12px;color:var(--text2)"><i class="fa-regular fa-calendar" style="color:var(--accent)"></i> @item.NgayHen?.ToString("dd/MM/yyyy HH:mm")</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (isOverdue2)
+                                    {
+                                        <span class="pill pill-danger"><i class="fa-solid fa-triangle-exclamation"></i> Quá hạn</span>
+                                    }
+                                    else if (isToday2)
+                                    {
+                                        <span class="pill pill-warn"><i class="fa-solid fa-fire"></i> Hôm nay</span>
+                                    }
+                                    else if (!item.NgayHen.HasValue)
+                                    {
+                                        <span class="pill pill-muted">Mới nhận</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="pill pill-accent">Đã hẹn</span>
+                                    }
+                                </td>
+                                <td style="text-align:right">
+                                    <div style="display:flex;justify-content:flex-end;gap:4px">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="act-btn"><i class="fa-solid fa-eye"></i></a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="act-btn"><i class="fa-solid fa-pen"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tbl-foot">
+                <span id="visibleCount">@total đang tư vấn</span>
+                <span style="color:var(--text3)">Tiềm năng → <strong style="color:var(--text)">Tư vấn</strong> → Học viên</span>
+            </div>
+        </div>
+    </div>
+}
+
+@if (status == 2)
+{
+    <div class="tbl-wrap">
+        <div style="overflow-x:auto">
+            <table class="crm-tbl">
+                <thead>
+                    <tr>
+                        <th style="width:36px"><input type="checkbox" id="checkAll" onchange="toggleAll(this)" style="accent-color:var(--accent)"></th>
+                        <th>Học viên</th>
+                        <th>Liên hệ</th>
+                        <th>Lớp học</th>
+                        @if (ViewBag.CurrentFilter == "no-phi")
+                        {
+                            <th>Học Phí</th>
+                        }
+                        <th>Sale</th>
+                        <th>Ngày nhập học</th>
+                        <th style="text-align:right">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    @if (!displayModel.Any())
+                    {
+                        <tr><td colspan="8"><div class="empty-st"><i class="fa-solid fa-users"></i><p>Chưa có học viên nào.</p></div></td></tr>
+                    }
+                    @foreach (var item in displayModel)
+                    {
+                        var hp = item.LopHoc?.HocPhi ?? 0m;
+                        var dt = item.PhieuThus?.Sum(p => p.SoTien) ?? 0m;
+                        var no = hp - dt;
+                        var pct = hp > 0 ? (int)(dt * 100 / hp) : 100;
+                        var avcs = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
+                        var avc4 = avcs[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avcs.Length];
+                        bool debt2 = no > 0; bool hasCls = item.LopHocId != null;
+                        string rcls = "tbl-row all" + (hasCls ? " classed" : " noclass") + (debt2 ? " debt" : "");
+                        <tr class="@rcls"
+                            data-name="@(item.HoTen?.ToLower())"
+                            data-phone="@(item.SoDienThoai?.ToLower() ?? "")"
+                            data-code="@(item.MaHocVien?.ToLower() ?? "")"
+                            data-lop="@(item.LopHoc?.TenLop ?? "")">
+                            <td><input type="checkbox" class="row-chk" style="accent-color:var(--accent)"></td>
+                            <td>
+                                <div style="display:flex;align-items:center;gap:10px">
+                                    <div class="av av-34" style="background:@avc4">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div>
+                                        <div style="font-size:13px;font-weight:600;color:var(--text)">@item.HoTen</div>
+                                        <div style="font-size:10px;margin-top:1px">
+                                            @if (!string.IsNullOrEmpty(item.MaHocVien))
+                                            {
+                                                <span style="color:var(--accent);font-family:monospace"><i class="fa-solid fa-qrcode"></i> @item.MaHocVien</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:var(--text3)">Chưa cấp mã</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size:12.5px;font-weight:500;color:var(--text)">@(item.SoDienThoai ?? "—")</div>
+                                <div style="font-size:11px;color:var(--text2)">@(item.Email ?? "—")</div>
+                            </td>
+                            <td>
+                                @if (item.LopHoc != null)
+                                {
+                                    <span class="class-pill ok"><i class="fa-solid fa-chalkboard"></i> @item.LopHoc.TenLop</span>
+                                }
+                                else
+                                {
+                                    <span class="class-pill wa"><i class="fa-solid fa-clock"></i> Chờ xếp lớp</span>
+                                }
+                            </td>
+                            @if (ViewBag.CurrentFilter == "no-phi")
+                            {
+                                <td style="min-width:110px">
+                                    @if (hp > 0)
+                                    {
+                                        <div style="font-size:11px;color:var(--text2)">
+                                            <span style="color:@(debt2?"var(--danger)":"var(--success)");font-weight:600">@(dt.ToString("N0"))₫</span>
+                                            / @(hp.ToString("N0"))₫
+                                        </div>
+                                        <div class="debt-bar"><div class="debt-fill" style="width:@pct%;background:@(debt2?"var(--danger)":"var(--success)")"></div></div>
+                                        @if (debt2)
+                                        {
+                                            <div style="font-size:10px;color:var(--danger);margin-top:2px">Nợ @(no.ToString("N0"))₫</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size:11px;color:var(--text3)">Chưa có</span>
+                                    }
+                                </td>
+                            }
+                            <td style="font-size:12px;color:var(--text)">@(item.NhanVien?.HoTen ?? "—")</td>
+                            <td style="font-size:12px;color:var(--text)">@(item.NgayTao?.ToString("dd/MM/yyyy") ?? "—")</td>
+                            <td style="text-align:right">
+                                <div style="display:flex;justify-content:flex-end;gap:4px">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="act-btn" title="Xem hồ sơ"><i class="fa-solid fa-eye"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="act-btn" title="Sửa"><i class="fa-solid fa-pen"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="act-btn d" title="Xóa"><i class="fa-solid fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="tbl-foot">
+            <span id="visibleCount">@total học viên</span>
+            <span style="color:var(--text3)">Tiềm năng → Tư vấn → <strong style="color:var(--text)">Học viên</strong></span>
+        </div>
+    </div>
+}
+
+@if (status == 0)
+{
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form asp-controller="HocViens" asp-action="ImportExcel" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h6 class="modal-title"><i class="fa-solid fa-file-excel me-2" style="color:var(--success)"></i>Nhập danh sách tiềm năng</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" style="padding:20px">
+                        <div style="margin-bottom:14px">
+                            <label style="font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px">Chọn file Excel (.xlsx)</label>
+                            <input type="file" name="fileExcel" class="form-control" accept=".xlsx,.xls" required>
+                        </div>
+                        <div style="background:var(--accent-dim);border-radius:8px;padding:12px;font-size:12px;color:var(--text2)">
+                            <i class="fa-solid fa-circle-info me-1" style="color:var(--accent)"></i>
+                            File cần có cột: <strong>Họ Tên, SĐT, Email</strong> (dòng 1 là tiêu đề)
+                            <div style="margin-top:8px">
+                                <a asp-action="DownloadTemplate" style="color:var(--accent);font-size:11px"><i class="fa-solid fa-download"></i> Tải file mẫu</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-c" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn-c pri"><i class="fa-solid fa-cloud-arrow-up"></i> Nhập dữ liệu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        var STATUS = parseInt('@status') || 0;
+        var curFilter = 'all';
+
+        // Fix lỗi mờ Modal
+        document.addEventListener("DOMContentLoaded", function () {
+            var modalExcel = document.getElementById('importModal');
+            if (modalExcel) document.body.appendChild(modalExcel);
+        });
+
+        function downloadTemplate() {
+            window.location.href = '@Url.Action("DownloadTemplate", "HocViens")';
+        }
+
+        // HÀM LOẠI BỎ DẤU TIẾNG VIỆT (Giúp gõ "tuan" vẫn ra "Tuấn")
+        function removeAccents(str) {
+            if (!str) return '';
+            return str.normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                      .toLowerCase();
+        }
+
+        function setFilter(f, card) {
+            curFilter = f;
+            var cards = document.querySelectorAll('.stat-card');
+            for (var i = 0; i < cards.length; i++) cards[i].classList.remove('active');
+            card.classList.add('active');
+            applyFilters();
+        }
+
+        // HÀM LỌC SIÊU TỐI ƯU & CHỐNG ĐỤNG ĐỘ ID HEADER
+        function applyFilters() {
+            try {
+                // 1. Chỉ tìm đúng ô input nằm trong khu vực bảng (.tb-l)
+                var searchInput = document.querySelector('.tb-l input[type="text"]');
+                var q = searchInput ? removeAccents(searchInput.value) : '';
+
+                var srcInput = document.getElementById('filterSource');
+                var src = (STATUS === 0 && srcInput && srcInput.value !== '') ? removeAccents(srcInput.value) : '';
+
+                var lopInput = document.getElementById('filterLop');
+                var lop = (STATUS === 2 && lopInput && lopInput.value !== '') ? removeAccents(lopInput.value) : '';
+
+                // 2. Lấy TẤT CẢ các thẻ dữ liệu (Bảng, List, Kanban)
+                var items = document.querySelectorAll('.tbl-row, .list-row, .k-card');
+                var cnt = 0;
+
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var isKanban = item.classList.contains('k-card');
+
+                    // 3. Gom toàn bộ chữ hiển thị trên dòng đó để tìm kiếm (An toàn tuyệt đối)
+                    var rawText = item.textContent || item.innerText || '';
+                    var itemText = removeAccents(rawText);
+
+                    // 4. So sánh
+                    var mSearch = (q === '') || itemText.includes(q);
+                    var mSrc = (src === '') || itemText.includes(src);
+                    var mLop = (lop === '') || itemText.includes(lop);
+
+                    var mFilter = true;
+                    if (!isKanban) {
+                        mFilter = (curFilter === 'all') || item.classList.contains(curFilter);
+                    }
+
+                    // 5. Ẩn Hiện
+                    if (mSearch && mSrc && mLop && mFilter) {
+                        item.style.display = '';
+                        if (!isKanban) cnt++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+
+                // 6. Cập nhật con số hiển thị
+                var label = STATUS === 0 ? 'tiềm năng' : (STATUS === 1 ? 'đang tư vấn' : 'học viên');
+                var el1 = document.getElementById('visibleCount');
+                if (el1) el1.textContent = cnt + ' ' + label;
+
+                var el2 = document.getElementById('countTxt');
+                if (el2) el2.textContent = cnt + ' bản ghi';
+
+            } catch (err) {
+                console.error("Lỗi tìm kiếm: ", err);
+            }
+        }
+
+        function switchView(v) {
+            var kanban = document.getElementById('kanbanView');
+            var list = document.getElementById('listView');
+            if (!kanban || !list) return;
+
+            if (v === 'kanban') {
+                kanban.style.display = ''; list.style.display = 'none';
+                var btnK = document.getElementById('btnKanban'); if (btnK) btnK.classList.add('on');
+                var btnL = document.getElementById('btnList'); if (btnL) btnL.classList.remove('on');
+            } else {
+                kanban.style.display = 'none'; list.style.display = '';
+                var btnL = document.getElementById('btnList'); if (btnL) btnL.classList.add('on');
+                var btnK = document.getElementById('btnKanban'); if (btnK) btnK.classList.remove('on');
+            }
+            localStorage.setItem('pipelineView', v);
+            applyFilters();
+        }
+
+        if (STATUS === 1) {
+            switchView(localStorage.getItem('pipelineView') || 'kanban');
+        }
+
+        function toggleAll(cb) {
+            var chks = document.querySelectorAll('.row-chk');
+            for (var i = 0; i < chks.length; i++) chks[i].checked = cb.checked;
+        }
+    </script>
+}

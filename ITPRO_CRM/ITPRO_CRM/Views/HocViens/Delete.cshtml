@@ -1,0 +1,115 @@
+﻿@model dynamic
+
+<style>
+    .dm-card-del {
+        background-color: var(--surface);
+        border: 1px solid var(--danger);
+        border-radius: 14px;
+        max-width: 500px;
+        margin: 0 auto;
+        box-shadow: var(--shadow);
+    }
+
+    .dm-del-icon {
+        font-size: 60px;
+        color: var(--danger);
+        opacity: 0.8;
+        margin-bottom: 20px;
+    }
+
+    .dm-del-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 10px;
+    }
+
+    .dm-del-desc {
+        font-size: 13px;
+        color: var(--text2);
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+
+    .dm-del-info {
+        background: var(--surface2);
+        border-left: 4px solid var(--danger);
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    .dm-del-lbl {
+        color: var(--text3);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+
+    .dm-del-val {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .dm-btn-del {
+        background: var(--danger);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 30px;
+        border: none;
+        transition: 0.2s;
+        box-shadow: 0 4px 12px rgba(239,68,68,0.2);
+    }
+
+        .dm-btn-del:hover {
+            background: #dc2626;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        padding: 10px 24px;
+        border-radius: 30px;
+        transition: 0.2s;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+</style>
+
+<div class="container py-5 text-center">
+    <div class="dm-card-del p-4 p-md-5">
+        <i class="fa-solid fa-circle-exclamation dm-del-icon"></i>
+        <h3 class="dm-del-title">Xác nhận xóa dữ liệu?</h3>
+        <p class="dm-del-desc">Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa mục này ra khỏi hệ thống vĩnh viễn không?</p>
+
+        <div class="dm-del-info">
+            <div class="dm-del-lbl">Thông tin mục chọn xóa:</div>
+            <div class="dm-del-val">@(Model.HoTen ?? Model.TenChienDich ?? Model.MaPhieu)</div>
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="d-flex gap-3 justify-content-center">
+                <button type="button" onclick="window.history.back()" class="dm-btn-cancel">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Không, quay lại
+                </button>
+                <button type="submit" class="dm-btn-del">
+                    Vẫn xóa dữ liệu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

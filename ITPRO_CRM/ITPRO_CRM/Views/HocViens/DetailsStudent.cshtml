@@ -1,0 +1,860 @@
+@model ITPRO_CRM.Models.HocVien
+
+@{
+    ViewData["Title"] = "Hồ sơ: " + Model.HoTen;
+    var activeTab = TempData["ActiveTab"] as string ?? "finance";
+
+    // --- XỬ LÝ SỐ LIỆU TÀI CHÍNH MỚI (Lấy theo Đợt Thanh Toán) ---
+    var cacDotThanhToan = ViewBag.CacDotThanhToan as List<ITPRO_CRM.Models.DotThanhToan> ?? new List<ITPRO_CRM.Models.DotThanhToan>();
+
+    // Lấy Tổng phải thu (Đã trừ giảm giá) từ bảng Đợt Thanh Toán. Nếu không có đợt nào thì lấy học phí gốc.
+    decimal tongPhaiThu = cacDotThanhToan.Any() ? cacDotThanhToan.Sum(d => d.SoTienPhaiThu) : (Model.LopHoc?.HocPhi ?? 0);
+    // Lấy Tổng đã nộp
+    decimal tongDaNop = cacDotThanhToan.Any() ? cacDotThanhToan.Sum(d => d.SoTienDaThu) : (Model.PhieuThus?.Sum(p => p.SoTien) ?? 0);
+
+    decimal conNo = tongPhaiThu - tongDaNop;
+    if (conNo < 0) conNo = 0; // Tránh hiện nợ âm
+
+    string colorTaiChinh = conNo > 0 ? "var(--danger)" : "var(--success)";
+    string bgTaiChinh = conNo > 0 ? "rgba(239,68,68,0.1)" : "rgba(34,197,94,0.1)";
+    string textTaiChinh = conNo > 0 ? $"Còn nợ {conNo:N0}đ" : "Đã hoàn thành học phí";
+    string iconTaiChinh = conNo > 0 ? "fa-circle-exclamation" : "fa-circle-check";
+
+    // --- XỬ LÝ SỐ LIỆU ĐIỂM DANH ---
+    int tongBuoiDaHoc = Model.DiemDanhs?.Count ?? 0;
+    int soBuoiCoMat = Model.DiemDanhs?.Count(d => d.TrangThai == 1) ?? 0;
+    int soBuoiVang = tongBuoiDaHoc - soBuoiCoMat;
+
+    string colorHocTap = soBuoiVang >= 3 ? "var(--warning)" : "var(--accent)";
+    string bgHocTap = soBuoiVang >= 3 ? "rgba(245,158,11,0.1)" : "rgba(59,130,246,0.1)";
+    string textHocTap = soBuoiVang >= 3 ? $"Báo động: Vắng {soBuoiVang} buổi" : "Chuyên cần tốt";
+    string iconHocTap = soBuoiVang >= 3 ? "fa-triangle-exclamation" : "fa-user-graduate";
+}
+
+<style>
+    /* BỘ CSS CHUẨN DARK/LIGHT MODE */
+    .dm-luxury-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        height: 100%;
+        transition: 0.3s;
+    }
+
+    .dm-nav-tabs {
+        border-bottom: 1px solid var(--border);
+        margin: 0;
+        padding: 0 10px;
+        background: var(--surface);
+        border-radius: 16px 16px 0 0;
+    }
+
+        .dm-nav-tabs .nav-link {
+            color: var(--text2);
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            padding: 14px 20px;
+            border-bottom: 3px solid transparent;
+            background: transparent;
+            transition: 0.2s;
+        }
+
+            .dm-nav-tabs .nav-link:hover {
+                color: var(--accent);
+            }
+
+            .dm-nav-tabs .nav-link.active {
+                color: var(--accent);
+                border-bottom-color: var(--accent);
+                background: transparent;
+            }
+
+    .dm-info-label {
+        font-size: 10px;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .dm-info-value {
+        font-size: 15px;
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .dm-btn-outline {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 18px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        text-decoration: none;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .dm-btn-outline:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .dm-table th {
+            background: var(--surface2);
+            color: var(--text3);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dm-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text2);
+            vertical-align: middle;
+        }
+
+        .dm-table tr:last-child td {
+            border-bottom: none;
+        }
+
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: none !important;
+    }
+
+        .dm-input:focus {
+            border-color: var(--accent) !important;
+        }
+
+    .dm-modal-content {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+    }
+
+    .dm-modal-header {
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+    }
+
+    .dm-modal-body {
+        padding: 24px;
+    }
+
+    .dm-modal-footer {
+        border-top: 1px solid var(--border);
+        padding: 16px 24px;
+        background: var(--surface2);
+        border-radius: 0 0 16px 16px;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Index" class="dm-btn-outline"><i class="fa-solid fa-arrow-left me-2"></i> Danh sách Học viên</a>
+        <div class="d-flex gap-2">
+            @if (Model.TrangThai == 0 || Model.TrangThai == 1)
+            {
+                <button type="button" class="btn btn-sm" style="background: var(--success); color: #fff; font-weight: 600; border-radius: 20px; padding: 8px 18px;" data-bs-toggle="modal" data-bs-target="#enrollModal">
+                    <i class="fa-solid fa-graduation-cap me-2 fa-bounce"></i> NHẬP HỌC
+                </button>
+            }
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="dm-btn-outline" style="border-color: var(--warning); color: var(--warning); background: rgba(245,158,11,0.1);">
+                <i class="fa-solid fa-pen me-2"></i> Cập nhật hồ sơ
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="dm-luxury-card d-flex align-items-center position-relative">
+                <button type="button" class="btn position-absolute top-0 end-0 m-3 shadow-sm d-flex align-items-center justify-content-center"
+                        style="width: 36px; height: 36px; border-radius: 50%; background: var(--surface); border: 1.5px solid #ea4335; color: #ea4335; transition: 0.2s; z-index: 10;"
+                        data-bs-toggle="modal" data-bs-target="#quickEmailModal" title="Gửi Email cho học viên này">
+                    <i class="fa-solid fa-envelope fs-5"></i>
+                </button>
+
+                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm me-3 flex-shrink-0" style="width: 70px; height: 70px; font-size: 2rem; background: var(--accent); color: #fff;">
+                    @(Model.HoTen?.Substring(0, 1) ?? "H")
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1" style="color: var(--text);">@Model.HoTen</h5>
+
+                    @if (!string.IsNullOrEmpty(Model.MaHocVien))
+                    {
+                        <div class="mb-1">
+                            <span style="font-size: 11px; font-weight: 600; background: rgba(59,130,246,0.1); color: var(--accent); border: 1px solid rgba(59,130,246,0.2); padding: 2px 8px; border-radius: 20px;">
+                                <i class="fa-solid fa-id-card-clip me-1"></i> MSHV: @Model.MaHocVien
+                            </span>
+                        </div>
+                    }
+                    <span style="font-size: 11px; font-weight: 500; background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; display: inline-block; margin-top: 4px;">
+                        <i class="fa-solid fa-chalkboard-user me-1"></i> @(Model.LopHoc?.TenLop ?? "Chưa có lớp")
+                    </span>
+                    <div style="font-size: 11px; color: var(--text2); margin-top: 4px;"><i class="fa-solid fa-phone me-1"></i> @Model.SoDienThoai</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="dm-luxury-card" style="border-bottom: 4px solid @colorTaiChinh;">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="dm-info-label" style="color: @colorTaiChinh;">Trạng thái Học phí</span>
+                    <i class="fa-solid @iconTaiChinh fs-5" style="color: @colorTaiChinh;"></i>
+                </div>
+                <div class="fw-bold mb-2" style="font-size: 18px; color: var(--text);">@string.Format("{0:N0}", tongDaNop)đ <span style="font-size: 13px; color: var(--text3); font-weight: 500;">/ @string.Format("{0:N0}", tongPhaiThu)đ</span></div>
+                <div style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; display: inline-block; background: @bgTaiChinh; color: @colorTaiChinh; border: 1px solid @colorTaiChinh;">
+                    @textTaiChinh
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="dm-luxury-card" style="border-bottom: 4px solid @colorHocTap;">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="dm-info-label" style="color: @colorHocTap;">Chuyên cần</span>
+                    <i class="fa-solid @iconHocTap fs-5" style="color: @colorHocTap;"></i>
+                </div>
+                <div class="fw-bold mb-2" style="font-size: 18px; color: var(--text);">@soBuoiCoMat <span style="font-size: 13px; color: var(--text3); font-weight: 500;">/ @tongBuoiDaHoc buổi</span></div>
+                <div style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; display: inline-block; background: @bgHocTap; color: @colorHocTap; border: 1px solid @colorHocTap;">
+                    @textHocTap
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);">
+        <ul class="nav nav-tabs dm-nav-tabs" id="studentTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link @(activeTab == "finance" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#finance"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Tài chính</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link @(activeTab == "academic" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#academic"><i class="fa-solid fa-clipboard-user me-2"></i>Điểm danh</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link @(activeTab == "care" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#care"><i class="fa-solid fa-headset me-2"></i>Chăm sóc</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link @(activeTab == "profile" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#profile"><i class="fa-solid fa-address-card me-2"></i>Hồ sơ chi tiết</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" style="padding: 24px;">
+            <div class="tab-pane fade @(activeTab == "finance" ? "show active" : "")" id="finance">
+
+                <h6 class="fw-bold m-0 mb-3" style="color: var(--text); font-size: 14px;">Lộ trình đóng học phí</h6>
+                <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px;">
+                    <table class="dm-table">
+                        <thead>
+                            <tr>
+                                <th>Đợt nộp / Hạn</th>
+                                <th>Phải thu</th>
+                                <th>Đã thu</th>
+                                <th>Còn nợ</th>
+                                <th class="text-center">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (cacDotThanhToan.Any())
+                            {
+                                foreach (var dot in cacDotThanhToan)
+                                {
+                                    var isQuaHan = dot.TrangThai != 2 && dot.HanThanhToan < DateTime.Today;
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold" style="color: var(--text);">@dot.TenDot</div>
+                                            <div class="small @(isQuaHan ? "text-danger fw-bold" : "text-muted")">
+                                                <i class="fa-regular fa-clock me-1"></i>Hạn: @dot.HanThanhToan.ToString("dd/MM/yyyy")
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold" style="color: var(--text);">@dot.SoTienPhaiThu.ToString("N0") đ</td>
+                                        <td class="text-success fw-bold">@dot.SoTienDaThu.ToString("N0") đ</td>
+                                        <td class="text-danger fw-bold">@((dot.SoTienPhaiThu - dot.SoTienDaThu).ToString("N0")) đ</td>
+                                        <td class="text-center">
+                                            @if (dot.TrangThai == 2)
+                                            {
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            }
+                                            else if (isQuaHan)
+                                            {
+                                                <span class="badge bg-danger">Quá hạn</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-dark">Chờ thu</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="5" class="text-center py-3 text-muted">Học viên cũ (Chưa có lộ trình)</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold m-0" style="color: var(--text); font-size: 14px;">Lịch sử Phiếu thu / Miễn giảm</h6>
+                    @if (conNo > 0)
+                    {
+                        <button type="button" class="btn btn-sm" style="background: var(--success); color: #fff; font-weight: 600; border-radius: 20px; padding: 6px 16px;" data-bs-toggle="modal" data-bs-target="#modalThuTien">
+                            <i class="fa-solid fa-plus me-1"></i> Thu tiền
+                        </button>
+                    }
+                </div>
+
+                <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
+                    <table class="dm-table">
+                        <thead>
+                            <tr>
+                                <th>Mã Phiếu</th>
+                                <th>Ngày nộp</th>
+                                <th>Số tiền</th>
+                                <th>Hình thức</th>
+                                <th class="text-end">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.PhieuThus != null && Model.PhieuThus.Any())
+                            {
+                                @foreach (var pt in Model.PhieuThus.OrderByDescending(p => p.NgayThu))
+                                {
+                                    string tenHinhThuc = pt.HinhThuc == 1 ? "Tiền mặt" : (pt.HinhThuc == 2 ? "Chuyển khoản" : "Mã khuyến mãi");
+                                    string cssHinhThuc = pt.HinhThuc == 3 ? "background: rgba(234, 179, 8, 0.1); color: #ca8a04; border: 1px solid #fde047;" : "background: var(--surface2); color: var(--text); border: 1px solid var(--border);";
+
+                                    <tr>
+                                        <td style="font-family: 'DM Mono', monospace; font-weight: 600;">@(pt.MaPhieu ?? $"PT{pt.Id:0000}")</td>
+                                        <td>@(pt.NgayThu.ToString("dd/MM/yyyy HH:mm"))</td>
+                                        <td style="color: var(--success); font-weight: 700;">@string.Format("{0:N0}", pt.SoTien) đ</td>
+                                        <td>
+                                            <span style="font-size: 11px; padding: 2px 6px; border-radius: 4px; @cssHinhThuc">
+                                                <i class="fa-solid @(pt.HinhThuc == 3 ? "fa-ticket" : (pt.HinhThuc == 1 ? "fa-money-bill" : "fa-building-columns")) me-1"></i>
+                                                @tenHinhThuc
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-sm dm-btn-outline" style="padding: 4px 10px;"
+                                                    onclick="xemPhieuThu('@(pt.MaPhieu ?? $"PT{pt.Id:0000}")', '@pt.NgayThu.ToString("dd/MM/yyyy HH:mm")', '@string.Format("{0:N0}", pt.SoTien)', '@tenHinhThuc', '@pt.NguoiThu', '@pt.NoiDung')">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="5" class="text-center py-4" style="color: var(--text3);">Chưa có giao dịch.</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade @(activeTab == "academic" ? "show active" : "")" id="academic">
+
+                <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold m-0" style="color: var(--text); font-size: 13px;">
+                            <i class="fa-regular fa-comments me-2" style="color: var(--accent);"></i>GHI CHÚ / PHẢN ÁNH TỪ GIÁO VIÊN
+                        </h6>
+                        <button type="button" class="btn btn-sm dm-btn-outline" data-bs-toggle="modal" data-bs-target="#modalGiaoVienNote">
+                            <i class="fa-solid fa-plus me-1"></i> Thêm ghi chú
+                        </button>
+                    </div>
+
+                    @{
+                        // Lọc ra các bản ghi điểm danh có chứa GhiChuGiaoVien
+                        var cacGhiChu = Model.DiemDanhs?.Where(d => !string.IsNullOrEmpty(d.GhiChuGiaoVien))
+                        .OrderByDescending(d => d.NgayGhiChu ?? d.NgayDiemDanh).ToList();
+                    }
+                    @if (cacGhiChu != null && cacGhiChu.Any())
+                    {
+                        <div class="d-flex flex-column gap-2">
+                            @foreach (var note in cacGhiChu)
+                            {
+                                <div style="background: var(--surface); padding: 12px; border-radius: 6px; border: 1px solid var(--border);">
+                                    <div style="font-size: 11px; color: var(--text3); margin-bottom: 4px;">
+                                        <i class="fa-regular fa-clock me-1"></i> Ghi nhận lúc: @(note.NgayGhiChu?.ToString("HH:mm - dd/MM/yyyy") ?? note.NgayDiemDanh.ToString("dd/MM/yyyy"))
+                                    </div>
+                                    <div style="font-size: 13px; color: var(--text); font-weight: 500;">
+                                        @note.GhiChuGiaoVien
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="font-size: 12px; color: var(--text2); font-style: italic;">Chưa có phản ánh nào từ giáo viên.</div>
+                    }
+                </div>
+
+                <h6 class="fw-bold mb-3" style="color: var(--text); font-size: 14px;">Lịch sử điểm danh chi tiết</h6>
+                <div style="background: var(--surface2); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                    @if (Model.DiemDanhs != null && Model.DiemDanhs.Any())
+                    {
+                        <div class="row g-2">
+                            @foreach (var dd in Model.DiemDanhs.OrderBy(d => d.NgayDiemDanh))
+                            {
+                                <div class="col-md-3">
+                                    <div class="p-2 text-center" style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px;">
+                                        <div style="font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 4px;">@(dd.NgayDiemDanh.ToString("dd/MM/yyyy"))</div>
+                                        @if (dd.TrangThai == 1)
+                                        {
+                                            <span style="font-size: 10px; font-weight: 600; color: var(--success); background: rgba(34,197,94,0.1); padding: 2px 6px; border-radius: 4px;"><i class="fa-solid fa-check me-1"></i> Có mặt</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="font-size: 10px; font-weight: 600; color: var(--danger); background: rgba(239,68,68,0.1); padding: 2px 6px; border-radius: 4px;"><i class="fa-solid fa-xmark me-1"></i> Vắng</span>
+                                        }
+                                        <div style="font-size: 10px; color: var(--text3); margin-top: 4px;">@(string.IsNullOrEmpty(dd.GhiChu) ? "-" : dd.GhiChu)</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center" style="color: var(--text3);">Học viên này chưa có dữ liệu điểm danh.</div>
+                    }
+                </div>
+            </div>
+
+            <div class="tab-pane fade @(activeTab == "care" ? "show active" : "")" id="care">
+                <form asp-action="AddNote" method="post" style="background: var(--surface2); padding: 16px; border-radius: 8px; border: 1px solid var(--border); border-top: 3px solid var(--accent); margin-bottom: 24px;">
+                    <h6 class="fw-bold mb-3" style="color: var(--accent); font-size: 13px;"><i class="fa-solid fa-pen-to-square me-2"></i>Ghi nhận Chăm sóc / Phản hồi</h6>
+                    <input type="hidden" name="HocVienId" value="@Model.Id" />
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <select name="HinhThuc" class="form-select dm-input"><option value="Hỗ trợ học tập">Hỗ trợ học tập</option><option value="Nhắc học phí">Nhắc học phí</option><option value="Phản hồi/Khiếu nại">Khách phàn nàn</option></select>
+                        </div>
+                        <div class="col-md-4">
+                            <input name="NoiDung" class="form-control dm-input" placeholder="Nội dung chăm sóc..." required />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="datetime-local" name="NgayHen" class="form-control dm-input" title="Hẹn gọi lại" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn w-100" style="background: var(--accent); color: #fff; font-weight: 600; font-size: 13px; border-radius: 6px; padding: 8px;">Lưu lại</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div>
+                    @if (Model.LichSuTuVans != null && Model.LichSuTuVans.Count > 0)
+                    {
+                        foreach (var item in Model.LichSuTuVans.OrderByDescending(x => x.NgayTuVan))
+                        {
+                            <div class="d-flex mb-3 align-items-start">
+                                <div class="text-center me-3" style="width: 60px;">
+                                    <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px;">
+                                        <div style="font-weight: 700; color: var(--text); font-size: 13px;">@(item.NgayTuVan.ToString("dd/MM"))</div>
+                                        <div style="color: var(--text3); font-size: 10px;">@(item.NgayTuVan.ToString("HH:mm"))</div>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 p-3 rounded-3" style="background: var(--surface2); border-left: 3px solid var(--accent);">
+                                    <div style="font-weight: 600; font-size: 11px; color: var(--accent); text-transform: uppercase;">@item.HinhThuc</div>
+                                    <div style="font-size: 13px; color: var(--text); margin-top: 4px;">@item.NoiDung</div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="tab-pane fade @(activeTab == "profile" ? "show active" : "")" id="profile">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div style="font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin liên lạc</div>
+                        <div class="mb-3"><div class="dm-info-label">Email</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.Email) ? "--" : Model.Email)</div></div>
+                        <div class="mb-3"><div class="dm-info-label">Ngày sinh</div><div class="dm-info-value">@(Model.NgaySinh.ToString("dd/MM/yyyy") == "01/01/0001" ? "--" : Model.NgaySinh.ToString("dd/MM/yyyy"))</div></div>
+                        <div class="mb-3"><div class="dm-info-label">Địa chỉ</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.DiaChi) ? "--" : Model.DiaChi)</div></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin Học tập/Công việc</div>
+                        <div class="mb-3"><div class="dm-info-label">Trường học / Công ty</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.TruongHoc) ? "--" : Model.TruongHoc)</div></div>
+                        <div class="mb-3"><div class="dm-info-label">Chuyên ngành</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.NganhHoc) ? "--" : Model.NganhHoc)</div></div>
+                        <div class="mb-3"><div class="dm-info-label">Mục tiêu</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.MucTieuHocTap) ? "--" : Model.MucTieuHocTap)</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalThuTien" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow);">
+            <form asp-controller="HocViens" asp-action="ThemPhieuThu" method="post">
+                <input type="hidden" name="HocVienId" value="@Model.Id" />
+                <input type="hidden" name="SoTien" id="valSoTienGuiLen" value="@conNo" />
+
+                <div class="modal-header" style="border-bottom: 1px dashed var(--border); padding: 16px 20px;">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px; background: rgba(34,197,94,0.1); color: var(--success);">
+                            <i class="fa-solid fa-file-invoice-dollar fs-5"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold m-0" style="color: var(--text); font-size: 14px;">PHIẾU THU TIỀN</h6>
+                            <div style="font-size: 11px; color: var(--text3);">Mẫu chứng từ kế toán điện tử</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(var(--theme-invert, 0));"></button>
+                </div>
+
+                <div class="modal-body p-4">
+
+                    <div class="p-3 mb-4" style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;">
+                        <div class="row">
+                            <div class="col-7">
+                                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text3); margin-bottom: 2px;">Người nộp</div>
+                                <div class="fw-bold" style="font-size: 13px; color: var(--text);">@Model.HoTen</div>
+                            </div>
+                            <div class="col-5 text-end">
+                                <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; color: var(--text3); margin-bottom: 2px;">Lớp học</div>
+                                <div class="fw-bold" style="font-size: 13px; color: var(--success);">@(Model.LopHoc?.TenLop ?? "Chưa xếp lớp")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text2); margin-bottom: 8px;">SỐ TIỀN THU <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="text" id="inpTienHienThi" class="form-control text-end shadow-none dm-input"
+                                   style="color: var(--success) !important; font-weight: 700; font-size: 20px; height: 46px; border-right: none !important; border-radius: 6px 0 0 6px;"
+                                   value="@conNo.ToString("N0")" required oninput="formatTien(this)" autocomplete="off" />
+                            <span class="input-group-text" style="background: var(--surface2); border: 1px solid var(--border); border-left: none; color: var(--text3); font-weight: 600; font-size: 12px; border-radius: 0 6px 6px 0;">VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <div class="col-12">
+                            <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text2); margin-bottom: 8px;">HÌNH THỨC THANH TOÁN</label>
+                            <select name="HinhThuc" class="form-select shadow-none dm-input" style="height: 40px; font-size: 13px;">
+                                <option value="2">💳 Chuyển khoản ngân hàng</option>
+                                <option value="1">💵 Tiền mặt</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text2); margin-bottom: 8px;">NỘI DUNG CHỨNG TỪ</label>
+                            <textarea name="NoiDung" class="form-control shadow-none dm-input" rows="2" style="font-size: 13px; resize: none;" required>Thu học phí đợt tiếp theo</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer" style="border-top: 1px solid var(--border); padding: 16px 20px; background: var(--surface2); border-radius: 0 0 12px 12px;">
+                    <button type="button" class="btn dm-btn-outline px-4" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn px-4" style="background: var(--success); color: #fff; font-weight: 600; font-size: 13px; border-radius: 20px; border: none;">
+                        <i class="fa-solid fa-check me-1"></i> Xác nhận thu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="enrollModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content dm-modal-content">
+            <form asp-controller="HocViens" asp-action="EnrollStudent" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="dm-modal-header">
+                    <h6 class="fw-bold m-0" style="color: var(--accent);"><i class="fa-solid fa-file-signature me-2"></i>THỦ TỤC NHẬP HỌC: @Model.HoTen</h6>
+                </div>
+                <div class="dm-modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="dm-info-label" style="border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin đào tạo</div>
+                            <div class="mb-3">
+                                <label class="dm-info-label">Xếp vào Lớp học <span class="text-danger">*</span></label>
+                                <select name="lopHocId" class="form-select dm-input" required onchange="tuDongDienHocPhi(this)">
+                                    <option value="" data-hocphi="0">-- Chọn lớp học --</option>
+                                    @if (ViewBag.DanhSachLop != null)
+                                    {
+                                        foreach (var lop in ViewBag.DanhSachLop)
+                                        {
+                                            <option value="@lop.Id" data-hocphi="@lop.HocPhi">@lop.TenLop</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="dm-info-label">Ghi chú giáo vụ</label>
+                                <textarea name="ghiChu" class="form-control dm-input" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="dm-info-label" style="border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin tài chính</div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="dm-info-label">Tổng học phí gốc</label>
+                                    <input type="number" id="inpGoc" name="hocPhi" class="form-control dm-input text-end fw-bold" value="0" onkeyup="tinhTien()" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="dm-info-label">Đóng hôm nay <span class="text-danger">*</span></label>
+                                    <input type="number" id="inpDong" name="daNop" class="form-control dm-input text-end fw-bold" style="color: var(--success) !important;" value="0" required onkeyup="tinhTien()" />
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-5">
+                                    <label class="dm-info-label">Giảm trừ (VNĐ)</label>
+                                    <input type="number" id="inpGiam" name="giamTru" class="form-control dm-input text-end" value="0" onkeyup="tinhTien()" />
+                                </div>
+                                <div class="col-7">
+                                    <label class="dm-info-label">Lý do giảm trừ</label>
+                                    <input type="text" name="lyDoGiamGia" class="form-control dm-input" placeholder="VD: Khuyến mãi tháng 5..." />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="dm-info-label">Hình thức thu tiền hôm nay</label>
+                                <select name="hinhThuc" class="form-select dm-input">
+                                    <option value="Chuyển khoản">💳 Chuyển khoản</option>
+                                    <option value="Tiền mặt">💵 Tiền mặt</option>
+                                </select>
+                            </div>
+                            <div style="background: var(--surface2); padding: 12px; border-radius: 8px; border: 1px solid var(--warning);">
+                                <div class="d-flex justify-content-between mb-1"><span class="dm-info-label mb-0">Học phí cần đóng (Sau giảm):</span><span style="font-weight:700; color:var(--text);" id="txtPhaiThu">0 đ</span></div>
+                                <div class="d-flex justify-content-between"><span class="dm-info-label mb-0">Còn nợ lại (Chia 2 đợt 60-40):</span><span style="font-weight:700; color:var(--danger);" id="txtConNo">0 đ</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dm-modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn dm-btn-outline" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn" style="background: var(--success); color: #fff; font-weight: 600; font-size: 13px; border-radius: 6px; padding: 8px 24px;"><i class="fa-solid fa-check me-2"></i> CHỐT NHẬP HỌC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quickEmailModal" aria-labelledby="quickEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content dm-modal-content">
+            <div class="dm-modal-header">
+                <h6 class="fw-bold m-0" style="color: #ea4335;">
+                    <i class="fa-solid fa-envelope me-2"></i>GỬI EMAIL NHANH: @Model.HoTen
+                </h6>
+            </div>
+            <div class="dm-modal-body">
+                <input type="hidden" id="quickHocVienId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="dm-info-label">Tiêu đề thư <span class="text-danger">*</span></label>
+                    <input type="text" id="quickTieuDe" class="form-control dm-input" placeholder="Nhập tiêu đề..." required />
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <label class="dm-info-label mb-0">Nội dung thư <span class="text-danger">*</span></label>
+                        <span style="font-size: 10px; color: #ea4335; background: rgba(234, 67, 53, 0.1); padding: 2px 6px; border-radius: 4px;">Tag: {"{{"} TenHocVien {"}}"}</span>
+                    </div>
+                    <textarea id="quickNoiDung" class="form-control dm-input"></textarea>
+                </div>
+                <div id="quickEmailAlert" class="alert d-none" style="font-size: 13px; padding: 10px; margin-bottom: 0;"></div>
+            </div>
+            <div class="dm-modal-footer d-flex justify-content-end gap-2">
+                <button type="button" class="btn dm-btn-outline" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" id="btnSendQuickEmail" class="btn" style="background: #ea4335; color: #fff; font-weight: 600; font-size: 13px; border-radius: 6px; padding: 8px 24px;" onclick="executeQuickEmail()">
+                    <i class="fa-solid fa-paper-plane me-2"></i> Gửi ngay
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalGiaoVienNote" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content dm-modal-content">
+            <form asp-controller="HocViens" asp-action="AddTeacherNote" method="post">
+                <input type="hidden" name="HocVienId" value="@Model.Id" />
+                <div class="dm-modal-header">
+                    <h6 class="fw-bold m-0" style="color: var(--danger);"><i class="fa-solid fa-bullhorn me-2"></i>THÊM PHẢN ÁNH / CẢNH BÁO</h6>
+                </div>
+                <div class="dm-modal-body">
+                    <div class="mb-2">
+                        <label class="dm-info-label">Nội dung ghi chú của Giáo viên</label>
+                        <textarea name="GhiChuGiaoVien" class="form-control dm-input" rows="4" placeholder="Ví dụ: Học viên dạo này hay nghỉ học, không làm bài tập về nhà..." required></textarea>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text3); font-style: italic;">
+                        <i class="fa-solid fa-circle-info me-1"></i> Ghi chú này sẽ được đính kèm vào lịch sử điểm danh và hiện đỏ trên hệ thống để Sale dễ dàng theo dõi.
+                    </div>
+                </div>
+                <div class="dm-modal-footer d-flex justify-content-end gap-2">
+                    <button type="button" class="btn dm-btn-outline" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn" style="background: var(--danger); color: #fff; font-weight: 600; font-size: 13px; border-radius: 6px; padding: 8px 24px;">
+                        <i class="fa-solid fa-paper-plane me-1"></i> Gửi phản ánh
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalViewPhieu" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content dm-modal-content" style="border-top: 5px solid var(--success) !important;">
+            <div class="dm-modal-header d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold m-0" style="color: var(--success);"><i class="fa-solid fa-receipt me-2"></i>CHI TIẾT CHỨNG TỪ TÀI CHÍNH</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="dm-modal-body text-center">
+                <div class="text-muted small mb-1">MÃ PHIẾU</div>
+                <h4 class="fw-bold mb-4" id="vMa" style="font-family: 'DM Mono', monospace; color: var(--text);"></h4>
+
+                <div class="row text-start g-3">
+                    <div class="col-6"><label class="dm-info-label">Ngày ghi nhận</label><div id="vNgay" class="fw-bold" style="color: var(--text);"></div></div>
+                    <div class="col-6 text-end"><label class="dm-info-label">Số tiền</label><div id="vTien" class="fw-bold text-success fs-5"></div></div>
+                    <div class="col-6"><label class="dm-info-label">Hình thức</label><div id="vHinhThuc" style="color: var(--text);"></div></div>
+                    <div class="col-6 text-end"><label class="dm-info-label">Nhân sự thực hiện</label><div id="vNguoiThu" class="fw-bold" style="color: var(--text);"></div></div>
+                    <div class="col-12"><label class="dm-info-label">Nội dung chi tiết</label><div id="vNoiDung" class="p-3 rounded-3" style="background: var(--surface2); font-size: 13px; color: var(--text2); border: 1px dashed var(--border);"></div></div>
+                </div>
+            </div>
+            <div class="dm-modal-footer">
+                <button class="btn dm-btn-outline w-100" data-bs-dismiss="modal">Đóng cửa sổ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        // --- 1. FIX LỖI BÓNG MỜ CHO TẤT CẢ CÁC MODAL ---
+        // Đẩy tất cả các modal ra ngoài body để không bị kẹt hiệu ứng CSS
+        document.body.appendChild(document.getElementById('quickEmailModal'));
+        document.body.appendChild(document.getElementById('modalGiaoVienNote')); // Fix mờ cho Ghi chú Giáo viên
+        document.body.appendChild(document.getElementById('modalViewPhieu'));
+        document.body.appendChild(document.getElementById('modalThuTien'));
+        document.body.appendChild(document.getElementById('enrollModal'));
+
+        // --- 2. CÁC HÀM FORMAT VÀ TÍNH TOÁN TIỀN ---
+        function formatTien(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val === '') {
+                input.value = '';
+                document.getElementById('valSoTienGuiLen').value = 0;
+                return;
+            }
+            let num = parseInt(val, 10);
+            input.value = num.toLocaleString('en-US'); // Tự động thêm dấu phẩy
+            document.getElementById('valSoTienGuiLen').value = num; // Ghi số gốc vào thẻ ẩn
+        }
+
+        function tuDongDienHocPhi(sel) {
+            let opt = sel.options[sel.selectedIndex];
+            document.getElementById('inpGoc').value = opt.getAttribute('data-hocphi') || 0;
+            tinhTien();
+        }
+
+        function tinhTien() {
+            let goc = parseFloat(document.getElementById('inpGoc').value) || 0;
+            let giam = parseFloat(document.getElementById('inpGiam').value) || 0;
+            let dong = parseFloat(document.getElementById('inpDong').value) || 0;
+            let phaiThu = goc - giam;
+            document.getElementById('txtPhaiThu').innerText = phaiThu.toLocaleString('vi-VN') + " đ";
+            document.getElementById('txtConNo').innerText = ((phaiThu - dong) > 0 ? (phaiThu - dong).toLocaleString('vi-VN') : 0) + " đ";
+        }
+
+        // --- 3. HÀM MỞ MODAL XEM CHI TIẾT PHIẾU THU ---
+        function xemPhieuThu(ma, ngay, tien, hinhthuc, nguoi, nd) {
+            document.getElementById('vMa').innerText = ma;
+            document.getElementById('vNgay').innerText = ngay;
+            document.getElementById('vTien').innerText = tien + " đ";
+            document.getElementById('vHinhThuc').innerText = hinhthuc;
+            document.getElementById('vNguoiThu').innerText = nguoi;
+            document.getElementById('vNoiDung').innerText = nd;
+            new bootstrap.Modal(document.getElementById('modalViewPhieu')).show();
+        }
+
+        // --- 4. CẤU HÌNH GỬI EMAIL VÀ CKEDITOR ---
+        var quickEditor;
+        var myModalEl = document.getElementById('quickEmailModal');
+
+        myModalEl.addEventListener('shown.bs.modal', function () {
+            if (!quickEditor) {
+                CKEDITOR.config.versionCheck = false;
+                quickEditor = CKEDITOR.replace('quickNoiDung', {
+                    height: 200,
+                    toolbarGroups: [
+                        { name: 'basicstyles', groups: [ 'basicstyles' ] },
+                        { name: 'paragraph', groups: [ 'list', 'align' ] },
+                        { name: 'links' }, { name: 'colors' }
+                    ],
+                    removeButtons: 'Subscript,Superscript,Strike'
+                });
+            }
+        });
+
+        myModalEl.addEventListener('hidden.bs.modal', function () {
+            $('#quickTieuDe').val('');
+            if (quickEditor) quickEditor.setData('');
+            $('#quickEmailAlert').addClass('d-none').removeClass('alert-success alert-danger');
+        });
+
+        function executeQuickEmail() {
+            var hvId = $('#quickHocVienId').val();
+            var title = $('#quickTieuDe').val();
+            var content = quickEditor ? quickEditor.getData() : $('#quickNoiDung').val();
+            var btn = $('#btnSendQuickEmail');
+            var alertBox = $('#quickEmailAlert');
+
+            if (!title.trim() || !content.trim()) {
+                alertBox.removeClass('d-none alert-success').addClass('alert-danger').text("Vui lòng nhập đầy đủ tiêu đề và nội dung.");
+                return;
+            }
+
+            btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-1"></i> Đang gửi...');
+            alertBox.addClass('d-none');
+
+            $.ajax({
+                url: '/EmailMarketing/SendQuickEmail',
+                type: 'POST',
+                data: { hocVienId: hvId, tieuDe: title, noiDung: content },
+                success: function (res) {
+                    btn.prop('disabled', false).html('<i class="fa-solid fa-paper-plane me-1"></i> Gửi ngay');
+                    alertBox.removeClass('d-none alert-danger alert-success');
+
+                    if (res.success) {
+                        alertBox.addClass('alert-success').html('<i class="fa-solid fa-check me-1"></i> ' + res.message);
+                        setTimeout(function() {
+                            var modal = bootstrap.Modal.getInstance(myModalEl);
+                            modal.hide();
+                        }, 1500);
+                    } else {
+                        alertBox.addClass('alert-danger').html('<i class="fa-solid fa-circle-exclamation me-1"></i> ' + res.message);
+                    }
+                },
+                error: function () {
+                    btn.prop('disabled', false).html('<i class="fa-solid fa-paper-plane me-1"></i> Gửi ngay');
+                    alertBox.removeClass('d-none alert-success').addClass('alert-danger').text("Đã xảy ra lỗi kết nối mạng!");
+                }
+            });
+        }
+    </script>
+}

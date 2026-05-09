@@ -1,0 +1,200 @@
+@model ITPRO_CRM.Models.LopHoc
+
+@{
+    ViewData["Title"] = "Xác nhận xóa lớp";
+    int siSo = Model.HocViens?.Count ?? 0;
+}
+
+<style>
+    .dm-card-del {
+        background-color: var(--surface);
+        border: 1px solid var(--danger);
+        border-radius: 14px;
+        max-width: 550px;
+        margin: 0 auto;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .dm-del-header {
+        background-color: rgba(239, 68, 68, 0.08);
+        padding: 24px;
+        text-align: center;
+        border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+    }
+
+    .dm-del-icon {
+        font-size: 50px;
+        color: var(--danger);
+        margin-bottom: 12px;
+    }
+
+    .dm-del-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--danger);
+        margin-bottom: 6px;
+    }
+
+    .dm-del-desc {
+        font-size: 12px;
+        color: var(--text2);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .dm-del-body {
+        padding: 24px;
+    }
+
+    .dm-del-alert {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+        .dm-del-alert i {
+            margin-top: 2px;
+        }
+
+    .dm-info-box {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0 16px;
+        margin-bottom: 24px;
+    }
+
+    .dm-info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+    }
+
+        .dm-info-row:last-child {
+            border-bottom: none;
+        }
+
+    .dm-info-label {
+        color: var(--text3);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .dm-info-value {
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .dm-btn-del {
+        background: var(--danger);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 30px;
+        border: none;
+        transition: 0.2s;
+        box-shadow: 0 4px 12px rgba(239,68,68,0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .dm-btn-del:hover {
+            background: #dc2626;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .dm-btn-cancel {
+        background: transparent;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        padding: 10px 24px;
+        border-radius: 30px;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+</style>
+
+<div class="container-fluid px-4 py-5">
+    <div class="dm-card-del">
+        <div class="dm-del-header">
+            <div class="dm-del-icon">⚠️</div>
+            <h5 class="dm-del-title">Xác nhận xóa lớp học</h5>
+            <p class="dm-del-desc">Hành động này <strong>không thể hoàn tác</strong>. Toàn bộ dữ liệu liên quan sẽ bị mất.</p>
+        </div>
+
+        <div class="dm-del-body">
+            @if (siSo > 0)
+            {
+                <div class="dm-del-alert">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <strong>Lớp này đang có @siSo học viên!</strong><br /> Xóa lớp sẽ ảnh hưởng nghiêm trọng đến dữ liệu của các học viên này.
+                    </div>
+                </div>
+            }
+
+            <div class="dm-info-box">
+                <div class="dm-info-row">
+                    <span class="dm-info-label">Tên lớp</span>
+                    <span class="dm-info-value" style="color: var(--accent);">@Model.TenLop</span>
+                </div>
+                <div class="dm-info-row">
+                    <span class="dm-info-label">Khai giảng</span>
+                    <span class="dm-info-value">@Model.NgayKhaiGiang.ToString("dd/MM/yyyy")</span>
+                </div>
+                @if (Model.GiangVien != null)
+                {
+                    <div class="dm-info-row">
+                        <span class="dm-info-label">Giảng viên</span>
+                        <span class="dm-info-value">@Model.GiangVien.HoTen</span>
+                    </div>
+                }
+                <div class="dm-info-row">
+                    <span class="dm-info-label">Số học viên</span>
+                    <span class="dm-info-value" style="color: @(siSo > 0 ? "var(--danger)" : "var(--text)");">@siSo học viên</span>
+                </div>
+                <div class="dm-info-row">
+                    <span class="dm-info-label">Học phí</span>
+                    <span class="dm-info-value" style="font-family: 'JetBrains Mono', monospace;">@Model.HocPhi.ToString("#,##0") đ</span>
+                </div>
+            </div>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-3 justify-content-end">
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="dm-btn-cancel">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Quay lại
+                    </a>
+                    <button type="submit" class="dm-btn-del">
+                        <i class="fa-solid fa-trash me-2"></i> Xóa lớp này
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

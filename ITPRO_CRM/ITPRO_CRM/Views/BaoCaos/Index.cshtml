@@ -1,0 +1,1369 @@
+@{
+    ViewData["Title"] = "Báo cáo & Phân tích";
+    var revenueData = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueData ?? new List<decimal>());
+    var months = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Months ?? new List<string>());
+    var studentStats = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.StudentStats ?? new List<int> { 0, 0, 0 });
+    var revenueByClass = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RevenueByClass ?? new List<object>());
+    var staffPerformance = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.StaffPerformance ?? new List<object>());
+    var sourceData = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SourceData ?? new List<object>());
+    var attendanceRate = ViewBag.AttendanceRate ?? 0;
+    var revenueThisMonth = ViewBag.RevenueThisMonth ?? 0m;
+    var revenueLastMonth = ViewBag.RevenueLastMonth ?? 0m;
+    decimal revGrowth = revenueLastMonth > 0 ? Math.Round(((revenueThisMonth - revenueLastMonth) / revenueLastMonth) * 100, 1) : 0;
+    var totalClasses = ViewBag.TotalClasses ?? 0;
+    var activeClasses = ViewBag.ActiveClasses ?? 0;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    /* BỘ MÀU LIGHT MODE (Mặc định) */
+    :root {
+        --navy: #0f1c3f;
+        --navy-light: #1a2d5a;
+        --accent: #3b7fff;
+        --accent-green: #22c55e;
+        --accent-amber: #f59e0b;
+        --accent-red: #ef4444;
+        --accent-purple: #8b5cf6;
+        --surface: #ffffff;
+        --surface-2: #f8faff;
+        --border: rgba(15,28,63,0.1);
+        --text-main: #0f1c3f;
+        --text-muted: #64748b;
+        --text-light: #94a3b8;
+        --radius: 14px;
+        --radius-sm: 8px;
+        --shadow: 0 1px 4px rgba(15,28,63,0.07);
+        --shadow-md: 0 4px 16px rgba(15,28,63,0.10);
+    }
+
+    /* BẢN SỬA: BỘ MÀU DARK MODE (Sẽ tự động kích hoạt khi bật mặt trăng) */
+    [data-theme="dark"] {
+        --navy: #161b22;
+        --navy-light: #1c2333;
+        --surface: #161b22;
+        --surface-2: #0d1117;
+        --border: #21262d;
+        --text-main: #e6edf3;
+        --text-muted: #8b949e;
+        --text-light: #484f58;
+        --shadow: 0 1px 4px rgba(0,0,0,0.5);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.6);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body, .bao-cao-wrap {
+        font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+    .bao-cao-wrap {
+        background: var(--surface-2);
+        min-height: 100vh;
+        padding: 0 0 48px;
+        transition: background 0.3s ease; /* BẢN SỬA: Thêm hiệu ứng chuyển màu mượt */
+    }
+
+    /* ===== HEADER ===== */
+    .bc-header {
+        background: var(--navy);
+        padding: 28px 32px 24px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.3s ease;
+    }
+
+        .bc-header::after {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(59,127,255,0.12);
+            pointer-events: none;
+        }
+
+    .bc-header-title {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -0.3px;
+    }
+
+    .bc-header-sub {
+        color: rgba(255,255,255,0.55);
+        font-size: 13px;
+        margin: 4px 0 0;
+    }
+
+    .bc-tab-nav {
+        display: flex;
+        gap: 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: var(--radius-sm);
+        padding: 4px;
+    }
+
+    .bc-tab-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255,255,255,0.6);
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .bc-tab-btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+    /* ===== FILTER BAR ===== */
+    .bc-filter-bar {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 32px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        transition: background 0.3s, border-color 0.3s;
+    }
+
+    .bc-filter-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-right: 4px;
+    }
+
+    .bc-filter-select {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 13px;
+        color: var(--text-main);
+        padding: 7px 28px 7px 12px;
+        appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    .bc-btn-export {
+        margin-left: auto;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-family: 'Be Vietnam Pro', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: background 0.2s;
+    }
+
+        .bc-btn-export:hover {
+            background: #2563eb;
+        }
+
+    /* ===== CONTENT BODY ===== */
+    .bc-body {
+        padding: 28px 32px;
+    }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .kpi-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 22px;
+        position: relative;
+        overflow: hidden;
+        transition: box-shadow 0.2s, transform 0.2s, background 0.3s, border-color 0.3s;
+    }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+    .kpi-blue::before {
+        background: var(--accent);
+    }
+
+    .kpi-green::before {
+        background: var(--accent-green);
+    }
+
+    .kpi-amber::before {
+        background: var(--accent-amber);
+    }
+
+    .kpi-purple::before {
+        background: var(--accent-purple);
+    }
+
+    .kpi-red::before {
+        background: var(--accent-red);
+    }
+
+    .kpi-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 8px;
+    }
+
+    .kpi-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text-main);
+        letter-spacing: -0.5px;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+        .kpi-value.small {
+            font-size: 22px;
+        }
+
+    .kpi-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 20px;
+    }
+
+    .badge-up {
+        background: rgba(34,197,94,0.12);
+        color: #16a34a;
+    }
+
+    .badge-down {
+        background: rgba(239,68,68,0.12);
+        color: #dc2626;
+    }
+
+    .badge-neutral {
+        background: rgba(100,116,139,0.12);
+        color: #475569;
+    }
+
+    /* Bản sửa: Sửa màu badge neutral cho chế độ dark */
+    [data-theme="dark"] .badge-neutral {
+        background: rgba(255,255,255,0.1);
+        color: var(--text-muted);
+    }
+
+    .kpi-icon {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        font-size: 40px;
+        opacity: 0.07;
+        color: var(--text-main);
+    }
+
+    /* ===== SECTION TITLES ===== */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title i {
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+    .section-dot {
+        width: 4px;
+        height: 18px;
+        background: var(--accent);
+        border-radius: 2px;
+        margin-right: 2px;
+    }
+
+    /* ===== CHART CARDS ===== */
+    .chart-row {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .chart-row-2 {
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .chart-row-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .chart-row-full {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        box-shadow: var(--shadow);
+        transition: background 0.3s, border-color 0.3s;
+    }
+
+    /* ===== LEGEND ===== */
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 14px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+    /* ===== TABLE ===== */
+    .bc-table-wrap {
+        overflow-x: auto;
+    }
+
+    .bc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .bc-table th {
+            background: var(--surface-2);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 11px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        .bc-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border); /* BẢN SỬA: Dùng var(--border) thay vì màu cứng */
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .bc-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .bc-table tr:hover td {
+            background: var(--surface-2);
+        }
+
+    /* ===== PROGRESS ===== */
+    .progress-bar {
+        height: 6px;
+        background: var(--border); /* BẢN SỬA: Đổi màu nền thanh bar theo theme */
+        border-radius: 3px;
+        overflow: hidden;
+        min-width: 80px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: var(--accent);
+        transition: width 0.8s ease;
+    }
+
+    .progress-green {
+        background: var(--accent-green);
+    }
+
+    .progress-amber {
+        background: var(--accent-amber);
+    }
+
+    /* ===== TABS ===== */
+    .tab-panel {
+        display: none;
+    }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+    /* ===== STATUS BADGE ===== */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .pill-green {
+        background: rgba(34,197,94,0.12);
+        color: #15803d;
+    }
+
+    .pill-amber {
+        background: rgba(245,158,11,0.12);
+        color: #b45309;
+    }
+
+    .pill-blue {
+        background: rgba(59,127,255,0.12);
+        color: #1d4ed8;
+    }
+
+    .pill-gray {
+        background: rgba(100,116,139,0.12);
+        color: #475569;
+    }
+
+    .pill-red {
+        background: rgba(239,68,68,0.12);
+        color: #b91c1c;
+    }
+
+    [data-theme="dark"] .pill-green {
+        color: #4ade80;
+    }
+
+    [data-theme="dark"] .pill-amber {
+        color: #fbbf24;
+    }
+
+    [data-theme="dark"] .pill-blue {
+        color: #60a5fa;
+    }
+
+    [data-theme="dark"] .pill-gray {
+        color: #94a3b8;
+    }
+
+    [data-theme="dark"] .pill-red {
+        color: #f87171;
+    }
+
+    /* ===== SUMMARY ROW ===== */
+    .summary-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .summary-cell {
+        background: var(--surface);
+        padding: 14px 16px;
+        text-align: center;
+        transition: background 0.3s;
+    }
+
+    .summary-cell-num {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    .summary-cell-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-weight: 500;
+        margin-top: 2px;
+    }
+
+    /* ===== TOOLTIP HELPER ===== */
+    .info-tip {
+        color: var(--text-light);
+        font-size: 14px;
+        cursor: help;
+    }
+
+    /* ===== PRINT ===== */
+    @@media print {
+        .bc-tab-nav, .bc-filter-bar, .bc-btn-export, .bc-tab-btn {
+            display: none !important;
+        }
+
+        .tab-panel {
+            display: block !important;
+        }
+
+        .bc-header {
+            background: #fff !important;
+            color: #000 !important;
+        }
+
+        .bc-header-title, .bc-header-sub {
+            color: #000 !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .bc-body {
+            padding: 16px;
+        }
+
+        .bc-header {
+            padding: 18px 16px;
+        }
+
+        .chart-row-2, .chart-row-3 {
+            grid-template-columns: 1fr;
+        }
+
+        .kpi-value {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="bao-cao-wrap">
+
+    <div class="bc-header">
+        <div>
+            <h1 class="bc-header-title">
+                <i class="bi bi-bar-chart-line me-2"></i>Báo cáo & Phân tích
+            </h1>
+            <p class="bc-header-sub">Dữ liệu tổng hợp đến ngày @(DateTime.Now.ToString("dd/MM/yyyy HH:mm"))</p>
+        </div>
+        <div class="bc-tab-nav" id="mainTabNav">
+            <button class="bc-tab-btn active" data-tab="tong-quan">Tổng quan</button>
+            <button class="bc-tab-btn" data-tab="doanh-thu">Doanh thu</button>
+            <button class="bc-tab-btn" data-tab="hoc-vien">Học viên</button>
+            <button class="bc-tab-btn" data-tab="lop-hoc">Lớp học</button>
+            <button class="bc-tab-btn" data-tab="nhan-su">Nhân sự</button>
+        </div>
+    </div>
+
+    <div class="bc-filter-bar">
+        <span class="bc-filter-label">Lọc theo:</span>
+        <select class="bc-filter-select" id="filterYear">
+            @for (int y = DateTime.Now.Year; y >= DateTime.Now.Year - 3; y--)
+            {
+                <option value="@y" selected="@(y == DateTime.Now.Year)">Năm @y</option>
+            }
+        </select>
+        <select class="bc-filter-select" id="filterMonth">
+            <option value="0">Tất cả tháng</option>
+            @for (int m = 1; m <= 12; m++)
+            {
+                <option value="@m" selected="@(m == DateTime.Now.Month)">Tháng @m</option>
+            }
+        </select>
+        <select class="bc-filter-select" id="filterStaff">
+            <option value="0">Tất cả nhân viên</option>
+        </select>
+        <button class="bc-btn-export" onclick="window.print()">
+            <i class="bi bi-printer"></i> In báo cáo
+        </button>
+        <button class="bc-btn-export" style="background:#16a34a;" onclick="exportCSV()">
+            <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+        </button>
+    </div>
+
+    <div class="bc-body">
+
+        <div class="tab-panel active" id="tab-tong-quan">
+
+            <div class="kpi-grid">
+                <div class="kpi-card kpi-blue">
+                    <div class="kpi-label">Tổng doanh thu lũy kế</div>
+                    <div class="kpi-value small" id="kpi-tongdt">@(((decimal)(ViewBag.TongDoanhThu ?? 0m)).ToString("N0"))đ</div>
+                    <span class="kpi-badge @(revGrowth >= 0 ? "badge-up" : "badge-down")">
+                        <i class="bi bi-arrow-@(revGrowth >= 0 ? "up" : "down")-short"></i> @(Math.Abs(revGrowth))% so tháng trước
+                    </span>
+                    <i class="bi bi-cash-stack kpi-icon"></i>
+                </div>
+
+                <div class="kpi-card kpi-green">
+                    <div class="kpi-label">Học viên mới tháng này</div>
+                    <div class="kpi-value" id="kpi-hocvien">@ViewBag.HocVienMoi</div>
+                    <span class="kpi-badge badge-neutral">Trạng thái: Đã nhập học</span>
+                    <i class="bi bi-people kpi-icon"></i>
+                </div>
+
+                <div class="kpi-card kpi-amber">
+                    <div class="kpi-label">Tỷ lệ chốt</div>
+                    <div class="kpi-value">@ViewBag.TiLeChot<span style="font-size:18px">%</span></div>
+                    <span class="kpi-badge @(((double)(ViewBag.TiLeChot ?? 0)) >= 30 ? "badge-up" : "badge-down")">
+                        @(((double)(ViewBag.TiLeChot ?? 0)) >= 30 ? "Tốt" : "Cần cải thiện")
+                    </span>
+                    <i class="bi bi-funnel kpi-icon"></i>
+                </div>
+
+                <div class="kpi-card kpi-purple">
+                    <div class="kpi-label">Lớp đang hoạt động</div>
+                    <div class="kpi-value">@activeClasses <span style="font-size:14px;color:var(--text-muted)">/ @totalClasses</span></div>
+                    <span class="kpi-badge badge-neutral">Tổng số lớp: @totalClasses</span>
+                    <i class="bi bi-journal-bookmark kpi-icon"></i>
+                </div>
+
+                <div class="kpi-card kpi-green">
+                    <div class="kpi-label">Tỷ lệ điểm danh TB</div>
+                    <div class="kpi-value">@attendanceRate<span style="font-size:18px">%</span></div>
+                    <span class="kpi-badge @(((int)(attendanceRate)) >= 80 ? "badge-up" : "badge-down")">
+                        @(((int)(attendanceRate)) >= 80 ? "Tốt" : "Thấp")
+                    </span>
+                    <i class="bi bi-calendar-check kpi-icon"></i>
+                </div>
+            </div>
+
+            <div class="chart-row chart-row-2">
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot"></span>Doanh thu 12 tháng gần nhất</div>
+                        <select class="bc-filter-select" id="chartTypeRevenue" onchange="switchChartType()">
+                            <option value="line">Biểu đồ đường</option>
+                            <option value="bar">Biểu đồ cột</option>
+                        </select>
+                    </div>
+                    <div style="position:relative;height:260px;">
+                        <canvas id="revenueChart" role="img" aria-label="Biểu đồ doanh thu 12 tháng gần nhất"></canvas>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item"><span class="legend-dot" style="background:#3b7fff"></span>Doanh thu (VNĐ)</div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot" style="background:var(--accent-purple)"></span>Pipeline CRM</div>
+                    </div>
+                    <div style="position:relative;height:200px;">
+                        <canvas id="studentChart" role="img" aria-label="Phân bổ học viên theo trạng thái CRM"></canvas>
+                    </div>
+                    <div id="pipelineLegend" class="chart-legend" style="margin-top:16px;flex-direction:column;gap:10px;"></div>
+                </div>
+            </div>
+
+            <div class="chart-row chart-row-2">
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot" style="background:var(--accent-green)"></span>Doanh thu theo lớp học (Top 8)</div>
+                    </div>
+                    <div style="position:relative;height:280px;">
+                        <canvas id="classRevenueChart" role="img" aria-label="Doanh thu theo lớp học"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot" style="background:var(--accent-amber)"></span>Nguồn khách hàng</div>
+                    </div>
+                    <div style="position:relative;height:220px;">
+                        <canvas id="sourceChart" role="img" aria-label="Nguồn khách hàng"></canvas>
+                    </div>
+                    <div id="sourceLegend" class="chart-legend" style="margin-top:12px;flex-direction:column;gap:8px;"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tab-panel" id="tab-doanh-thu">
+
+            <div class="summary-row">
+                <div class="summary-cell">
+                    <div class="summary-cell-num">@(((decimal)(ViewBag.RevenueThisMonth ?? 0m)).ToString("N0"))đ</div>
+                    <div class="summary-cell-label">Doanh thu tháng này</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num">@(((decimal)(ViewBag.RevenueLastMonth ?? 0m)).ToString("N0"))đ</div>
+                    <div class="summary-cell-label">Tháng trước</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num" style="color:@(revGrowth >= 0 ? "var(--accent-green)" : "var(--accent-red)")">@(revGrowth >= 0 ? "+" : "")@revGrowth%</div>
+                    <div class="summary-cell-label">Tăng trưởng</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num">@(((decimal)(ViewBag.TongDoanhThu ?? 0m)).ToString("N0"))đ</div>
+                    <div class="summary-cell-label">Tổng lũy kế</div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="section-header">
+                    <div class="section-title"><span class="section-dot"></span>Chi tiết thu học phí</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="text" id="searchPhieu" placeholder="🔍 Tìm phiếu thu..." class="bc-filter-select" style="padding:7px 12px;min-width:200px;" oninput="filterTable()">
+                    </div>
+                </div>
+                <div class="bc-table-wrap">
+                    <table class="bc-table" id="phieuThuTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)" style="cursor:pointer">Mã phiếu <i class="bi bi-sort-alpha-down"></i></th>
+                                <th onclick="sortTable(1)" style="cursor:pointer">Học viên <i class="bi bi-sort-alpha-down"></i></th>
+                                <th>Lớp học</th>
+                                <th onclick="sortTable(3)" style="cursor:pointer">Số tiền <i class="bi bi-sort-numeric-down"></i></th>
+                                <th onclick="sortTable(4)" style="cursor:pointer">Ngày thu <i class="bi bi-sort-alpha-down"></i></th>
+                                <th>Hình thức</th>
+                                <th>Người thu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phieuThuBody">
+                            @if (ViewBag.PhieuThus != null)
+                            {
+                                foreach (var p in ViewBag.PhieuThus)
+                                {
+                                    <tr>
+                                        <td><span style="font-family:monospace;font-size:12px;color:var(--accent)">@(p.MaPhieu ?? "—")</span></td>
+                                        <td><strong>@(p.HocVien?.HoTen ?? "—")</strong></td>
+                                        <td>@(p.LopHoc?.TenLop ?? "—")</td>
+                                        <td><strong style="color:var(--accent-green)">@(p.SoTien.ToString("N0"))đ</strong></td>
+                                        <td>@(p.NgayThu.ToString("dd/MM/yyyy"))</td>
+                                        <td>
+                                            @if (p.HinhThuc == 0)
+                                            {
+                                                <span class="status-pill pill-amber">Tiền mặt</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status-pill pill-blue">Chuyển khoản</span>
+                                            }
+                                        </td>
+                                        <td>@(p.NguoiThu ?? "—")</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-hoc-vien">
+
+            <div class="summary-row">
+                <div class="summary-cell">
+                    <div class="summary-cell-num" id="sv-tiem-nang">—</div>
+                    <div class="summary-cell-label">Tiềm năng (Lead)</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num" id="sv-tu-van">—</div>
+                    <div class="summary-cell-label">Đang tư vấn</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num" id="sv-hoc-vien">—</div>
+                    <div class="summary-cell-label">Học viên chính thức</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="summary-cell-num" id="sv-tong">—</div>
+                    <div class="summary-cell-label">Tổng hồ sơ</div>
+                </div>
+            </div>
+
+            <div class="chart-row chart-row-2">
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot"></span>Học viên mới theo tháng</div>
+                    </div>
+                    <div style="position:relative;height:260px;">
+                        <canvas id="newStudentChart" role="img" aria-label="Học viên mới theo tháng"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot" style="background:var(--accent-amber)"></span>Phân tích chuyển đổi</div>
+                    </div>
+                    <div id="funnelViz" style="padding:10px 0;"></div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="section-header">
+                    <div class="section-title"><span class="section-dot"></span>Học viên đóng học phí cao nhất</div>
+                </div>
+                <div class="bc-table-wrap">
+                    <table class="bc-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Học viên</th>
+                                <th>Trạng thái</th>
+                                <th>Lớp học</th>
+                                <th>Tổng học phí đã nộp</th>
+                                <th>Ngày tham gia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int rank = 1;
+                            }
+                            @if (ViewBag.TopStudents != null)
+                            {
+                                foreach (ITPRO_CRM.Controllers.TopStudentViewModel s in ViewBag.TopStudents)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (rank == 1)
+                                            {
+                                                <span style="color:#f59e0b;font-size:18px;">🥇</span>
+                                            }
+                                            else if (rank == 2)
+                                            {
+                                                <span style="font-size:18px;">🥈</span>
+                                            }
+                                            else if (rank == 3)
+                                            {
+                                                <span style="font-size:18px;">🥉</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="color:var(--text-muted);font-weight:600">@rank</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div style="font-weight:600">@s.HoTen</div>
+                                            <div style="font-size:12px;color:var(--text-muted)">@(s.SoDienThoai ?? s.Email ?? "")</div>
+                                        </td>
+                                        <td>
+                                            @{
+                                                var (pillClass, label) = s.TrangThai switch
+                                                {
+                                                    0 => ("pill-gray", "Tiềm năng"),
+                                                    1 => ("pill-amber", "Đang tư vấn"),
+                                                    2 => ("pill-green", "Học viên"),
+                                                    3 => ("pill-red", "Đã hủy"),
+                                                    _ => ("pill-gray", "Khác")
+                                                };
+                                            }
+                                            <span class="status-pill @pillClass">@label</span>
+                                        </td>
+                                        <td>@(s.TenLop ?? "—")</td>
+                                        <td><strong style="color:var(--accent-green)">@(s.TongHocPhi.ToString("N0"))đ</strong></td>
+                                        <td>@(s.NgayTao?.ToString("dd/MM/yyyy") ?? "—")</td>
+                                    </tr>
+                                    rank++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-lop-hoc">
+
+            <div class="chart-card" style="margin-bottom:20px">
+                <div class="section-header">
+                    <div class="section-title"><span class="section-dot"></span>Tình trạng lớp học</div>
+                </div>
+                <div class="bc-table-wrap">
+                    <table class="bc-table">
+                        <thead>
+                            <tr>
+                                <th>Tên lớp</th>
+                                <th>Lịch học</th>
+                                <th>Khai giảng</th>
+                                <th>Sĩ số</th>
+                                <th>Mức lấp đầy</th>
+                                <th>Học phí</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.LopHocs != null)
+                            {
+                                foreach (var lop in ViewBag.LopHocs)
+                                {
+                                    double fillRate = lop.SiSoToiDa > 0 ? Math.Round(((double)lop.SiSoHienTai / lop.SiSoToiDa) * 100, 0) : 0;
+                                    var progressClass = fillRate >= 80 ? "progress-green" : (fillRate >= 50 ? "" : "progress-amber");
+                                    var (sCls, sLbl) = lop.TrangThai switch { 1 => ("pill-green", "Đang học"), 2 => ("pill-gray", "Đã kết thúc"), _ => ("pill-blue", "Sắp khai giảng") };
+                                    <tr>
+                                        <td><strong>@lop.TenLop</strong></td>
+                                        <td><span style="font-size:12px;color:var(--text-muted)">@lop.LichHoc</span></td>
+                                        <td>@(lop.NgayKhaiGiang.ToString("dd/MM/yyyy"))</td>
+                                        <td>@lop.SiSoHienTai / @lop.SiSoToiDa</td>
+                                        <td>
+                                            <div style="display:flex;align-items:center;gap:8px">
+                                                <div class="progress-bar" style="flex:1">
+                                                    <div class="progress-fill @progressClass" style="width:@fillRate%"></div>
+                                                </div>
+                                                <span style="font-size:12px;font-weight:600;min-width:32px">@fillRate%</span>
+                                            </div>
+                                        </td>
+                                        <td>@(lop.HocPhi.ToString("N0"))đ</td>
+                                        <td><span class="status-pill @sCls">@sLbl</span></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-nhan-su">
+
+            <div class="chart-row chart-row-2">
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot"></span>Hiệu suất nhân viên sale</div>
+                    </div>
+                    <div style="position:relative;height:280px;">
+                        <canvas id="staffChart" role="img" aria-label="Hiệu suất nhân viên sale"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="section-header">
+                        <div class="section-title"><span class="section-dot" style="background:var(--accent-purple)"></span>KPI tháng này</div>
+                    </div>
+                    <div id="kpiStaffList">
+                        @if (ViewBag.StaffKpi != null)
+                        {
+                            foreach (ITPRO_CRM.Controllers.StaffKpiViewModel staff in ViewBag.StaffKpi)
+                            {
+                                double kpiPct = (staff.KpiThang ?? 0) > 0
+                                ? Math.Min(Math.Round(((double)staff.SoHocVien / (double)staff.KpiThang!) * 100, 0), 100)
+                                : 0;
+                                var kpiClass = kpiPct >= 100 ? "progress-green" : (kpiPct >= 60 ? "" : "progress-amber");
+                                <div style="margin-bottom:16px;">
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                        <span style="font-weight:600;font-size:13px;">@staff.HoTen</span>
+                                        <span style="font-size:12px;color:var(--text-muted)">
+                                            @staff.SoHocVien / @(staff.KpiThang ?? 0) HV &nbsp;
+                                            <span class="status-pill @(kpiPct >= 100 ? "pill-green" : kpiPct >= 60 ? "pill-blue" : "pill-amber")">@kpiPct%</span>
+                                        </span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill @kpiClass" style="width:@kpiPct%"></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="color:var(--text-muted);text-align:center;padding:40px 0;font-size:14px;">
+                                <i class="bi bi-info-circle me-2"></i>Chưa có dữ liệu nhân sự
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    // ========== DATA FROM SERVER ==========
+    const revenueData = @Html.Raw(revenueData);
+    const months = @Html.Raw(months);
+    const studentStats = @Html.Raw(studentStats);
+    const revenueByClass = @Html.Raw(revenueByClass);
+    const sourceData = @Html.Raw(sourceData);
+    const staffPerformance = @Html.Raw(staffPerformance);
+
+    // ========== BẢN SỬA: ĐỌC THEME CHO CHART ==========
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15,28,63,0.05)';
+    const textColor = isDark ? '#8b949e' : '#64748b';
+
+    // Cấu hình Tooltip đồng bộ Dark/Light
+    const tooltipConfig = {
+        backgroundColor: isDark ? '#1c2333' : '#ffffff',
+        borderColor: isDark ? '#21262d' : 'rgba(15,28,63,0.1)',
+        borderWidth: 1,
+        titleColor: isDark ? '#e6edf3' : '#0f1c3f',
+        bodyColor: isDark ? '#8b949e' : '#64748b',
+        padding: 10,
+        cornerRadius: 8
+    };
+
+    // ========== STUDENT SUMMARY ==========
+    if (studentStats && studentStats.length >= 3) {
+        const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+        el('sv-tiem-nang', studentStats[0]);
+        el('sv-tu-van', studentStats[1]);
+        el('sv-hoc-vien', studentStats[2]);
+        el('sv-tong', studentStats.reduce((a, b) => a + b, 0));
+    }
+
+    // ========== PALETTE ==========
+    const palette = ['#3b7fff','#22c55e','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#f97316','#ec4899'];
+    const pipelineColors = ['#94a3b8','#f59e0b','#22c55e'];
+    const pipelineLabels = ['Tiềm năng', 'Đang tư vấn', 'Học viên'];
+
+    // ========== CHART DEFAULTS ==========
+    Chart.defaults.font.family = "'Be Vietnam Pro', sans-serif";
+    Chart.defaults.color = textColor;
+
+    // ===== REVENUE CHART =====
+    const ctxRev = document.getElementById('revenueChart')?.getContext('2d');
+    let revenueChart;
+    if (ctxRev) {
+        revenueChart = new Chart(ctxRev, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Doanh thu (đ)',
+                    data: revenueData,
+                    borderColor: '#3b7fff',
+                    backgroundColor: 'rgba(59,127,255,0.08)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: isDark ? '#161b22' : '#fff',
+                    pointBorderColor: '#3b7fff',
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 7,
+                    borderWidth: 2.5
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        ...tooltipConfig,
+                        callbacks: {
+                            label: ctx => ' ' + parseInt(ctx.raw).toLocaleString('vi-VN') + 'đ'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor, drawBorder: false },
+                        ticks: { color: textColor, callback: v => (v >= 1000000 ? (v/1000000).toFixed(0) + 'tr' : v.toLocaleString('vi-VN')) }
+                    },
+                    x: { grid: { display: false }, ticks: { color: textColor } }
+                }
+            }
+        });
+    }
+
+    function switchChartType() {
+        if (!revenueChart) return;
+        revenueChart.config.type = document.getElementById('chartTypeRevenue').value;
+        revenueChart.update();
+    }
+
+    // ===== PIPELINE / DONUT =====
+    const ctxStu = document.getElementById('studentChart')?.getContext('2d');
+    if (ctxStu) {
+        new Chart(ctxStu, {
+            type: 'doughnut',
+            data: {
+                labels: pipelineLabels,
+                datasets: [{
+                    data: studentStats,
+                    backgroundColor: pipelineColors,
+                    borderWidth: 0,
+                    hoverOffset: 6,
+                    cutout: '72%'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        const total = studentStats.reduce((a, b) => a + b, 0);
+        const legend = document.getElementById('pipelineLegend');
+        if (legend && total > 0) {
+            pipelineLabels.forEach((lbl, i) => {
+                const pct = Math.round((studentStats[i] / total) * 100);
+                legend.innerHTML += `<div class="legend-item" style="justify-content:space-between;width:100%">
+                    <span style="display:flex;align-items:center;gap:8px">
+                        <span class="legend-dot" style="background:${pipelineColors[i]}"></span>${lbl}
+                    </span>
+                    <span style="font-weight:700;color:var(--text-main)">${studentStats[i]} <span style="font-weight:400;color:var(--text-muted);font-size:11px">(${pct}%)</span></span>
+                </div>`;
+            });
+        }
+    }
+
+    // ===== CLASS REVENUE CHART =====
+    const ctxCls = document.getElementById('classRevenueChart')?.getContext('2d');
+    if (ctxCls && revenueByClass && revenueByClass.length > 0) {
+        new Chart(ctxCls, {
+            type: 'bar',
+            data: {
+                labels: revenueByClass.map(d => d.TenLop || d.tenLop),
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: revenueByClass.map(d => d.TongThu || d.tongThu),
+                    backgroundColor: palette.slice(0, revenueByClass.length),
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { ...tooltipConfig, callbacks: { label: ctx => ' ' + parseInt(ctx.raw).toLocaleString('vi-VN') + 'đ' } }
+                },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: textColor, callback: v => (v/1000000).toFixed(0) + 'tr' } },
+                    y: { grid: { display: false }, ticks: { color: textColor } }
+                }
+            }
+        });
+    } else if (ctxCls) {
+        ctxCls.canvas.closest('.chart-card').querySelector('.section-header').insertAdjacentHTML('afterend',
+            '<p style="color:var(--text-muted);text-align:center;padding:60px 0;font-size:14px;"><i class="bi bi-info-circle me-2"></i>Chưa có dữ liệu doanh thu theo lớp</p>');
+    }
+
+    // ===== SOURCE CHART =====
+    const ctxSrc = document.getElementById('sourceChart')?.getContext('2d');
+    if (ctxSrc && sourceData && sourceData.length > 0) {
+        new Chart(ctxSrc, {
+            type: 'pie',
+            data: {
+                labels: sourceData.map(d => d.Nguon || d.nguon || 'Khác'),
+                datasets: [{
+                    data: sourceData.map(d => d.SoLuong || d.soLuong),
+                    backgroundColor: palette,
+                    borderWidth: 0,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        const total = sourceData.reduce((a, b) => a + (b.SoLuong || b.soLuong || 0), 0);
+        const srcLegend = document.getElementById('sourceLegend');
+        if (srcLegend && total > 0) {
+            sourceData.forEach((d, i) => {
+                const sl = d.SoLuong || d.soLuong || 0;
+                const ng = d.Nguon || d.nguon || 'Khác';
+                const pct = Math.round((sl / total) * 100);
+                srcLegend.innerHTML += `<div class="legend-item" style="justify-content:space-between;width:100%">
+                    <span style="display:flex;align-items:center;gap:8px">
+                        <span class="legend-dot" style="background:${palette[i]}"></span>${ng}
+                    </span>
+                    <strong>${sl} <span style="font-weight:400;color:var(--text-muted);font-size:11px">(${pct}%)</span></strong>
+                </div>`;
+            });
+        }
+    }
+
+    // ===== NEW STUDENT CHART =====
+    const ctxNS = document.getElementById('newStudentChart')?.getContext('2d');
+    if (ctxNS) {
+        new Chart(ctxNS, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Học viên mới',
+                    data: revenueData.map(() => Math.floor(Math.random() * 15 + 2)), // placeholder
+                    backgroundColor: 'rgba(34,197,94,0.7)',
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor } },
+                    x: { grid: { display: false }, ticks: { color: textColor } }
+                }
+            }
+        });
+    }
+
+    // ===== FUNNEL CONVERSION =====
+    const funnelEl = document.getElementById('funnelViz');
+    if (funnelEl && studentStats) {
+        const steps = [
+            { label: 'Tiềm năng (Lead)', val: studentStats[0], color: '#94a3b8' },
+            { label: 'Đang tư vấn', val: studentStats[1], color: '#f59e0b' },
+            { label: 'Học viên chính thức', val: studentStats[2], color: '#22c55e' }
+        ];
+        const max = Math.max(...steps.map(s => s.val), 1);
+        funnelEl.innerHTML = steps.map((s, i) => {
+            const w = Math.max(30, Math.round((s.val / max) * 100));
+            const pct = i > 0 && steps[i-1].val > 0 ? Math.round((s.val / steps[i-1].val) * 100) : 100;
+            return `<div style="margin-bottom:14px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;">
+                    <span style="font-weight:600;color:var(--text-main)">${s.label}</span>
+                    <span style="color:var(--text-muted)">${s.val} ${i > 0 ? '<span style="color:'+s.color+'">↓ '+pct+'%</span>' : ''}</span>
+                </div>
+                <div style="height:28px;border-radius:4px;overflow:hidden;background:var(--border);">
+                    <div style="height:100%;width:${w}%;background:${s.color};border-radius:4px;transition:width 1s ease;display:flex;align-items:center;padding:0 10px;">
+                        <span style="font-size:12px;font-weight:700;color:#fff;">${s.val}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // ===== STAFF CHART =====
+    const ctxStaff = document.getElementById('staffChart')?.getContext('2d');
+    if (ctxStaff && staffPerformance && staffPerformance.length > 0) {
+        new Chart(ctxStaff, {
+            type: 'bar',
+            data: {
+                labels: staffPerformance.map(s => s.HoTen || s.hoTen),
+                datasets: [
+                    { label: 'Số học viên', data: staffPerformance.map(s => s.SoHocVien || s.soHocVien || 0), backgroundColor: '#3b7fff', borderRadius: 5 },
+                    { label: 'Doanh thu (triệu)', data: staffPerformance.map(s => Math.round((s.DoanhThu || s.doanhThu || 0) / 1000000)), backgroundColor: '#22c55e', borderRadius: 5 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: textColor } },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: textColor } },
+                    y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: textColor } }
+                }
+            }
+        });
+    }
+
+    // ========== TAB SWITCHING ==========
+    document.getElementById('mainTabNav').addEventListener('click', e => {
+        const btn = e.target.closest('.bc-tab-btn');
+        if (!btn) return;
+        document.querySelectorAll('.bc-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tabId = btn.dataset.tab;
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-' + tabId)?.classList.add('active');
+    });
+
+    // ========== TABLE FILTER ==========
+    function filterTable() {
+        const q = document.getElementById('searchPhieu').value.toLowerCase();
+        document.querySelectorAll('#phieuThuBody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+
+    // ========== TABLE SORT ==========
+    function sortTable(colIndex) {
+        const tbody = document.getElementById('phieuThuBody');
+        if (!tbody) return;
+        const rows = Array.from(tbody.rows);
+        let asc = true;
+        rows.sort((a, b) => {
+            const aVal = a.cells[colIndex].innerText.replace(/[đ,\.]/g,'').trim();
+            const bVal = b.cells[colIndex].innerText.replace(/[đ,\.]/g,'').trim();
+            const aNum = parseFloat(aVal), bNum = parseFloat(bVal);
+            if (!isNaN(aNum) && !isNaN(bNum)) return asc ? aNum - bNum : bNum - aNum;
+            return asc ? aVal.localeCompare(bVal, 'vi') : bVal.localeCompare(aVal, 'vi');
+        });
+        rows.forEach(r => tbody.appendChild(r));
+    }
+
+    // ========== EXPORT CSV ==========
+    function exportCSV() {
+        const headers = ['Mã phiếu','Học viên','Lớp học','Số tiền','Ngày thu','Hình thức','Người thu'];
+        const rows = Array.from(document.querySelectorAll('#phieuThuBody tr'))
+            .filter(r => r.style.display !== 'none')
+            .map(r => Array.from(r.cells).map(c => '"' + c.innerText.replace(/"/g,'""') + '"').join(','));
+        const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        a.download = 'BaoCao_DoanhThu_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+    }
+</script>

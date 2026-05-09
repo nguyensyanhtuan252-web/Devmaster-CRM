@@ -1,0 +1,1046 @@
+@model ITPRO_CRM.Models.HocVien
+
+@{
+    ViewData["Title"] = "Hồ sơ: " + Model.HoTen;
+    var activeTab = TempData["ActiveTab"] as string ?? "info";
+}
+
+<style>
+    /* ============================================================
+               BASE: DARK/LIGHT MODE SYNC
+            ============================================================ */
+    .dm-profile-wrap .card {
+        background-color: var(--surface) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text);
+    }
+
+    .dm-profile-wrap .text-dark {
+        color: var(--text) !important;
+    }
+
+    .dm-profile-wrap .text-muted {
+        color: var(--text2) !important;
+    }
+
+    .dm-profile-wrap .bg-light {
+        background-color: var(--surface2) !important;
+    }
+
+    .dm-profile-wrap .bg-white {
+        background-color: var(--surface) !important;
+    }
+
+    .dm-profile-wrap .border-bottom {
+        border-bottom-color: var(--border) !important;
+    }
+
+    .dm-profile-wrap .nav-tabs .nav-link {
+        color: var(--text2);
+        background: transparent;
+        font-size: 13px;
+    }
+
+        .dm-profile-wrap .nav-tabs .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .dm-profile-wrap .nav-tabs .nav-link.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+    /* ============================================================
+               MODAL CHUNG & DARK MODE
+            ============================================================ */
+    .dm-modal .modal-content,
+    .dm-modal .modal-header,
+    .dm-modal .modal-body {
+        background-color: var(--surface) !important;
+        color: var(--text) !important;
+        border-color: var(--border) !important;
+    }
+
+    .dm-modal .modal-header {
+        border-bottom: 1px solid var(--border) !important;
+        padding: 18px 24px;
+    }
+
+    .dm-modal .modal-title,
+    .dm-modal h6.text-dark,
+    .dm-modal h6,
+    .dm-modal .text-dark {
+        color: var(--text) !important;
+    }
+
+    .dm-modal .modal-title {
+        font-size: 16px;
+    }
+
+    .dm-modal .bg-light, .dm-modal .bg-white {
+        background-color: var(--surface2) !important;
+    }
+
+    .dm-modal .modal-body {
+        padding: 24px 32px !important;
+    }
+
+    .dm-modal label.form-label.fw-bold {
+        font-size: 11.5px;
+        color: var(--text2) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .dm-modal .modal-footer {
+        background-color: var(--surface2) !important;
+        border-top: 1px solid var(--border) !important;
+        padding: 16px 24px;
+    }
+
+    /* Nút Close Modal đổi màu theo theme */
+    .btn-close {
+        filter: var(--calendar-icon-filter);
+    }
+
+    /* ============================================================
+               FORM INPUT CHUNG
+            ============================================================ */
+    .dm-input {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13.5px;
+        padding: 8px 14px;
+        border-radius: 6px;
+    }
+
+        .dm-input::placeholder {
+            color: var(--text2) !important;
+            opacity: 0.7;
+        }
+
+        .dm-input:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 0.2rem rgba(var(--accent-rgb), 0.1) !important;
+        }
+
+        .dm-input.money-input {
+            text-align: right;
+            font-weight: 700;
+            color: var(--text) !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 15px;
+        }
+
+            .dm-input.money-input:focus {
+                background-color: var(--surface) !important;
+            }
+
+    /* ============================================================
+               ĐỊNH DẠNG KHU VỰC TÀI CHÍNH (MODAL NHẬP HỌC)
+            ============================================================ */
+    #enrollModal .section-finance {
+        background-color: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 16px;
+        padding: 16px;
+    }
+
+    #enrollModal .finance-summary {
+        background-color: var(--surface) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px;
+        padding: 12px 16px;
+    }
+
+        #enrollModal .finance-summary span {
+            color: var(--text) !important;
+        }
+
+    #enrollModal select option {
+        background-color: var(--surface2);
+        color: var(--text);
+    }
+
+    #enrollModal .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--text2) !important;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 14px;
+    }
+
+    /* ============================================================
+               NÚT CHỨC NĂNG
+            ============================================================ */
+    .dm-btn-enroll {
+        color: #fff !important;
+        background: linear-gradient(135deg, #1d6b63 0%, #154f49 100%);
+        border: 1px solid #10413b;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 7px 18px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+
+        .dm-btn-enroll:hover {
+            background: linear-gradient(135deg, #238076 0%, #1d6b63 100%);
+            transform: translateY(-1px);
+        }
+
+    .btn-gmail {
+        background-color: var(--surface);
+        border: 1.5px solid #ea4335;
+        color: #ea4335;
+    }
+
+        .btn-gmail:hover {
+            background-color: #ea4335;
+            color: #fff;
+        }
+
+    /* ============================================================
+               TAB LỊCH SỬ TƯ VẤN (TĂNG CHIỀU CAO)
+            ============================================================ */
+    .tv-form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+    }
+
+    .tv-form-title {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 12px;
+    }
+
+    .tv-form-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
+
+        .tv-form-grid > select[name="HinhThuc"] {
+            flex: 0 0 130px;
+        }
+
+        .tv-form-grid > input[name="NoiDung"] {
+            flex: 1 1 200px;
+        }
+
+        .tv-form-grid > input[name="KetQua"] {
+            flex: 1 1 120px;
+        }
+
+        .tv-form-grid > .tv-date-wrap {
+            flex: 0 0 160px;
+        }
+
+        .tv-form-grid > .tv-btn-submit {
+            flex: 0 0 auto;
+            min-width: 75px;
+        }
+
+    @@media (max-width: 992px) {
+        .tv-form-grid > select[name="HinhThuc"],
+        .tv-form-grid > input[name="NoiDung"],
+        .tv-form-grid > input[name="KetQua"],
+        .tv-form-grid > .tv-date-wrap {
+            flex: 1 1 45%;
+        }
+
+        .tv-form-grid > .tv-btn-submit {
+            flex: 1 1 100%;
+        }
+    }
+
+    .tv-date-wrap {
+        position: relative;
+    }
+
+        .tv-date-wrap .tv-icon {
+            position: absolute;
+            left: 9px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: var(--text2);
+            pointer-events: none;
+        }
+
+        .tv-date-wrap input {
+            padding-left: 30px;
+        }
+
+    .tv-btn-submit {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 7px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+        .tv-btn-submit:hover {
+            background: var(--surface2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+    .tv-filter-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .tv-chip {
+        font-size: 12px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text2);
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+        .tv-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .tv-chip.active {
+            background: var(--surface2);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+    .tv-timeline {
+        position: relative;
+        padding-left: 44px;
+        min-height: 400px;
+    }
+
+        .tv-timeline::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 8px;
+            bottom: 8px;
+            width: 1px;
+            background: var(--border);
+        }
+
+    .tv-entry {
+        position: relative;
+        margin-bottom: 24px;
+    }
+
+    .tv-dot {
+        position: absolute;
+        left: -38px;
+        top: 16px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid var(--surface);
+        box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .tv-dot-call {
+        background: #378ADD;
+    }
+
+    .tv-dot-meet {
+        background: #1D9E75;
+    }
+
+    .tv-dot-msg {
+        background: #BA7517;
+    }
+
+    .tv-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        transition: 0.15s;
+    }
+
+        .tv-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+    .tv-card-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+    }
+
+    .tv-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 6px;
+    }
+
+    .tv-badge-call {
+        background: rgba(55,138,221,0.12);
+        color: #185FA5;
+    }
+
+    .tv-badge-meet {
+        background: rgba(29,158,117,0.12);
+        color: #0F6E56;
+    }
+
+    .tv-badge-msg {
+        background: rgba(186,117,23,0.12);
+        color: #854F0B;
+    }
+
+    .tv-by {
+        font-size: 11px;
+        color: var(--text2);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        padding: 2px 8px;
+        border-radius: 20px;
+    }
+
+    .tv-date {
+        font-size: 11px;
+        color: var(--text2);
+        margin-left: auto;
+    }
+
+    .tv-content {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.6;
+        margin: 8px 0;
+    }
+
+    .tv-result {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 8px;
+        font-size: 11px;
+        color: var(--text2);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        padding: 3px 10px;
+        border-radius: 6px;
+    }
+
+        .tv-result i {
+            color: #1D9E75;
+            font-size: 12px;
+        }
+
+    .tv-btn-delete {
+        background: transparent;
+        border: none;
+        color: var(--text2);
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.15s;
+        margin-left: 4px;
+    }
+
+        .tv-btn-delete:hover {
+            color: #e74c3c;
+            background: rgba(231,76,60,0.08);
+        }
+
+    .tv-empty {
+        text-align: center;
+        padding: 48px 0;
+        color: var(--text2);
+    }
+
+        .tv-empty i {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        .tv-empty p {
+            font-size: 13px;
+        }
+</style>
+
+<div class="container py-4 dm-profile-wrap">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="@(Model.TrangThai == 0 ? Url.Action("Leads") : Model.TrangThai == 1 ? Url.Action("Pipeline") : Url.Action("Index"))"
+           class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+           style="color: var(--text); border-color: var(--border);">
+            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại
+        </a>
+        <div class="d-flex gap-2 align-items-center">
+            @if (Model.TrangThai == 0 || Model.TrangThai == 1)
+            {
+                <button type="button" class="btn dm-btn-enroll btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#enrollModal">
+                    <i class="fa-solid fa-graduation-cap me-1"></i> Nhập học
+                </button>
+            }
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm rounded-pill px-4 fw-bold shadow-sm">
+                <i class="fa-solid fa-pen me-1"></i> Sửa hồ sơ
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 text-center h-100 position-relative">
+                <button type="button" class="btn btn-gmail position-absolute top-0 end-0 m-3 shadow d-flex align-items-center justify-content-center"
+                        style="width:36px;height:36px;border-radius:50%;z-index:10;"
+                        data-bs-toggle="modal" data-bs-target="#quickEmailModal" title="Gửi Email trực tiếp">
+                    <i class="fa-solid fa-envelope fs-5"></i>
+                </button>
+                <div class="card-body p-4">
+                    <div class="mb-3 position-relative d-inline-block">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto shadow"
+                             style="width:100px;height:100px;font-size:2.5rem;font-weight:bold;">
+                            @(Model.HoTen?.Substring(0, 1) ?? "H")
+                        </div>
+                        <span class="position-absolute bottom-0 end-0 badge rounded-pill bg-success border border-white">
+                            @(Model.TrangThai == 2 ? "Học viên" : (Model.TrangThai == 1 ? "Đang tư vấn" : "Tiềm năng"))
+                        </span>
+                    </div>
+
+                    <h5 class="fw-bold mb-1" style="color: var(--text);">@Model.HoTen</h5>
+                    <p class="text-muted small mb-2">@Model.Email</p>
+
+                    @if (!string.IsNullOrEmpty(Model.MaHocVien))
+                    {
+                        <div class="d-inline-block bg-primary bg-opacity-10 text-primary fw-bold border border-primary border-opacity-25 rounded-pill px-3 py-1 mb-3 shadow-sm">
+                            <i class="fa-solid fa-id-card-clip me-1"></i> MSHV: @Model.MaHocVien
+                        </div>
+                    }
+
+                    <div class="d-grid gap-2 text-start p-3 rounded-3 small" style="background-color: var(--surface2);">
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Ngày sinh:</span>
+                            <span class="fw-bold" style="color: var(--text);">
+                                @(Model.NgaySinh.ToString("dd/MM/yyyy") == "01/01/0001" ? "--" : Model.NgaySinh.ToString("dd/MM/yyyy"))
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Điện thoại:</span>
+                            <span class="fw-bold text-primary">@Model.SoDienThoai</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Địa chỉ:</span>
+                            <span class="fw-bold text-end" style="color: var(--text); max-width:120px;">@(Model.DiaChi ?? "--")</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 d-flex justify-content-center gap-2">
+                        @if (!string.IsNullOrEmpty(Model.FacebookLink))
+                        {
+                            <a href="@Model.FacebookLink" target="_blank" class="btn btn-outline-primary btn-sm rounded-circle" style="width:35px;height:35px;padding:0;line-height:33px;">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.ZaloLink))
+                        {
+                            <a href="@Model.ZaloLink" target="_blank" class="btn btn-outline-success btn-sm rounded-circle" style="width:35px;height:35px;padding:0;line-height:33px;">
+                                <i class="fa-solid fa-comment-dots"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header border-bottom py-3" style="background-color: var(--surface);">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold @(activeTab == "info" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                                <i class="fa-solid fa-circle-info me-2 text-info"></i>Thông tin chung
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-bold @(activeTab == "history" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#history" type="button">
+                                <i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i>Lịch sử tư vấn
+                                @if (Model.LichSuTuVans != null && Model.LichSuTuVans.Count > 0)
+                                {
+                                    <span class="badge bg-warning text-dark rounded-pill ms-1" style="font-size:10px;">@Model.LichSuTuVans.Count</span>
+                                }
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="tab-content" id="myTabContent">
+
+                        <div class="tab-pane fade @(activeTab == "info" ? "show active" : "")" id="info">
+                            <h6 class="fw-bold text-uppercase mb-3 small" style="color: var(--text);">
+                                <i class="fa-solid fa-id-card-clip me-2"></i>Hồ sơ cá nhân
+                            </h6>
+                            <div class="row g-3 mb-4 border-bottom pb-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fa-solid fa-building-columns text-muted me-2" style="width:20px"></i>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size:0.75rem">Trường học</small>
+                                            <span class="fw-bold" style="color: var(--text);">@(Model.TruongHoc ?? "--")</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa-solid fa-briefcase text-muted me-2" style="width:20px"></i>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size:0.75rem">Nơi làm việc</small>
+                                            <span class="fw-bold" style="color: var(--text);">@(Model.CongViecHienTai ?? "--")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fa-solid fa-book-open text-muted me-2" style="width:20px"></i>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size:0.75rem">Chuyên ngành</small>
+                                            <span class="fw-bold" style="color: var(--text);">@(Model.NganhHoc ?? "--")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-uppercase text-primary mb-3 small"><i class="fa-solid fa-bullseye me-2"></i>Mục tiêu & Nhu cầu</h6>
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-3 mb-4 border border-primary border-opacity-10">
+                                @if (!string.IsNullOrEmpty(Model.MucTieuHocTap))
+                                {
+                                    <p class="mb-0 fst-italic" style="color: var(--text);">"@Model.MucTieuHocTap"</p>
+                                }
+                                else
+                                {
+                                    <p class="mb-0 text-muted fst-italic">-- Chưa cập nhật mục tiêu học tập --</p>
+                                }
+                            </div>
+
+                            <h6 class="fw-bold text-uppercase text-success mb-3 small"><i class="fa-solid fa-graduation-cap me-2"></i>Thông tin xếp lớp</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="small text-muted">Lớp học đăng ký</label>
+                                    <div class="fw-bold" style="color: var(--text);">@(Model.LopHoc?.TenLop ?? "Chưa xếp lớp")</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small text-muted">Nguồn giới thiệu</label>
+                                    <div class="fw-bold" style="color: var(--text);">@(Model.ChienDich?.TenChienDich ?? "Khách tự nhiên")</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade @(activeTab == "history" ? "show active" : "")" id="history">
+                            <div class="tv-form-card">
+                                <div class="tv-form-title"><i class="fa-solid fa-pen-to-square me-1"></i> Ghi nhận tư vấn mới</div>
+                                <form asp-action="AddNote" method="post">
+                                    <input type="hidden" name="HocVienId" value="@Model.Id" />
+                                    <div class="tv-form-grid">
+                                        <select name="HinhThuc" class="shadow-none dm-input">
+                                            <option value="Gọi điện">📞 Gọi điện</option>
+                                            <option value="Gặp mặt">🤝 Gặp mặt</option>
+                                            <option value="Zalo/Tin nhắn">💬 Nhắn tin</option>
+                                        </select>
+                                        <input name="NoiDung" type="text" class="dm-input" placeholder="Nội dung trao đổi..." required />
+                                        <input name="KetQua" type="text" class="dm-input" placeholder="Kết quả..." />
+                                        <div class="tv-date-wrap">
+                                            <i class="fa-regular fa-calendar-check tv-icon"></i>
+                                            <input type="datetime-local" class="dm-input" name="NgayHen" title="Hẹn lịch liên lạc lại" />
+                                        </div>
+                                        <button type="submit" class="tv-btn-submit"><i class="fa-solid fa-paper-plane me-1"></i> Gửi</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            @{
+                                var totalCount = Model.LichSuTuVans?.Count ?? 0;
+                                var callCount = Model.LichSuTuVans?.Count(x => x.HinhThuc == "Gọi điện") ?? 0;
+                                var meetCount = Model.LichSuTuVans?.Count(x => x.HinhThuc == "Gặp mặt") ?? 0;
+                                var msgCount = Model.LichSuTuVans?.Count(x => x.HinhThuc == "Zalo/Tin nhắn") ?? 0;
+                            }
+                            <div class="tv-filter-row">
+                                <button class="tv-chip active" data-filter="all" onclick="tvSetFilter(this,'all')">
+                                    Tất cả <span class="ms-1 opacity-75">(@totalCount)</span>
+                                </button>
+                                @if (callCount > 0)
+                                {
+                                    <button class="tv-chip" data-filter="Gọi điện" onclick="tvSetFilter(this,'Gọi điện')">
+                                        📞 Gọi điện <span class="ms-1 opacity-75">(@callCount)</span>
+                                    </button>
+                                }
+                                @if (meetCount > 0)
+                                {
+                                    <button class="tv-chip" data-filter="Gặp mặt" onclick="tvSetFilter(this,'Gặp mặt')">
+                                        🤝 Gặp mặt <span class="ms-1 opacity-75">(@meetCount)</span>
+                                    </button>
+                                }
+                                @if (msgCount > 0)
+                                {
+                                    <button class="tv-chip" data-filter="Zalo/Tin nhắn" onclick="tvSetFilter(this,'Zalo/Tin nhắn')">
+                                        💬 Nhắn tin <span class="ms-1 opacity-75">(@msgCount)</span>
+                                    </button>
+                                }
+                            </div>
+
+                            <div class="tv-timeline" id="tvTimeline">
+                                @if (Model.LichSuTuVans != null && Model.LichSuTuVans.Count > 0)
+                                {
+                                    @foreach (var item in Model.LichSuTuVans.OrderByDescending(x => x.NgayTuVan))
+                                    {
+                                        string dotClass = item.HinhThuc == "Gọi điện" ? "tv-dot-call" : item.HinhThuc == "Gặp mặt" ? "tv-dot-meet" : "tv-dot-msg";
+                                        string badgeClass = item.HinhThuc == "Gọi điện" ? "tv-badge-call" : item.HinhThuc == "Gặp mặt" ? "tv-badge-meet" : "tv-badge-msg";
+                                        string iconClass = item.HinhThuc == "Gọi điện" ? "fa-phone" : item.HinhThuc == "Gặp mặt" ? "fa-users" : "fa-comment-dots";
+
+                                        <div class="tv-entry" data-hinhthuc="@item.HinhThuc">
+                                            <div class="tv-dot @dotClass"></div>
+                                            <div class="tv-card">
+                                                <div class="tv-card-head">
+                                                    <span class="tv-badge @badgeClass"><i class="fa-solid @iconClass" style="font-size:11px;"></i> @item.HinhThuc</span>
+                                                    <span class="tv-by"><i class="fa-regular fa-circle-user me-1" style="font-size:11px;"></i>@(item.NguoiTuVan ?? "Admin")</span>
+                                                    <span class="tv-date">@item.NgayTuVan.ToString("dd/MM/yyyy") &middot; @item.NgayTuVan.ToString("HH:mm")</span>
+
+                                                    <form asp-action="DeleteNote" method="post" class="ms-2" onsubmit="return confirm('Xóa ghi chú tư vấn này?');">
+                                                        <input type="hidden" name="noteId" value="@item.Id" />
+                                                        <input type="hidden" name="hocVienId" value="@Model.Id" />
+                                                        <button type="submit" class="tv-btn-delete" title="Xóa ghi chú"><i class="fa-solid fa-trash-can"></i></button>
+                                                    </form>
+                                                </div>
+
+                                                <p class="tv-content">@item.NoiDung</p>
+
+                                                @if (!string.IsNullOrEmpty(item.KetQua))
+                                                {
+                                                    <div>
+                                                        <span class="tv-result"><i class="fa-solid fa-check-circle"></i> @item.KetQua</span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="tv-empty" id="tvEmpty">
+                                        <i class="fa-regular fa-comment-slash"></i>
+                                        <p>Chưa có lịch sử tư vấn nào.</p>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade dm-modal" id="enrollModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <form id="enrollForm" asp-controller="HocViens" asp-action="EnrollStudent" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold m-0">
+                        <i class="fa-solid fa-graduation-cap me-2" style="color:#1d6b63"></i>Làm thủ tục: <strong>@Model.HoTen</strong>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <p class="section-label"><i class="fa-solid fa-book-open-reader me-2 text-primary"></i>Thông tin đào tạo</p>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Xếp vào Lớp học <span class="text-danger">*</span></label>
+                                <select name="lopHocId" class="form-select dm-input shadow-none" required onchange="tuDongDienHocPhi(this)">
+                                    <option value="" data-hocphi="0">-- Chọn lớp học đang mở --</option>
+                                    @if (ViewBag.DanhSachLop != null)
+                                    {
+                                        foreach (var lop in ViewBag.DanhSachLop)
+                                        {
+                                            <option value="@lop.Id" data-hocphi="@(lop.HocPhi.ToString("#,##0"))">@lop.TenLop</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Ghi chú cho Giáo vụ</label>
+                                <textarea name="ghiChu" class="form-control dm-input shadow-none" rows="5" placeholder="Ví dụ: Cần mượn máy tính..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="section-finance">
+                                <p class="section-label"><i class="fa-solid fa-file-invoice-dollar me-2 text-success"></i>Thông tin tài chính</p>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tổng học phí gốc (VNĐ) <span class="text-danger">*</span></label>
+                                    <input type="text" id="inpGoc" name="hocPhiDisplay" class="form-control dm-input money-input shadow-none" value="0" required oninput="handleMoneyInput(this)" />
+                                    <input type="hidden" id="inpGocReal" name="hocPhi" value="0" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Giảm trừ / Học bổng (VNĐ)</label>
+                                    <div class="row g-2">
+                                        <div class="col-7">
+                                            <input type="text" id="inpGiam" name="giamTruDisplay" class="form-control dm-input money-input shadow-none text-danger" value="0" oninput="handleMoneyInput(this)" />
+                                            <input type="hidden" id="inpGiamReal" name="giamTru" value="0" />
+                                        </div>
+                                        <div class="col-5">
+                                            <input type="text" name="lyDoGiamGia" class="form-control dm-input shadow-none" placeholder="Lý do giảm" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Đóng ngay hôm nay (VNĐ)</label>
+                                    <input type="text" id="inpDong" name="daNopDisplay" class="form-control dm-input money-input shadow-none text-success" style="font-size:16px !important;" value="0" required oninput="handleMoneyInput(this)" />
+                                    <input type="hidden" id="inpDongReal" name="daNop" value="0" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Hình thức thanh toán</label>
+                                    <select name="hinhThuc" class="form-select dm-input shadow-none">
+                                        <option value="Chuyển khoản">💳 Chuyển khoản (Mặc định)</option>
+                                        <option value="Tiền mặt">💵 Tiền mặt</option>
+                                        <option value="Quẹt thẻ POS">🏧 Quẹt thẻ POS</option>
+                                    </select>
+                                </div>
+
+                                <div class="finance-summary">
+                                    <div class="d-flex justify-content-between mb-2 align-items-center">
+                                        <span class="text-muted fw-bold small">Thực thu:</span>
+                                        <span class="fw-bold" style="font-size:15px;" id="txtPhaiThu">0 đ</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted fw-bold small">Còn nợ:</span>
+                                        <span class="fw-bold text-danger" style="font-size:15px;" id="txtConNo">0 đ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill px-4 btn-sm" style="color: var(--text); border-color: var(--border);" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn dm-btn-enroll rounded-pill px-5 shadow-sm btn-sm">
+                        <i class="fa-solid fa-check-circle me-1"></i> XÁC NHẬN CHỐT ĐƠN
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade dm-modal" id="quickEmailModal" aria-labelledby="quickEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-bottom py-3">
+                <h6 class="fw-bold m-0" style="color:#ea4335;"><i class="fa-solid fa-envelope me-2"></i>GỬI EMAIL NHANH: @Model.HoTen</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="quickHocVienId" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-muted small text-uppercase">Tiêu đề thư <span class="text-danger">*</span></label>
+                    <input type="text" id="quickTieuDe" class="form-control dm-input" placeholder="Nhập tiêu đề..." required />
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <label class="form-label fw-bold text-muted small text-uppercase mb-0">Nội dung thư <span class="text-danger">*</span></label>
+                        <span style="font-size:10px;color:#ea4335;background:rgba(234,67,53,0.1);padding:2px 6px;border-radius:4px;">Tag: TenHocVien</span>
+                    </div>
+                    <textarea id="quickNoiDung" class="form-control dm-input"></textarea>
+                </div>
+                <div id="quickEmailAlert" class="alert d-none" style="font-size:13px;padding:10px;margin-bottom:0;"></div>
+            </div>
+            <div class="modal-footer border-top py-3">
+                <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill px-4 btn-sm" style="color: var(--text); border-color: var(--border);" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="button" id="btnSendQuickEmail" class="btn rounded-pill px-4 shadow-sm btn-sm" style="background:#ea4335;color:#fff;font-weight:600; border: none;" onclick="executeQuickEmail()">
+                    <i class="fa-solid fa-paper-plane me-2"></i> Gửi ngay
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        /* ---- FILTER LỊCH SỬ TƯ VẤN ---- */
+        function tvSetFilter(el, filter) {
+            document.querySelectorAll('.tv-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+
+            document.querySelectorAll('#tvTimeline .tv-entry').forEach(entry => {
+                entry.style.display = (filter === 'all' || entry.dataset.hinhthuc === filter) ? '' : 'none';
+            });
+
+            const visible = [...document.querySelectorAll('#tvTimeline .tv-entry')]
+                .filter(e => e.style.display !== 'none').length;
+
+            let emptyEl = document.getElementById('tvEmptyFiltered');
+            if (visible === 0) {
+                if (!emptyEl) {
+                    emptyEl = document.createElement('div');
+                    emptyEl.id = 'tvEmptyFiltered';
+                    emptyEl.className = 'tv-empty';
+                    emptyEl.innerHTML = '<i class="fa-regular fa-comment-slash"></i><p>Không có kết quả phù hợp.</p>';
+                    document.getElementById('tvTimeline').appendChild(emptyEl);
+                }
+            } else {
+                emptyEl?.remove();
+            }
+        }
+
+        /* ---- XỬ LÝ INPUT TIỀN ---- */
+        function handleMoneyInput(input) {
+            const realInput = document.getElementById(input.id + 'Real');
+            const raw = input.value.replace(/,/g, '');
+            if (!raw || isNaN(raw)) {
+                realInput.value = 0;
+                input.value = '';
+                tinhTien();
+                return;
+            }
+            const num = parseInt(raw);
+            realInput.value = num;
+            input.value = num.toLocaleString('en-US');
+            tinhTien();
+        }
+
+        function tinhTien() {
+            const goc  = parseInt(document.getElementById('inpGocReal').value)  || 0;
+            const giam = parseInt(document.getElementById('inpGiamReal').value) || 0;
+            const dong = parseInt(document.getElementById('inpDongReal').value) || 0;
+            const phaiThu = goc - giam;
+            const conNo   = Math.max(0, phaiThu - dong);
+            document.getElementById('txtPhaiThu').innerText = phaiThu.toLocaleString('vi-VN') + ' đ';
+            document.getElementById('txtConNo').innerText   = conNo.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function tuDongDienHocPhi(sel) {
+            const raw = sel.options[sel.selectedIndex].getAttribute('data-hocphi') || '0';
+            const num = parseInt(raw.replace(/,/g, '')) || 0;
+            document.getElementById('inpGoc').value     = num === 0 ? '0' : num.toLocaleString('en-US');
+            document.getElementById('inpGocReal').value = num;
+            tinhTien();
+        }
+
+        /* ---- INIT ---- */
+        document.addEventListener('DOMContentLoaded', function () {
+            tinhTien();
+            ['enrollModal', 'quickEmailModal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) document.body.appendChild(el);
+            });
+        });
+
+        /* ---- CKEDITOR CHO EMAIL ---- */
+        var quickEditor;
+        const myModalEl = document.getElementById('quickEmailModal');
+
+        if (myModalEl) {
+            myModalEl.addEventListener('shown.bs.modal', function () {
+                if (!quickEditor) {
+                    CKEDITOR.config.versionCheck = false;
+                    quickEditor = CKEDITOR.replace('quickNoiDung', {
+                        height: 200,
+                        toolbarGroups: [
+                            { name: 'basicstyles', groups: ['basicstyles'] },
+                            { name: 'paragraph',   groups: ['list', 'align'] },
+                            { name: 'links' },
+                            { name: 'colors' }
+                        ],
+                        removeButtons: 'Subscript,Superscript,Strike'
+                    });
+                }
+            });
+
+            myModalEl.addEventListener('hidden.bs.modal', function () {
+                $('#quickTieuDe').val('');
+                if (quickEditor) quickEditor.setData('');
+                $('#quickEmailAlert').addClass('d-none').removeClass('alert-success alert-danger');
+            });
+        }
+
+        /* ---- GỬI EMAIL NHANH ---- */
+        function executeQuickEmail() {
+            const hvId    = $('#quickHocVienId').val();
+            const title   = $('#quickTieuDe').val();
+            const content = quickEditor ? quickEditor.getData() : $('#quickNoiDung').val();
+            const btn      = $('#btnSendQuickEmail');
+            const alertBox = $('#quickEmailAlert');
+
+            if (!title.trim() || !content.trim()) {
+                alertBox.removeClass('d-none alert-success').addClass('alert-danger')
+                        .text('Vui lòng nhập đầy đủ tiêu đề và nội dung.');
+                return;
+            }
+
+            btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-1"></i> Đang gửi...');
+            alertBox.addClass('d-none');
+
+            $.ajax({
+                url: '/EmailMarketing/SendQuickEmail',
+                type: 'POST',
+                data: { hocVienId: hvId, tieuDe: title, noiDung: content },
+                success: function (res) {
+                    btn.prop('disabled', false).html('<i class="fa-solid fa-paper-plane me-1"></i> Gửi ngay');
+                    alertBox.removeClass('d-none alert-danger alert-success');
+                    if (res.success) {
+                        alertBox.addClass('alert-success').html('<i class="fa-solid fa-check me-1"></i> ' + res.message);
+                        setTimeout(() => bootstrap.Modal.getInstance(myModalEl).hide(), 1500);
+                    } else {
+                        alertBox.addClass('alert-danger').html('<i class="fa-solid fa-circle-exclamation me-1"></i> ' + res.message);
+                    }
+                },
+                error: function () {
+                    btn.prop('disabled', false).html('<i class="fa-solid fa-paper-plane me-1"></i> Gửi ngay');
+                    alertBox.removeClass('d-none alert-success').addClass('alert-danger').text('Đã xảy ra lỗi kết nối mạng!');
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,390 @@
+@model IEnumerable<ITPRO_CRM.Models.LopHoc>
+
+@{
+    ViewData["Title"] = "Quản lý Lớp học";
+    int tongLop = ViewBag.TongSoLop ?? 0;
+    int lopDangHoc = ViewBag.LopDangHoc ?? 0;
+    int lopSapMo = ViewBag.LopSapMo ?? 0;
+    int tongHocVien = ViewBag.TongHocVien ?? 0;
+}
+
+<style>
+    /* ── Stat Cards ── */
+    .stat-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        position: relative;
+        overflow: hidden;
+        transition: 0.2s;
+        box-shadow: var(--shadow);
+    }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border2);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+    .stat-lbl {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
+    }
+
+    .stat-val {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--text);
+        font-family: 'JetBrains Mono', 'DM Mono', monospace;
+        line-height: 1;
+    }
+
+    .stat-icon {
+        position: absolute;
+        right: 20px;
+        bottom: 15px;
+        font-size: 36px;
+        opacity: 0.05;
+        color: var(--text);
+    }
+
+    /* ── Filter bar ── */
+    .dm-filter-bar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+    }
+
+    .dm-filter-lbl {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dm-input {
+        background: var(--surface2) !important;
+        border: 1px solid var(--border) !important;
+        color: var(--text) !important;
+        font-size: 13px;
+        border-radius: 6px;
+        box-shadow: none !important;
+    }
+
+        .dm-input:focus {
+            border-color: var(--accent) !important;
+        }
+
+    .dm-btn {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        color: var(--text);
+        cursor: pointer;
+    }
+
+        .dm-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    .dm-btn-pri {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+    }
+
+        .dm-btn-pri:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+
+    /* ── Class Card ── */
+    .dm-class-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: 0.2s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow);
+    }
+
+        .dm-class-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border2);
+        }
+
+    .dm-class-body {
+        padding: 20px;
+        flex: 1;
+    }
+
+    .dm-class-footer {
+        border-top: 1px solid var(--border);
+        padding: 12px 20px;
+        background: var(--surface2);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .c-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+        .c-title:hover {
+            color: var(--accent);
+        }
+
+    .c-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: 1px solid transparent;
+    }
+
+    .c-meta {
+        font-size: 12px;
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+        .c-meta i {
+            width: 14px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+    .c-progress {
+        height: 6px;
+        border-radius: 10px;
+        background: var(--surface2);
+        overflow: hidden;
+        margin-top: 6px;
+        border: 1px solid var(--border);
+    }
+
+    .c-progress-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s;
+    }
+
+    .c-act-btn {
+        flex: 1;
+        text-align: center;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 6px;
+        padding: 6px;
+        font-size: 12px;
+        color: var(--text2);
+        transition: 0.2s;
+        text-decoration: none;
+    }
+
+        .c-act-btn:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+
+        .c-act-btn.del:hover {
+            background: rgba(239,68,68,0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text3);
+    }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-0" style="color: var(--text);">Quản lý Lớp học</h4>
+            <p class="small mb-0" style="color: var(--text2);">Tổng quan & vận hành các lớp đào tạo</p>
+        </div>
+        <a asp-action="Create" class="dm-btn dm-btn-pri shadow-sm rounded-pill px-4">
+            <i class="fa-solid fa-plus"></i> Mở lớp mới
+        </a>
+    </div>
+
+    <div class="stat-row">
+        <div class="stat-card" style="border-top: 3px solid var(--accent);">
+            <div class="stat-lbl" style="color: var(--accent);">Tổng số lớp</div>
+            <div class="stat-val">@tongLop</div>
+            <i class="fa-solid fa-chalkboard stat-icon"></i>
+        </div>
+        <div class="stat-card" style="border-top: 3px solid var(--success);">
+            <div class="stat-lbl" style="color: var(--success);">Đang hoạt động</div>
+            <div class="stat-val">@lopDangHoc</div>
+            <i class="fa-solid fa-circle-play stat-icon"></i>
+        </div>
+        <div class="stat-card" style="border-top: 3px solid var(--warning);">
+            <div class="stat-lbl" style="color: var(--warning);">Sắp khai giảng</div>
+            <div class="stat-val">@lopSapMo</div>
+            <i class="fa-solid fa-clock stat-icon"></i>
+        </div>
+        <div class="stat-card" style="border-top: 3px solid #be185d;">
+            <div class="stat-lbl" style="color: #be185d;">Tổng học viên</div>
+            <div class="stat-val">@tongHocVien</div>
+            <i class="fa-solid fa-users stat-icon"></i>
+        </div>
+    </div>
+
+    <div class="dm-filter-bar">
+        <form method="get" asp-action="Index" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="dm-filter-lbl">Tìm kiếm</label>
+                <input type="text" name="search" value="@ViewBag.Search" class="form-control dm-input" placeholder="Tên lớp, mô tả..." />
+            </div>
+            <div class="col-md-2">
+                <label class="dm-filter-lbl">Trạng thái</label>
+                <select name="trangThai" class="form-select dm-input">
+                    <option value="">Tất cả</option>
+                    <option value="0" selected="@(ViewBag.TrangThai?.ToString() == "0")">Sắp mở</option>
+                    <option value="1" selected="@(ViewBag.TrangThai?.ToString() == "1")">Đang học</option>
+                    <option value="2" selected="@(ViewBag.TrangThai?.ToString() == "2")">Kết thúc</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="dm-filter-lbl">Giảng viên</label>
+                <select name="giangVienId" class="form-select dm-input" asp-items="ViewBag.GiangViens">
+                    <option value="">Tất cả giảng viên</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="dm-btn dm-btn-pri flex-grow-1"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                    <a asp-action="Index" class="dm-btn"><i class="fa-solid fa-rotate-right"></i></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fa-solid fa-chalkboard"></i>
+            <h5 class="fw-bold" style="color: var(--text);">Không tìm thấy lớp học nào</h5>
+            <p>Thử thay đổi bộ lọc hoặc <a asp-action="Create" style="color: var(--accent);">mở lớp mới</a></p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                string accentColor = item.TrangThai == 1 ? "var(--success)" : (item.TrangThai == 0 ? "var(--warning)" : "var(--text3)");
+                string bgBadge = item.TrangThai == 1 ? "rgba(34,197,94,0.1)" : (item.TrangThai == 0 ? "rgba(245,158,11,0.1)" : "var(--surface2)");
+                string statusName = item.TrangThai == 1 ? "Đang học" : (item.TrangThai == 0 ? "Sắp mở" : "Đã kết thúc");
+
+                int siSo = item.HocViens?.Count ?? 0;
+                int maxSiSo = item.SiSoToiDa > 0 ? item.SiSoToiDa : 1;
+                int percent = Math.Min((siSo * 100) / maxSiSo, 100);
+                string barColor = percent >= 90 ? "var(--danger)" : (percent >= 70 ? "var(--warning)" : "var(--success)");
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="dm-class-card" style="border-top: 3px solid @accentColor;">
+                        <div class="dm-class-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="c-badge" style="background: @bgBadge; color: @accentColor; border-color: @accentColor;">@statusName</span>
+                                <span style="font-size: 12px; font-weight: 700; color: var(--success); background: rgba(34,197,94,0.1); padding: 4px 8px; border-radius: 6px;">@(item.HocPhi.ToString("#,##0")) đ</span>
+                            </div>
+
+                            <a asp-action="Details" asp-route-id="@item.Id" class="c-title">
+                                <i class="fa-solid fa-chalkboard-user me-2" style="color: var(--accent);"></i>@item.TenLop
+                            </a>
+
+                            @if (!string.IsNullOrEmpty(item.MoTa))
+                            {
+                                <p style="font-size: 12px; color: var(--text3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px;">@item.MoTa</p>
+                            }
+
+                            <div class="c-meta mt-3"><i class="fa-solid fa-calendar-days" style="color: var(--accent);"></i> Khai giảng: <strong style="color: var(--text);">@item.NgayKhaiGiang.ToString("dd/MM/yyyy")</strong></div>
+                            @if (!string.IsNullOrEmpty(item.LichHoc))
+                            {
+                                <div class="c-meta"><i class="fa-solid fa-clock" style="color: var(--warning);"></i> Lịch: <strong style="color: var(--text);">@item.LichHoc @(item.GioBatDau.HasValue ? $"({item.GioBatDau.Value.ToString(@"hh\:mm")})" : "")</strong></div>
+                            }
+                            @if (item.GiangVien != null)
+                            {
+                                <div class="c-meta"><i class="fa-solid fa-chalkboard-user" style="color: var(--success);"></i> GV: <strong style="color: var(--text);">@item.GiangVien.HoTen</strong></div>
+                            }
+
+                            <div class="mt-4">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="c-meta m-0"><i class="fa-solid fa-users"></i> Sĩ số: <strong style="color: var(--text);" class="ms-1">@siSo / @maxSiSo</strong></span>
+                                    <span style="font-size: 11px; font-weight: 700; color: @barColor;">@percent%</span>
+                                </div>
+                                <div class="c-progress"><div class="c-progress-fill" style="width:@percent%; background:@barColor"></div></div>
+                            </div>
+                        </div>
+
+                        <div class="dm-class-footer">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="c-act-btn"><i class="fa-solid fa-eye me-1"></i> Quản lý</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="c-act-btn"><i class="fa-solid fa-pen me-1"></i> Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="c-act-btn del"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

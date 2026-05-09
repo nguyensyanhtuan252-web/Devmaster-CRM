@@ -1,0 +1,499 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.MauEmail>
+
+@{
+    ViewData["Title"] = "Quản lý mẫu Email";
+    var tongMau = Model.Count();
+    var mktCount = Model.Count(x => x.LoaiMau == "Marketing");
+    var tcCount = Model.Count(x => x.LoaiMau == "Tài chính");
+    var tbCount = Model.Count(x => x.LoaiMau == "Thông báo");
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap');
+
+    .email-page {
+        font-family: 'Sora', sans-serif;
+    }
+
+    /* ── Header ── */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 28px;
+    }
+
+    .page-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        margin: 0 0 4px;
+        letter-spacing: -0.3px;
+    }
+
+    .page-subtitle {
+        font-size: 0.78rem;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        padding: 9px 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: opacity .2s, transform .15s;
+        white-space: nowrap;
+    }
+
+        .btn-create:hover {
+            opacity: .88;
+            transform: translateY(-1px);
+            color: #fff;
+        }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    .stat-chip {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+        color: #94a3b8;
+    }
+
+        .stat-chip .num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+    /* ── Search bar ── */
+    .toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-wrap {
+        position: relative;
+        flex: 1;
+        max-width: 500px;
+    }
+
+        .search-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #475569;
+            font-size: 0.85rem;
+        }
+
+    .search-input {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 9px;
+        color: #e2e8f0;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.82rem;
+        padding: 10px 12px 10px 38px;
+        outline: none;
+        transition: border-color .2s;
+    }
+
+        .search-input::placeholder {
+            color: #475569;
+        }
+
+        .search-input:focus {
+            border-color: #3b82f6;
+        }
+
+    /* ── Table ── */
+    .email-table-wrap {
+        background: #1a1d2e;
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .email-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.83rem;
+    }
+
+        .email-table thead tr {
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .email-table thead th {
+            color: #64748b;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 13px 18px;
+            white-space: nowrap;
+        }
+
+        .email-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background .15s;
+        }
+
+            .email-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .email-table tbody tr:hover {
+                background: rgba(255,255,255,0.03);
+            }
+
+        .email-table td {
+            padding: 14px 18px;
+            vertical-align: middle;
+            color: #cbd5e1;
+        }
+
+    /* Tên mẫu */
+    .template-name {
+        font-weight: 600;
+        color: #e2e8f0;
+        font-size: 0.84rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .template-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #1e40af, #4f46e5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        color: #93c5fd;
+        flex-shrink: 0;
+    }
+
+    /* Tiêu đề — truncate */
+    .subject-cell {
+        max-width: 240px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #94a3b8;
+        font-size: 0.82rem;
+    }
+
+    /* Badge loại mẫu */
+    .badge-loai {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-marketing {
+        background: rgba(16,185,129,0.12);
+        color: #34d399;
+    }
+
+    .badge-taichinh {
+        background: rgba(245,158,11,0.12);
+        color: #fbbf24;
+    }
+
+    .badge-thongbao {
+        background: rgba(59,130,246,0.12);
+        color: #60a5fa;
+    }
+
+    .badge-khac {
+        background: rgba(148,163,184,0.10);
+        color: #94a3b8;
+    }
+
+    /* Date */
+    .date-mono {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        color: #475569;
+    }
+
+    /* Actions */
+    .action-btns {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+        font-size: 0.78rem;
+        text-decoration: none;
+        transition: background .15s, transform .1s;
+    }
+
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+
+    .btn-edit {
+        background: rgba(59,130,246,0.12);
+        color: #60a5fa;
+    }
+
+    .btn-details {
+        background: rgba(16,185,129,0.12);
+        color: #34d399;
+    }
+
+    .btn-delete {
+        background: rgba(239,68,68,0.10);
+        color: #f87171;
+    }
+
+    .btn-edit:hover {
+        background: rgba(59,130,246,0.22);
+        color: #60a5fa;
+    }
+
+    .btn-details:hover {
+        background: rgba(16,185,129,0.22);
+        color: #34d399;
+    }
+
+    .btn-delete:hover {
+        background: rgba(239,68,68,0.22);
+        color: #f87171;
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #475569;
+    }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 14px;
+            display: block;
+            opacity: .4;
+        }
+
+        .empty-state p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+    .btn-back {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: 9px;
+        color: #94a3b8;
+        font-family: 'Sora', sans-serif;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        text-decoration: none;
+        transition: background .2s, color .2s;
+        margin-bottom: 12px;
+    }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.09);
+            color: #e2e8f0;
+        }
+</style>
+
+<div class="email-page container-fluid mt-4">
+
+    <a asp-controller="EmailMarketing" asp-action="Index" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Quản lý Email Marketing
+    </a>
+    <div class="page-header">
+        <div>
+            <h5 class="page-title"><i class="fa-solid fa-envelopes-bulk text-info me-2"></i>Kho mẫu Email</h5>
+            <p class="page-subtitle">Danh sách các kịch bản email được định sẵn trong hệ thống</p>
+        </div>
+        <a asp-action="Create" class="btn-create">
+            <i class="fa-solid fa-plus"></i> Tạo mẫu mới
+        </a>
+    </div>
+
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-chip">
+            <i class="fa-solid fa-layer-group" style="color:#60a5fa;"></i>
+            Tổng mẫu: <span class="num">@tongMau</span>
+        </div>
+        <div class="stat-chip">
+            <i class="fa-solid fa-tag" style="color:#34d399;"></i>
+            Marketing: <span class="num">@mktCount</span>
+        </div>
+        <div class="stat-chip">
+            <i class="fa-solid fa-circle-dollar-to-slot" style="color:#fbbf24;"></i>
+            Tài chính: <span class="num">@tcCount</span>
+        </div>
+        <div class="stat-chip">
+            <i class="fa-solid fa-bell" style="color:#a78bfa;"></i>
+            Thông báo: <span class="num">@tbCount</span>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="txtSearchLocal" placeholder="Tìm theo tên, tiêu đề hoặc loại mẫu..." onkeyup="applyFilter()">
+        </div>
+    </div>
+
+    <div class="email-table-wrap">
+        <table class="email-table" id="emailTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên mẫu</th>
+                    <th>Tiêu đề Email</th>
+                    <th>Loại mẫu</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int idx = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    string badgeClass = item.LoaiMau switch
+                    {
+                        "Marketing" => "badge-marketing",
+                        "Tài chính" => "badge-taichinh",
+                        "Thông báo" => "badge-thongbao",
+                        _ => "badge-khac"
+                    };
+                    string badgeIcon = item.LoaiMau switch
+                    {
+                        "Marketing" => "fa-tag",
+                        "Tài chính" => "fa-circle-dollar-to-slot",
+                        "Thông báo" => "fa-bell",
+                        _ => "fa-circle"
+                    };
+                    <tr class="mau-row" data-loai="@item.LoaiMau" data-name="@item.TenMau?.ToLower()" data-tieude="@item.TieuDe?.ToLower()">
+                        <td class="date-mono" style="width:44px;color:#334155;">@(idx++)</td>
+                        <td>
+                            <div class="template-name">
+                                <span class="template-icon"><i class="fa-solid fa-file-lines"></i></span>
+                                @item.TenMau
+                            </div>
+                        </td>
+                        <td>
+                            <div class="subject-cell" title="@item.TieuDe">@item.TieuDe</div>
+                        </td>
+                        <td>
+                            <span class="badge-loai @badgeClass">
+                                <i class="fa-solid @badgeIcon"></i>
+                                @item.LoaiMau
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-mono">@item.NgayTao.ToString("dd/MM/yyyy")</span>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit" title="Chỉnh sửa">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details" title="Chi tiết">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete" title="Xoá">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <p>Chưa có mẫu email nào. <a asp-action="Create" style="color:#60a5fa;">Tạo mẫu đầu tiên</a></p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm lột sạch dấu Tiếng Việt
+        function removeAccents(str) {
+            if (!str) return '';
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        // Hàm Lọc danh sách siêu nhẹ
+        function applyFilter() {
+            var searchBox = document.getElementById('txtSearchLocal');
+            if (!searchBox) return;
+
+            var q = removeAccents(searchBox.value.trim());
+            var rows = document.querySelectorAll('.mau-row');
+
+            rows.forEach(function(row) {
+                // Quét toàn bộ nội dung chữ trong dòng
+                var text = removeAccents(row.textContent || row.innerText);
+
+                // Ẩn/hiện dòng dựa theo kết quả tìm kiếm
+                if (q === '' || text.includes(q)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+}
