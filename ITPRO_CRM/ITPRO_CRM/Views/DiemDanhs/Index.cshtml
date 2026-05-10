@@ -4,77 +4,452 @@
     ViewData["Title"] = "Điểm danh Lớp: " + ViewBag.LopHoc?.TenLop;
     var lopHoc = ViewBag.LopHoc as ITPRO_CRM.Models.LopHoc;
     var ngayDiemDanh = (DateTime)ViewBag.Ngay;
+    int soCoMat = Model?.Count(d => d.TrangThai == 1) ?? 0;
+    int soVang = Model?.Count(d => d.TrangThai == 0) ?? 0;
+    int tongSo = Model?.Count ?? 0;
 }
 
-<div class="container py-4">
+<style>
+    /* ── ĐÃ XÓA CÁC BIẾN MÀU CỐ ĐỊNH VÀ DÙNG BIẾN HỆ THỐNG VAR(--...) ── */
+    .dd-page {
+        font-family: inherit;
+        padding: 2rem 0;
+    }
+
+    .dd-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+
+    .dd-eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+        margin-bottom: 6px;
+    }
+
+    .dd-title-main {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0 0 10px;
+    }
+
+    .dd-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .dd-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 8px;
+    }
+
+        .dd-pill.date {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .dd-pill.ok {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+    .dd-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text2);
+        padding: 9px 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        text-decoration: none;
+        background: var(--surface);
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+        .dd-back-btn:hover {
+            background: var(--surface2);
+            border-color: var(--text3);
+            text-decoration: none;
+            color: var(--text);
+        }
+
+    .dd-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    .dd-stat-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 18px;
+    }
+
+    .dd-stat-val {
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+        .dd-stat-val.green {
+            color: var(--success);
+        }
+
+        .dd-stat-val.red {
+            color: var(--danger);
+        }
+
+    .dd-stat-lbl {
+        font-size: 12px;
+        color: var(--text3);
+    }
+
+    .dd-table-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .dd-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .dd-table thead th {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text3);
+            padding: 13px 18px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+            .dd-table thead th.center {
+                text-align: center;
+            }
+
+        .dd-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.1s;
+        }
+
+            .dd-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .dd-table tbody tr:hover {
+                background: var(--surface2);
+            }
+
+        .dd-table tbody td {
+            padding: 14px 18px;
+            vertical-align: middle;
+        }
+
+    .dd-row-num {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text3);
+    }
+
+    .dd-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(59, 130, 246, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #3b82f6;
+        flex-shrink: 0;
+    }
+
+    .dd-person-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dd-person-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .dd-person-phone {
+        font-size: 12px;
+        color: var(--text3);
+        margin-top: 1px;
+    }
+
+    .dd-btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .dd-status-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 13px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text3);
+        cursor: pointer;
+        transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+
+        .dd-status-btn.active-present {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .dd-status-btn.active-absent {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+    .dd-note-input {
+        font-size: 13px;
+        padding: 7px 11px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+        color: var(--text);
+        background: var(--surface2);
+        font-family: inherit;
+        transition: border-color 0.15s;
+    }
+
+        .dd-note-input:focus {
+            border-color: var(--accent);
+        }
+
+        .dd-note-input::placeholder {
+            color: var(--text3);
+        }
+
+        .dd-note-input:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+    .dd-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 18px;
+        border-top: 1px solid var(--border);
+        background: var(--surface2);
+    }
+
+    .dd-footer-info {
+        font-size: 13px;
+        color: var(--text3);
+    }
+
+    .dd-save-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 22px;
+        border-radius: 10px;
+        background: var(--success);
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+        .dd-save-btn:hover {
+            opacity: 0.9;
+        }
+
+    .dd-empty {
+        text-align: center;
+        padding: 60px 0;
+        color: var(--text3);
+        font-size: 14px;
+    }
+</style>
+
+<div class="container py-4 dd-page">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div class="dd-header">
                 <div>
-                    <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-clipboard-list text-success me-2"></i> ĐIỂM DANH HỌC VIÊN</h4>
-                    <p class="text-muted mb-0">Lớp: <span class="fw-bold text-primary">@lopHoc?.TenLop</span> | Ngày: <span class="fw-bold text-danger">@(ngayDiemDanh.ToString("dd/MM/yyyy"))</span></p>
+                    <div class="dd-eyebrow">
+                        <i class="fa-solid fa-clipboard-list me-1"></i> Điểm danh học viên
+                    </div>
+                    <h1 class="dd-title-main">@lopHoc?.TenLop</h1>
+                    <div class="dd-meta">
+                        <span class="dd-pill date">
+                            <i class="fa-regular fa-calendar me-1"></i>
+                            @(ngayDiemDanh.ToString("dd/MM/yyyy"))
+                        </span>
+                        @if (tongSo > 0)
+                        {
+                            <span class="dd-pill ok">
+                                <i class="fa-solid fa-users me-1"></i>
+                                @soCoMat/@tongSo có mặt
+                            </span>
+                        }
+                    </div>
                 </div>
-                <a asp-controller="LopHocs" asp-action="Index" class="btn btn-light border rounded-pill shadow-sm px-4 fw-bold">
-                    <i class="fa-solid fa-arrow-left me-1"></i> Trở về
-                </a>
+                <button type="button" class="dd-back-btn" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Trở về
+                </button>
             </div>
 
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="dd-stats">
+                <div class="dd-stat-card">
+                    <div class="dd-stat-val">@tongSo</div>
+                    <div class="dd-stat-lbl">Tổng học viên</div>
+                </div>
+                <div class="dd-stat-card">
+                    <div class="dd-stat-val green">@soCoMat</div>
+                    <div class="dd-stat-lbl">Có mặt</div>
+                </div>
+                <div class="dd-stat-card">
+                    <div class="dd-stat-val red">@soVang</div>
+                    <div class="dd-stat-lbl">Vắng mặt</div>
+                </div>
+            </div>
+
+            <div class="dd-table-card">
                 <form asp-action="Save" method="post">
                     <input type="hidden" name="lopId" value="@lopHoc?.Id" />
 
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th class="ps-4">#</th>
-                                    <th>Họ và Tên</th>
-                                    <th class="text-center" style="width: 250px;">Trạng thái</th>
-                                    <th class="pe-4">Ghi chú (Lý do vắng)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null && Model.Count > 0)
+                    <table class="dd-table">
+                        <thead>
+                            <tr>
+                                <th style="width:44px">#</th>
+                                <th>Học viên</th>
+                                <th class="center" style="width:220px">Trạng thái</th>
+                                <th style="width:240px">Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                for (int i = 0; i < Model.Count; i++)
                                 {
-                                    for (int i = 0; i < Model.Count; i++)
-                                    {
-                                        <tr>
-                                            <td class="ps-4 text-muted fw-bold">@(i + 1)</td>
-                                            <td>
-                                                <div class="fw-bold text-dark">@Model[i].HocVien?.HoTen</div>
-                                                <div class="small text-muted">@Model[i].HocVien?.SoDienThoai</div>
+                                    var hoTen = Model[i].HocVien?.HoTen ?? "";
+                                    var tenParts = hoTen.Trim().Split(' ');
+                                    var initials = "";
+                                    if (tenParts.Length >= 2)
+                                        initials = "" + tenParts[tenParts.Length - 2][0] + tenParts[tenParts.Length - 1][0];
+                                    else if (tenParts.Length == 1 && tenParts[0].Length > 0)
+                                        initials = "" + tenParts[0][0];
 
-                                                <input type="hidden" name="listDiemDanh[@i].HocVienId" value="@Model[i].HocVienId" />
-                                                <input type="hidden" name="listDiemDanh[@i].LopHocId" value="@Model[i].LopHocId" />
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="btn-group shadow-sm" role="group">
-                                                    <input type="radio" class="btn-check" name="listDiemDanh[@i].TrangThai" id="btnradio1_@i" value="1" @(Model[i].TrangThai == 1 ? "checked" : "")>
-                                                    <label class="btn btn-outline-success fw-bold px-3" for="btnradio1_@i"><i class="fa-solid fa-check me-1"></i> Có mặt</label>
-
-                                                    <input type="radio" class="btn-check" name="listDiemDanh[@i].TrangThai" id="btnradio2_@i" value="0" @(Model[i].TrangThai == 0 ? "checked" : "")>
-                                                    <label class="btn btn-outline-danger fw-bold px-3" for="btnradio2_@i"><i class="fa-solid fa-xmark me-1"></i> Vắng</label>
-                                                </div>
-                                            </td>
-                                            <td class="pe-4">
-                                                <input type="text" name="listDiemDanh[@i].GhiChu" value="@Model[i].GhiChu" class="form-control border-2 shadow-none" placeholder="Nhập lý do vắng..." />
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
                                     <tr>
-                                        <td colspan="4" class="text-center py-5 text-muted">Lớp học này hiện chưa có học viên nào.</td>
+                                        <td class="dd-row-num">@(i + 1)</td>
+                                        <td>
+                                            <input type="hidden" name="listDiemDanh[@i].HocVienId" value="@Model[i].HocVienId" />
+                                            <input type="hidden" name="listDiemDanh[@i].LopHocId" value="@Model[i].LopHocId" />
+                                            <div class="dd-person-wrap">
+                                                <div class="dd-avatar">@initials.ToUpper()</div>
+                                                <div>
+                                                    <div class="dd-person-name">@hoTen</div>
+                                                    <div class="dd-person-phone">@Model[i].HocVien?.SoDienThoai</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dd-btn-group">
+                                                <input type="radio" class="btn-check" name="listDiemDanh[@i].TrangThai"
+                                                       id="present_@i" value="1"
+                                                @(Model[i].TrangThai == 1 ? "checked" : "") />
+                                                <label class="dd-status-btn @(Model[i].TrangThai == 1 ? "active-present" : "")"
+                                                       for="present_@i">
+                                                    <i class="fa-solid fa-check"></i> Có mặt
+                                                </label>
+
+                                                <input type="radio" class="btn-check" name="listDiemDanh[@i].TrangThai"
+                                                       id="absent_@i" value="0"
+                                                @(Model[i].TrangThai == 0 ? "checked" : "") />
+                                                <label class="dd-status-btn @(Model[i].TrangThai == 0 ? "active-absent" : "")"
+                                                       for="absent_@i">
+                                                    <i class="fa-solid fa-xmark"></i> Vắng
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   name="listDiemDanh[@i].GhiChu"
+                                                   value="@Model[i].GhiChu"
+                                                   class="dd-note-input"
+                                                   placeholder="@(Model[i].TrangThai == 0 ? "Nhập lý do vắng..." : "—")" />
+                                        </td>
                                     </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="dd-empty">
+                                        <i class="fa-regular fa-folder-open fa-2x mb-2 d-block" style="color:var(--text3)"></i>
+                                        Lớp học này hiện chưa có học viên nào.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
-                    <div class="card-footer bg-white border-top p-4 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
-                            <i class="fa-solid fa-floppy-disk me-2"></i> LƯU KẾT QUẢ ĐIỂM DANH
+                    <div class="dd-footer">
+                        <span class="dd-footer-info">
+                            @if (tongSo == 0)
+                            {
+                                <text>Chưa có học viên</text>
+                            }
+                            else if (soVang == 0)
+                            {
+                                <text>Tất cả học viên đã có mặt</text>
+                            }
+                            else
+                            {
+                                <text>@soVang học viên vắng mặt</text>
+                            }
+                        </span>
+                        <button type="submit" class="dd-save-btn">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu kết quả điểm danh
                         </button>
                     </div>
                 </form>
@@ -83,3 +458,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('input[type="radio"].btn-check').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            var name = this.name;
+            var allRadios = document.querySelectorAll('input[type="radio"][name="' + name + '"]');
+            allRadios.forEach(function (r) {
+                var label = document.querySelector('label[for="' + r.id + '"]');
+                if (!label) return;
+                label.classList.remove('active-present', 'active-absent');
+                if (r.checked) {
+                    if (r.value === '1') label.classList.add('active-present');
+                    else label.classList.add('active-absent');
+                }
+            });
+
+            var row = this.closest('tr');
+            var noteInput = row ? row.querySelector('.dd-note-input') : null;
+            if (noteInput) {
+                if (this.value === '0') {
+                    noteInput.placeholder = 'Nhập lý do vắng...';
+                    noteInput.disabled = false;
+                    noteInput.style.opacity = '1';
+                } else {
+                    noteInput.placeholder = '—';
+                    noteInput.value = '';
+                }
+            }
+        });
+    });
+</script>

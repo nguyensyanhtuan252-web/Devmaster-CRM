@@ -1,74 +1,777 @@
 ﻿@model ITPRO_CRM.Models.GiangVien
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa Giảng viên";
+    var isActive = Model.TrangThai == 1;
+    var avatarUrl = string.IsNullOrEmpty(Model.AnhDaiDien)
+        ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(Model.HoTen ?? "GV")}&background=1d4ed8&color=fff&size=160&bold=true"
+        : Model.AnhDaiDien;
 }
 
-<h1>Edit</h1>
 
-<h4>GiangVien</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="HoTen" class="control-label"></label>
-                <input asp-for="HoTen" class="form-control" />
-                <span asp-validation-for="HoTen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SoDienThoai" class="control-label"></label>
-                <input asp-for="SoDienThoai" class="form-control" />
-                <span asp-validation-for="SoDienThoai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnhDaiDien" class="control-label"></label>
-                <input asp-for="AnhDaiDien" class="form-control" />
-                <span asp-validation-for="AnhDaiDien" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BangCap" class="control-label"></label>
-                <input asp-for="BangCap" class="form-control" />
-                <span asp-validation-for="BangCap" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="KinhNghiem" class="control-label"></label>
-                <input asp-for="KinhNghiem" class="form-control" />
-                <span asp-validation-for="KinhNghiem" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ThanhTich" class="control-label"></label>
-                <input asp-for="ThanhTich" class="form-control" />
-                <span asp-validation-for="ThanhTich" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChuyenMon" class="control-label"></label>
-                <input asp-for="ChuyenMon" class="form-control" />
-                <span asp-validation-for="ChuyenMon" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrangThai" class="control-label"></label>
-                <input asp-for="TrangThai" class="form-control" />
-                <span asp-validation-for="TrangThai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
+    .frm-wrap * {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .frm-wrap i {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+    }
+
+    /* ── Header ── */
+    .frm-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: var(--text3);
+        margin-bottom: 6px;
+        font-weight: 500;
+        letter-spacing: .3px;
+    }
+
+        .frm-breadcrumb a {
+            color: var(--text3);
+            text-decoration: none;
+        }
+
+            .frm-breadcrumb a:hover {
+                color: var(--accent);
+            }
+
+        .frm-breadcrumb i {
+            font-size: 10px;
+        }
+
+    .frm-page-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -.4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+    }
+
+    .frm-page-title-icon {
+        width: 38px;
+        height: 38px;
+        background: #f59e0b;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .frm-page-sub {
+        font-size: 12.5px;
+        color: var(--text2);
+        margin-left: 48px;
+        margin-bottom: 28px;
+    }
+
+    /* ── Edit notice banner ── */
+    .frm-edit-notice {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(245,158,11,.08);
+        border: 1px solid rgba(245,158,11,.3);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 22px;
+        font-size: 12.5px;
+        color: var(--text2);
+    }
+
+        .frm-edit-notice i {
+            color: #f59e0b;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .frm-edit-notice strong {
+            color: var(--text);
+        }
+
+    /* ── Layout ── */
+    .frm-layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    /* ── Avatar Panel ── */
+    .frm-avatar-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        position: sticky;
+        top: 20px;
+    }
+
+    .frm-avatar-ring {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 14px;
+    }
+
+    .frm-avatar-preview {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--surface);
+        box-shadow: 0 0 0 2px var(--border);
+        display: block;
+        transition: box-shadow .2s;
+    }
+
+    .frm-avatar-edit-btn {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #f59e0b;
+        border: 2px solid var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+    .frm-avatar-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 3px;
+    }
+
+    .frm-avatar-major {
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .frm-id-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 5px 10px;
+        font-size: 11.5px;
+        color: var(--text3);
+        font-weight: 500;
+        margin-bottom: 14px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Status toggle */
+    .frm-status-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-bottom: 14px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .frm-status-toggle-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text2);
+    }
+
+    .frm-toggle-switch {
+        width: 38px;
+        height: 21px;
+        background: var(--border);
+        border-radius: 20px;
+        position: relative;
+        transition: background .2s;
+        flex-shrink: 0;
+    }
+
+        .frm-toggle-switch.on {
+            background: var(--success);
+        }
+
+        .frm-toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #fff;
+            top: 3px;
+            left: 3px;
+            transition: transform .2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,.2);
+        }
+
+        .frm-toggle-switch.on::after {
+            transform: translateX(17px);
+        }
+
+    .frm-panel-tip {
+        font-size: 11px;
+        color: var(--text3);
+        line-height: 1.5;
+        border-top: 1px solid var(--border);
+        padding-top: 14px;
+        margin-top: 4px;
+        text-align: left;
+    }
+
+        .frm-panel-tip i {
+            color: #f59e0b;
+            margin-right: 4px;
+        }
+
+    /* ── Form Card ── */
+    .frm-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .frm-section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+    }
+
+    .frm-section-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(245,158,11,.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #f59e0b;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .frm-section-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .frm-section-sub {
+        font-size: 11.5px;
+        color: var(--text2);
+        margin-top: 1px;
+    }
+
+    .frm-section-body {
+        padding: 22px 24px;
+    }
+
+    .frm-divider {
+        height: 1px;
+        background: var(--border);
+    }
+
+    /* Fields */
+    .frm-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .frm-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .frm-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .frm-label .req {
+            color: var(--danger);
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .frm-label .tip {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text3);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin-left: auto;
+        }
+
+    .frm-input-wrap {
+        position: relative;
+    }
+
+    .frm-input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
+        font-size: 12px;
+        pointer-events: none;
+    }
+
+    .frm-input {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        padding: 10px 13px 10px 36px;
+        font-size: 13px;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s, background .15s;
+        line-height: 1.4;
+    }
+
+        .frm-input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,.12);
+            background: var(--surface);
+        }
+
+        .frm-input::placeholder {
+            color: var(--text3);
+        }
+
+    .frm-val-msg {
+        font-size: 11.5px;
+        color: var(--danger);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .frm-val-msg i {
+            font-size: 11px;
+        }
+
+    /* Changed field highlight */
+    .frm-input.changed {
+        border-color: #f59e0b !important;
+        background: rgba(245,158,11,.04) !important;
+    }
+
+    /* ── Footer ── */
+    .frm-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        background: var(--surface2);
+        border-top: 1px solid var(--border);
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .frm-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text2);
+        text-decoration: none;
+        transition: color .13s;
+    }
+
+        .frm-back-link:hover {
+            color: var(--text);
+        }
+
+    .frm-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .frm-change-count {
+        font-size: 12px;
+        color: var(--text3);
+        font-weight: 500;
+        display: none;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .frm-change-count.visible {
+            display: flex;
+        }
+
+    .frm-change-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #f59e0b;
+    }
+
+    .frm-btn-cancel {
+        padding: 10px 18px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text2);
+        cursor: pointer;
+        transition: all .13s;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+        .frm-btn-cancel:hover {
+            border-color: var(--border2);
+            color: var(--text);
+        }
+
+    .frm-btn-submit {
+        padding: 10px 24px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+        background: #f59e0b;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: all .18s;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 14px rgba(245,158,11,.3);
+    }
+
+        .frm-btn-submit:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(245,158,11,.38);
+        }
+
+    @@media (max-width: 768px) {
+        .frm-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .frm-avatar-panel {
+            position: static;
+        }
+
+        .frm-grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="frm-wrap">
+
+    <!-- Header -->
+    <div class="frm-breadcrumb">
+        <i class="fa-solid fa-house"></i>
+        <a asp-action="Index">Giảng viên</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Chỉnh sửa — @Model.HoTen</span>
     </div>
+    <div class="frm-page-title">
+        <div class="frm-page-title-icon"><i class="fa-solid fa-pen"></i></div>
+        Chỉnh sửa Hồ sơ
+    </div>
+    <div class="frm-page-sub">Cập nhật thông tin giảng viên. Các thay đổi sẽ được lưu ngay sau khi xác nhận.</div>
+
+    <!-- Edit notice -->
+    <div class="frm-edit-notice">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div>Bạn đang chỉnh sửa hồ sơ của <strong>@Model.HoTen</strong>. Các trường có viền vàng là trường đã thay đổi.</div>
+    </div>
+
+    <form asp-action="Edit" id="mainForm">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="frm-layout">
+
+            <!-- Left: Avatar panel -->
+            <div class="frm-avatar-panel">
+                <div class="frm-avatar-ring">
+                    <img id="avatarPreview" src="@avatarUrl" class="frm-avatar-preview" alt="@Model.HoTen">
+                    <div class="frm-avatar-edit-btn" title="Cập nhật ảnh qua URL bên phải">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <div class="frm-avatar-name" id="previewName">@Model.HoTen</div>
+                <div class="frm-avatar-major" id="previewMajor">@(Model.ChuyenMon ?? "Chuyên môn")</div>
+                <div class="frm-id-badge">
+                    <i class="fa-solid fa-fingerprint"></i> ID #@Model.Id
+                </div>
+
+                <!-- Status toggle -->
+                <div class="frm-status-toggle" id="statusToggle" onclick="toggleStatus()">
+                    <span class="frm-status-toggle-label" id="statusLabel">
+                        @if (isActive)
+                        {
+                            <i class="fa-solid fa-circle-check me-1" style="color:var(--success)"></i>
+
+                            <text>Đang công tác</text>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-circle-xmark me-1" style="color:var(--text3)"></i>
+
+                            <text>Đã nghỉ</text>
+                        }
+                    </span>
+                    <div class="frm-toggle-switch @(isActive ? "on" : "")" id="toggleSwitch"></div>
+                </div>
+                <input type="hidden" asp-for="TrangThai" id="TrangThai" value="@Model.TrangThai">
+
+                <div class="frm-panel-tip">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Chỉnh sửa sẽ ghi đè thông tin hiện tại. Kiểm tra kỹ trước khi lưu.
+                </div>
+            </div>
+
+            <!-- Right: Form card -->
+            <div class="frm-card">
+
+                <!-- Section 1 -->
+                <div class="frm-section-header">
+                    <div class="frm-section-icon"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <div class="frm-section-title">Thông tin cơ bản</div>
+                        <div class="frm-section-sub">Tên, liên hệ và ảnh đại diện</div>
+                    </div>
+                </div>
+                <div class="frm-section-body">
+                    <div class="frm-grid-2">
+                        <div class="frm-field" style="grid-column:1/-1">
+                            <label class="frm-label" asp-for="HoTen">Họ và Tên <span class="req">*</span></label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-user frm-input-icon"></i>
+                                <input asp-for="HoTen" class="frm-input" id="inpHoTen"
+                                       placeholder="Nguyễn Văn A" oninput="syncPreview(this)">
+                            </div>
+                            <span asp-validation-for="HoTen" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="Email">Email <span class="req">*</span></label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-envelope frm-input-icon"></i>
+                                <input asp-for="Email" class="frm-input" type="email"
+                                       placeholder="gv@itpro.edu.vn" oninput="markChanged(this)">
+                            </div>
+                            <span asp-validation-for="Email" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="SoDienThoai">Số Điện Thoại</label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-phone frm-input-icon"></i>
+                                <input asp-for="SoDienThoai" class="frm-input"
+                                       placeholder="0901 234 567" oninput="markChanged(this)">
+                            </div>
+                            <span asp-validation-for="SoDienThoai" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field" style="grid-column:1/-1">
+                            <label class="frm-label" asp-for="AnhDaiDien">
+                                URL Ảnh Đại Diện <span class="tip">Không bắt buộc</span>
+                            </label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-image frm-input-icon"></i>
+                                <input asp-for="AnhDaiDien" class="frm-input" id="inpAnh"
+                                       placeholder="https://..." oninput="syncAvatar(this)">
+                            </div>
+                            <span asp-validation-for="AnhDaiDien" class="frm-val-msg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="frm-divider"></div>
+
+                <!-- Section 2 -->
+                <div class="frm-section-header">
+                    <div class="frm-section-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div>
+                        <div class="frm-section-title">Chuyên môn & Học vấn</div>
+                        <div class="frm-section-sub">Bằng cấp, kinh nghiệm và lĩnh vực chuyên sâu</div>
+                    </div>
+                </div>
+                <div class="frm-section-body">
+                    <div class="frm-grid-2">
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="ChuyenMon">Chuyên Môn</label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-chalkboard frm-input-icon"></i>
+                                <input asp-for="ChuyenMon" class="frm-input" id="inpCM"
+                                       placeholder="Lập trình Web, AI..." oninput="syncMajor(this)">
+                            </div>
+                            <span asp-validation-for="ChuyenMon" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="BangCap">Bằng Cấp</label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-scroll frm-input-icon"></i>
+                                <input asp-for="BangCap" class="frm-input"
+                                       placeholder="Thạc sĩ, Tiến sĩ..." oninput="markChanged(this)">
+                            </div>
+                            <span asp-validation-for="BangCap" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="KinhNghiem">Kinh Nghiệm</label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-briefcase frm-input-icon"></i>
+                                <input asp-for="KinhNghiem" class="frm-input"
+                                       placeholder="5 năm, 10 năm..." oninput="markChanged(this)">
+                            </div>
+                            <span asp-validation-for="KinhNghiem" class="frm-val-msg"></span>
+                        </div>
+                        <div class="frm-field">
+                            <label class="frm-label" asp-for="ThanhTich">Thành Tích</label>
+                            <div class="frm-input-wrap">
+                                <i class="fa-solid fa-trophy frm-input-icon"></i>
+                                <input asp-for="ThanhTich" class="frm-input"
+                                       placeholder="Giải thưởng, chứng chỉ..." oninput="markChanged(this)">
+                            </div>
+                            <span asp-validation-for="ThanhTich" class="frm-val-msg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="frm-footer">
+                    <a asp-action="Index" class="frm-back-link">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+                    </a>
+                    <div class="frm-actions">
+                        <div class="frm-change-count" id="changeCount">
+                            <div class="frm-change-dot"></div>
+                            <span id="changeNum">0</span> thay đổi
+                        </div>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="frm-btn-cancel">
+                            <i class="fa-solid fa-xmark"></i> Hủy
+                        </a>
+                        <button type="submit" class="frm-btn-submit">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    let statusOn = @(isActive ? "true" : "false");
+    let changedFields = new Set();
+
+    // Store original values
+    const origValues = {};
+    document.querySelectorAll('.frm-input').forEach(inp => {
+        origValues[inp.id || inp.name] = inp.value;
+    });
+
+    function markChanged(el) {
+        const key = el.id || el.name;
+        const isChanged = el.value !== (origValues[key] ?? '');
+        el.classList.toggle('changed', isChanged);
+        if (isChanged) changedFields.add(key); else changedFields.delete(key);
+        updateChangeCount();
+    }
+
+    function updateChangeCount() {
+        const n = changedFields.size;
+        const cc = document.getElementById('changeCount');
+        cc.classList.toggle('visible', n > 0);
+        document.getElementById('changeNum').textContent = n;
+    }
+
+    function syncPreview(el) {
+        markChanged(el);
+        const name = el.value.trim();
+        document.getElementById('previewName').textContent = name || 'Họ và tên';
+        if (!document.getElementById('inpAnh').value.trim()) {
+            document.getElementById('avatarPreview').src =
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'GV')}&background=1d4ed8&color=fff&size=160&bold=true`;
+        }
+    }
+
+    function syncMajor(el) {
+        markChanged(el);
+        document.getElementById('previewMajor').textContent = el.value.trim() || 'Chuyên môn';
+    }
+
+    function syncAvatar(el) {
+        markChanged(el);
+        const url = el.value.trim();
+        if (url) {
+            document.getElementById('avatarPreview').src = url;
+        } else {
+            const name = document.getElementById('inpHoTen').value.trim();
+            document.getElementById('avatarPreview').src =
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'GV')}&background=1d4ed8&color=fff&size=160&bold=true`;
+        }
+    }
+
+    function toggleStatus() {
+        statusOn = !statusOn;
+        document.getElementById('TrangThai').value = statusOn ? 1 : 0;
+        document.getElementById('toggleSwitch').classList.toggle('on', statusOn);
+        document.getElementById('statusLabel').innerHTML = statusOn
+            ? '<i class="fa-solid fa-circle-check me-1" style="color:var(--success)"></i>Đang công tác'
+            : '<i class="fa-solid fa-circle-xmark me-1" style="color:var(--text3)"></i>Đã nghỉ';
+        // count status change
+        const origStatus = @(isActive ? "true" : "false");
+        if (statusOn !== origStatus) changedFields.add('TrangThai'); else changedFields.delete('TrangThai');
+        updateChangeCount();
+    }
+</script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

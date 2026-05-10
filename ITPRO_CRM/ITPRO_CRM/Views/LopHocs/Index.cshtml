@@ -290,14 +290,14 @@
     </div>
 
     <div class="dm-filter-bar">
-        <form method="get" asp-action="Index" class="row g-3 align-items-end">
+        <div class="row g-3 align-items-end">
             <div class="col-md-4">
                 <label class="dm-filter-lbl">Tìm kiếm</label>
-                <input type="text" name="search" value="@ViewBag.Search" class="form-control dm-input" placeholder="Tên lớp, mô tả..." />
+                <input type="text" id="liveSearchInput" class="form-control dm-input" placeholder="" autocomplete="off">
             </div>
             <div class="col-md-2">
                 <label class="dm-filter-lbl">Trạng thái</label>
-                <select name="trangThai" class="form-select dm-input">
+                <select id="statusFilter" class="form-select dm-input">
                     <option value="">Tất cả</option>
                     <option value="0" selected="@(ViewBag.TrangThai?.ToString() == "0")">Sắp mở</option>
                     <option value="1" selected="@(ViewBag.TrangThai?.ToString() == "1")">Đang học</option>
@@ -306,17 +306,11 @@
             </div>
             <div class="col-md-3">
                 <label class="dm-filter-lbl">Giảng viên</label>
-                <select name="giangVienId" class="form-select dm-input" asp-items="ViewBag.GiangViens">
+                <select id="teacherFilter" class="form-select dm-input" asp-items="ViewBag.GiangViens">
                     <option value="">Tất cả giảng viên</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <div class="d-flex gap-2">
-                    <button type="submit" class="dm-btn dm-btn-pri flex-grow-1"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
-                    <a asp-action="Index" class="dm-btn"><i class="fa-solid fa-rotate-right"></i></a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     @if (!Model.Any())
@@ -329,7 +323,7 @@
     }
     else
     {
-        <div class="row g-4">
+        <div class="row g-4" id="classGridContainer">
             @foreach (var item in Model)
             {
                 string accentColor = item.TrangThai == 1 ? "var(--success)" : (item.TrangThai == 0 ? "var(--warning)" : "var(--text3)");
@@ -341,7 +335,7 @@
                 int percent = Math.Min((siSo * 100) / maxSiSo, 100);
                 string barColor = percent >= 90 ? "var(--danger)" : (percent >= 70 ? "var(--warning)" : "var(--success)");
 
-                <div class="col-md-6 col-xl-4">
+                <div class="col-md-6 col-xl-4 class-card-item" data-status="@item.TrangThai" data-teacher="@item.GiangVienId">
                     <div class="dm-class-card" style="border-top: 3px solid @accentColor;">
                         <div class="dm-class-body">
                             <div class="d-flex justify-content-between align-items-start mb-3">
@@ -363,6 +357,7 @@
                             {
                                 <div class="c-meta"><i class="fa-solid fa-clock" style="color: var(--warning);"></i> Lịch: <strong style="color: var(--text);">@item.LichHoc @(item.GioBatDau.HasValue ? $"({item.GioBatDau.Value.ToString(@"hh\:mm")})" : "")</strong></div>
                             }
+
                             @if (item.GiangVien != null)
                             {
                                 <div class="c-meta"><i class="fa-solid fa-chalkboard-user" style="color: var(--success);"></i> GV: <strong style="color: var(--text);">@item.GiangVien.HoTen</strong></div>
@@ -388,3 +383,40 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Hàm xử lý lọc trực tiếp (Live Filter)
+            function executeLiveFilter() {
+                var searchText = $("#liveSearchInput").val().toLowerCase();
+                var statusValue = $("#statusFilter").val();
+                var teacherValue = $("#teacherFilter").val();
+
+                $(".class-card-item").each(function () {
+                    var card = $(this);
+                    var cardText = card.text().toLowerCase();
+                    var cardStatus = card.attr("data-status");
+                    var cardTeacher = card.attr("data-teacher") || ""; // Tránh lỗi null nếu không có giảng viên
+
+                    var isTextMatch = cardText.indexOf(searchText) > -1;
+                    var isStatusMatch = (statusValue === "") || (cardStatus === statusValue);
+                    var isTeacherMatch = (teacherValue === "") || (cardTeacher === teacherValue);
+
+                    if (isTextMatch && isStatusMatch && isTeacherMatch) {
+                        card.show();
+                    } else {
+                        card.hide();
+                    }
+                });
+            }
+
+            // Kích hoạt khi gõ hoặc thay đổi Dropdown
+            $("#liveSearchInput").on("keyup", executeLiveFilter);
+            $("#statusFilter, #teacherFilter").on("change", executeLiveFilter);
+
+        });
+    </script>
+}

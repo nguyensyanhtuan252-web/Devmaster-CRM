@@ -4,6 +4,14 @@
     ViewData["Title"] = "Cấu hình hệ thống";
 }
 
+@if (TempData["Success"] != null)
+{
+    <div id="toast-success" style="position:fixed;top:1.2rem;right:1.5rem;z-index:9999;background:#f0fdf4;border:1.5px solid #86efac;color:#15803d;padding:0.75rem 1.25rem;border-radius:12px;font-size:0.87rem;font-weight:600;display:flex;align-items:center;gap:0.5rem;box-shadow:0 4px 16px rgba(0,0,0,0.1)">
+        <i class="fa-solid fa-circle-check"></i> @TempData["Success"]
+    </div>
+    <script>setTimeout(()=>document.getElementById('toast-success')?.remove(),3500)</script>
+}
+
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
 
@@ -167,7 +175,7 @@
         border-radius: 10px;
     }
 
-    /* BODY LAYOUT */
+    /* BODY */
     .cfg-body {
         display: grid;
         grid-template-columns: 1fr 320px;
@@ -275,7 +283,14 @@
         font-weight: 800;
         flex-shrink: 0;
         box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+        overflow: hidden;
     }
+
+        .logo-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
     .logo-info strong {
         display: block;
@@ -609,16 +624,9 @@
             padding: 1.2rem;
         }
 
-        .cfg-hero {
-            padding: 1.5rem 1.2rem 2.5rem;
-        }
-
-        .cfg-tabs-wrap {
-            padding: 0 1.2rem;
-        }
-
-        .cfg-save-bar {
-            padding: 0.9rem 1.2rem;
+        .cfg-hero, .cfg-tabs-wrap, .cfg-save-bar {
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
         }
 
         .field-row.col2 {
@@ -628,10 +636,11 @@
 </style>
 
 <div class="cfg-root">
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger px-4 pt-2" style="font-size:0.83rem"></div>
 
+        <!-- HERO -->
         <div class="cfg-hero">
             <div class="cfg-hero-inner">
                 <div class="cfg-hero-left">
@@ -645,6 +654,7 @@
             </div>
         </div>
 
+        <!-- TABS -->
         <div class="cfg-tabs-wrap">
             <button type="button" class="cfg-tab active" onclick="switchTab(this,'tab-general')">
                 <i class="fa-solid fa-building"></i> Thông tin chung
@@ -659,10 +669,13 @@
 
         <div class="cfg-body">
 
-            <!-- LEFT -->
+            <!-- ───────────── LEFT COLUMN ───────────── -->
             <div>
 
+                <!-- TAB: THÔNG TIN CHUNG -->
                 <div id="tab-general">
+
+                    <!-- Card: Nhận diện thương hiệu -->
                     <div class="cfg-card">
                         <div class="cfg-card-head">
                             <div class="cfg-card-head-icon icon-blue"><i class="fa-solid fa-landmark"></i></div>
@@ -672,15 +685,27 @@
                             </div>
                         </div>
                         <div class="cfg-card-body">
+
+                            <!-- Logo upload -->
                             <div class="logo-zone" onclick="document.getElementById('logoInput').click()">
-                                <div class="logo-avatar">IT</div>
+                                <div class="logo-avatar" id="logoPreview">
+                                    @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                                    {
+                                        <img src="@Model.LogoUrl" alt="Logo" />
+                                    }
+                                    else
+                                    {
+                                        <span>IT</span>
+                                    }
+                                </div>
                                 <div class="logo-info">
                                     <strong>Logo trung tâm</strong>
                                     <span>PNG hoặc JPG · Khuyến nghị 256×256px · Tối đa 2MB</span>
                                 </div>
                                 <button type="button" class="logo-upload-btn"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Tải lên</button>
                             </div>
-                            <input type="file" id="logoInput" accept="image/*" style="display:none">
+                            <input type="file" id="logoInput" name="logoFile" accept="image/*" style="display:none">
+                            <input type="hidden" asp-for="LogoUrl" />
 
                             <div class="field-row">
                                 <div class="field-wrap">
@@ -700,6 +725,7 @@
                         </div>
                     </div>
 
+                    <!-- Card: Thông tin liên hệ -->
                     <div class="cfg-card">
                         <div class="cfg-card-head">
                             <div class="cfg-card-head-icon icon-green"><i class="fa-solid fa-address-book"></i></div>
@@ -723,7 +749,7 @@
                                     <label class="field-label"><i class="fa-solid fa-phone-volume"></i> Hotline dự phòng</label>
                                     <div class="phone-wrap">
                                         <span class="phone-prefix"><i class="fa-solid fa-phone" style="font-size:0.78rem;margin-right:4px;color:#94a3b8"></i> +84</span>
-                                        <input class="field-input" placeholder="Tùy chọn" />
+                                        <input asp-for="HotlineDuPhong" class="field-input" placeholder="Tùy chọn" />
                                     </div>
                                     <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Dùng khi hotline chính bận.</span>
                                 </div>
@@ -734,27 +760,28 @@
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-brands fa-facebook"></i> Facebook Page</label>
-                                    <input class="field-input" placeholder="facebook.com/itpro.academy" />
+                                    <input asp-for="Facebook" class="field-input" placeholder="facebook.com/itpro.academy" />
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-brands fa-youtube"></i> Kênh YouTube</label>
-                                    <input class="field-input" placeholder="youtube.com/@@itpro" />
+                                    <input asp-for="Youtube" class="field-input" placeholder="youtube.com/@@itpro" />
                                 </div>
                             </div>
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-globe"></i> Website chính thức</label>
-                                    <input class="field-input" placeholder="https://itpro.edu.vn" />
+                                    <input asp-for="Website" class="field-input" placeholder="https://itpro.edu.vn" />
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-brands fa-tiktok"></i> TikTok</label>
-                                    <input class="field-input" placeholder="tiktok.com/@@itpro" />
+                                    <input asp-for="TikTok" class="field-input" placeholder="tiktok.com/@@itpro" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div><!-- /tab-general -->
+                <!-- TAB: HIỂN THỊ & NGÔN NGỮ -->
                 <div id="tab-display" style="display:none">
                     <div class="cfg-card">
                         <div class="cfg-card-head">
@@ -765,46 +792,44 @@
                             </div>
                         </div>
                         <div class="cfg-card-body">
-                            <div class="field-row col2">
-                                <div class="field-wrap">
-                                    <label class="field-label"><i class="fa-solid fa-droplet"></i> Màu thương hiệu chính</label>
-                                    <div style="display:flex;gap:0.6rem;align-items:center">
-                                        <input type="color" value="#2563eb" style="width:48px;height:42px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px 4px;background:#fff">
-                                        <input class="field-input" value="#2563eb" style="flex:1" />
-                                    </div>
-                                </div>
-                                <div class="field-wrap">
-                                    <label class="field-label"><i class="fa-solid fa-droplet"></i> Màu nhấn phụ</label>
-                                    <div style="display:flex;gap:0.6rem;align-items:center">
-                                        <input type="color" value="#0ea5e9" style="width:48px;height:42px;border-radius:8px;border:1.5px solid #e2e8f0;cursor:pointer;padding:2px 4px;background:#fff">
-                                        <input class="field-input" value="#0ea5e9" style="flex:1" />
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-language"></i> Ngôn ngữ hệ thống</label>
-                                    <select class="field-input"><option selected>Tiếng Việt</option><option>English</option></select>
+                                    <select asp-for="NgonNgu" class="field-input">
+                                        <option value="vi">Tiếng Việt</option>
+                                        <option value="en">English</option>
+                                    </select>
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-clock"></i> Múi giờ</label>
-                                    <select class="field-input"><option selected>GMT+7 (Hà Nội)</option><option>GMT+0</option></select>
+                                    <select asp-for="MuiGio" class="field-input">
+                                        <option value="GMT+7">GMT+7 (Hà Nội)</option>
+                                        <option value="GMT+0">GMT+0 (UTC)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-money-bill"></i> Đơn vị tiền tệ</label>
-                                    <select class="field-input"><option selected>VNĐ (₫)</option><option>USD ($)</option></select>
+                                    <select asp-for="DonViTienTe" class="field-input">
+                                        <option value="VND">VNĐ (₫)</option>
+                                        <option value="USD">USD ($)</option>
+                                    </select>
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-calendar"></i> Định dạng ngày</label>
-                                    <select class="field-input"><option selected>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select>
+                                    <select asp-for="DinhDangNgay" class="field-input">
+                                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </div><!-- /tab-display -->
+                <!-- TAB: NÂNG CAO -->
                 <div id="tab-advanced" style="display:none">
                     <div class="cfg-card">
                         <div class="cfg-card-head">
@@ -818,32 +843,40 @@
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-clock-rotate-left"></i> Thời gian hết phiên (phút)</label>
-                                    <input class="field-input" type="number" value="60" min="15" max="480" />
+                                    <input asp-for="ThoiGianHetPhien" class="field-input" type="number" min="15" max="480" />
                                     <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Tự động đăng xuất sau thời gian không hoạt động.</span>
+                                    <span asp-validation-for="ThoiGianHetPhien" class="text-danger" style="font-size:0.78rem"></span>
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-users"></i> Số phiên tối đa / tài khoản</label>
-                                    <input class="field-input" type="number" value="3" min="1" max="10" />
+                                    <input asp-for="SoPhienToiDa" class="field-input" type="number" min="1" max="10" />
+                                    <span asp-validation-for="SoPhienToiDa" class="text-danger" style="font-size:0.78rem"></span>
                                 </div>
                             </div>
+
                             <div class="section-divider">Sao lưu dữ liệu</div>
+
                             <div class="field-row col2">
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-rotate"></i> Tần suất sao lưu tự động</label>
-                                    <select class="field-input"><option>Hàng ngày</option><option selected>Hàng tuần</option><option>Hàng tháng</option></select>
+                                    <select asp-for="TanSuatSaoLuu" class="field-input">
+                                        <option value="daily">Hàng ngày</option>
+                                        <option value="weekly">Hàng tuần</option>
+                                        <option value="monthly">Hàng tháng</option>
+                                    </select>
                                 </div>
                                 <div class="field-wrap">
                                     <label class="field-label"><i class="fa-solid fa-database"></i> Lưu trữ bản sao lưu (ngày)</label>
-                                    <input class="field-input" type="number" value="30" min="7" max="365" />
+                                    <input asp-for="LuuTruSaoLuu" class="field-input" type="number" min="7" max="365" />
+                                    <span asp-validation-for="LuuTruSaoLuu" class="text-danger" style="font-size:0.78rem"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- /tab-advanced -->
 
-            </div>
-
-            <!-- SIDEBAR -->
+            </div><!-- /left -->
+            <!-- ───────────── SIDEBAR ───────────── -->
             <div>
                 <div class="sidebar-card">
                     <div class="sidebar-card-head"><i class="fa-solid fa-signal" style="color:#22c55e"></i> Trạng thái hệ thống</div>
@@ -871,14 +904,65 @@
                     </div>
                 </div>
 
+                <!-- Checklist động theo dữ liệu model -->
                 <div class="sidebar-card">
                     <div class="sidebar-card-head"><i class="fa-solid fa-list-check" style="color:#2563eb"></i> Danh sách kiểm tra</div>
                     <div class="sidebar-card-body">
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Tên trung tâm đã thiết lập</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Địa chỉ đã cập nhật</div>
-                        <div class="checklist-item"><i class="fa-solid fa-circle-check check-icon"></i> Hotline đã khai báo</div>
-                        <div class="checklist-item"><i class="fa-solid fa-triangle-exclamation warn-icon"></i> Chưa tải logo lên</div>
-                        <div class="checklist-item"><i class="fa-solid fa-triangle-exclamation warn-icon"></i> Chưa cấu hình mạng xã hội</div>
+                        <div class="checklist-item">
+                            @if (!string.IsNullOrEmpty(Model.TenTrungTam))
+                            {
+                                <i class="fa-solid fa-circle-check check-icon"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+                            }
+                            Tên trung tâm đã thiết lập
+                        </div>
+                        <div class="checklist-item">
+                            @if (!string.IsNullOrEmpty(Model.DiaChi))
+                            {
+                                <i class="fa-solid fa-circle-check check-icon"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+                            }
+                            Địa chỉ đã cập nhật
+                        </div>
+                        <div class="checklist-item">
+                            @if (!string.IsNullOrEmpty(Model.SoDienThoai))
+                            {
+                                <i class="fa-solid fa-circle-check check-icon"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+                            }
+                            Hotline đã khai báo
+                        </div>
+                        <div class="checklist-item">
+                            @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                            {
+                                <i class="fa-solid fa-circle-check check-icon"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+                            }
+                            Logo trung tâm
+                        </div>
+                        <div class="checklist-item">
+                            @if (!string.IsNullOrEmpty(Model.Facebook) || !string.IsNullOrEmpty(Model.Website))
+                            {
+                                <i class="fa-solid fa-circle-check check-icon"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+                            }
+                            Mạng xã hội / Website
+                        </div>
                     </div>
                 </div>
 
@@ -887,7 +971,7 @@
                     <div class="sidebar-card-body">
                         <div class="stat-item">
                             <div class="stat-icon" style="background:#f5f3ff;color:#7c3aed"><i class="fa-solid fa-cube"></i></div>
-                            <div class="stat-text"><strong>Devmaster CRM</strong><span>Phiên bản 2.5.1</span></div>
+                            <div class="stat-text"><strong>ITPRO CRM</strong><span>Phiên bản 2.5.1</span></div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-icon" style="background:#fdf4ff;color:#a21caf"><i class="fa-solid fa-calendar-days"></i></div>
@@ -899,10 +983,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div><!-- /sidebar -->
 
-        </div>
-
+        </div><!-- /cfg-body -->
+        <!-- SAVE BAR -->
         <div class="cfg-save-bar">
             <div class="save-bar-hint">
                 <i class="fa-regular fa-floppy-disk"></i>
@@ -922,13 +1006,26 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        // Tab switching
         function switchTab(btn, targetId) {
             document.querySelectorAll('.cfg-tab').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
-            ['tab-general','tab-display','tab-advanced'].forEach(id => {
+            ['tab-general', 'tab-display', 'tab-advanced'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = (id === targetId) ? 'block' : 'none';
             });
         }
+
+        // Logo preview
+        document.getElementById('logoInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const preview = document.getElementById('logoPreview');
+                preview.innerHTML = `<img src="${e.target.result}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:14px">`;
+            };
+            reader.readAsDataURL(file);
+        });
     </script>
 }

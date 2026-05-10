@@ -1,75 +1,593 @@
 ﻿@model ITPRO_CRM.Models.GiangVien
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xác nhận Xóa Giảng viên";
+    var isActive = Model.TrangThai == 1;
+    var avatarUrl = string.IsNullOrEmpty(Model.AnhDaiDien)
+        ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(Model.HoTen ?? "GV")}&background=dc2626&color=fff&size=160&bold=true"
+        : Model.AnhDaiDien;
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>GiangVien</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HoTen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HoTen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoDienThoai)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoDienThoai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnhDaiDien)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnhDaiDien)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BangCap)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BangCap)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KinhNghiem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KinhNghiem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThanhTich)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThanhTich)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ChuyenMon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ChuyenMon)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrangThai)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrangThai)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    .del-wrap * {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .del-wrap i {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+    }
+
+    /* ── Breadcrumb ── */
+    .del-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: var(--text3);
+        margin-bottom: 24px;
+        font-weight: 500;
+    }
+
+        .del-breadcrumb a {
+            color: var(--text3);
+            text-decoration: none;
+        }
+
+            .del-breadcrumb a:hover {
+                color: var(--danger);
+            }
+
+        .del-breadcrumb i {
+            font-size: 10px;
+        }
+
+    /* ── Center layout ── */
+    .del-center {
+        max-width: 560px;
+        margin: 0 auto;
+        animation: delIn .3s cubic-bezier(.34,1.2,.64,1) both;
+    }
+
+    @@keyframes delIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px) scale(.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ── Warning banner ── */
+    .del-warning-banner {
+        background: var(--danger-dim);
+        border: 1px solid var(--danger);
+        border-radius: 14px 14px 0 0;
+        padding: 20px 24px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        border-bottom: none;
+    }
+
+    .del-warning-icon-wrap {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        background: var(--danger);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 19px;
+        box-shadow: 0 4px 14px rgba(220,38,38,.35);
+    }
+
+    .del-warning-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--danger);
+        margin-bottom: 4px;
+        letter-spacing: -.2px;
+    }
+
+    .del-warning-sub {
+        font-size: 12.5px;
+        color: var(--text2);
+        line-height: 1.5;
+    }
+
+        .del-warning-sub strong {
+            color: var(--text);
+        }
+
+    /* ── Main card ── */
+    .del-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 16px 16px;
+        overflow: hidden;
+    }
+
+    /* ── Profile row ── */
+    .del-profile-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+    }
+
+    .del-avatar-wrap {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .del-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--surface);
+        box-shadow: 0 0 0 2px var(--danger);
+        display: block;
+        filter: grayscale(20%);
+    }
+
+    .del-avatar-x {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--danger);
+        border: 2px solid var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 9px;
+    }
+
+    .del-profile-name {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 3px;
+        letter-spacing: -.2px;
+    }
+
+    .del-profile-major {
+        font-size: 12px;
+        color: var(--text2);
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .del-profile-id {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: var(--text3);
+        font-weight: 500;
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 2px 7px;
+    }
+
+    /* ── Info table ── */
+    .del-info-table {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .del-info-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .del-info-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+    .del-info-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .del-info-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .del-info-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: var(--danger-dim);
+        color: var(--danger);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        flex-shrink: 0;
+    }
+
+    .del-info-key {
+        font-size: 11px;
+        color: var(--text3);
+        font-weight: 500;
+        min-width: 90px;
+    }
+
+    .del-info-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+        .del-info-val.empty {
+            color: var(--text3);
+            font-weight: 400;
+            font-style: italic;
+            font-size: 12px;
+        }
+
+    /* ── Consequences notice ── */
+    .del-consequences {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .del-cons-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .del-cons-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+    .del-cons-list {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .del-cons-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        font-size: 12.5px;
+        color: var(--text2);
+        line-height: 1.5;
+    }
+
+    .del-cons-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        background: var(--danger-dim);
+        color: var(--danger);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    /* ── Confirm input ── */
+    .del-confirm-block {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+    }
+
+    .del-confirm-label {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .del-confirm-label span {
+            color: var(--danger);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+    .del-confirm-input {
+        width: 100%;
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: 'JetBrains Mono', monospace;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+    }
+
+        .del-confirm-input:focus {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px rgba(220,38,38,.1);
+        }
+
+    .del-confirm-hint {
+        font-size: 11.5px;
+        color: var(--text3);
+        margin-top: 7px;
+    }
+
+    /* ── Footer ── */
+    .del-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .del-cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 20px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text2);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .13s;
+        font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+        .del-cancel-btn:hover {
+            border-color: var(--border2);
+            color: var(--text);
+            background: var(--surface2);
+        }
+
+    .del-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+        background: var(--danger);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: all .18s;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        box-shadow: 0 4px 14px rgba(220,38,38,.3);
+        opacity: .45;
+        pointer-events: none;
+    }
+
+        .del-submit-btn.ready {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+            .del-submit-btn.ready:hover {
+                background: #b91c1c;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(220,38,38,.4);
+            }
+
+    @@media (max-width: 600px) {
+        .del-profile-row {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .del-info-key {
+            min-width: 70px;
+        }
+    }
+</style>
+
+<div class="del-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="del-breadcrumb">
+        <i class="fa-solid fa-house"></i>
+        <a asp-action="Index">Giảng viên</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <a asp-action="Details" asp-route-id="@Model.Id">@Model.HoTen</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span style="color:var(--danger);font-weight:700">Xóa</span>
+    </div>
+
+    <div class="del-center">
+
+        <!-- Warning banner -->
+        <div class="del-warning-banner">
+            <div class="del-warning-icon-wrap">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <div class="del-warning-title">Hành động không thể hoàn tác</div>
+                <div class="del-warning-sub">
+                    Bạn sắp xóa vĩnh viễn hồ sơ của <strong>@Model.HoTen</strong>.
+                    Tất cả dữ liệu liên quan sẽ bị mất hoàn toàn và không thể khôi phục.
+                </div>
+            </div>
+        </div>
+
+        <!-- Main card -->
+        <div class="del-card">
+
+            <!-- Profile row -->
+            <div class="del-profile-row">
+                <div class="del-avatar-wrap">
+                    <img src="@avatarUrl" class="del-avatar" alt="@Model.HoTen">
+                    <div class="del-avatar-x"><i class="fa-solid fa-xmark"></i></div>
+                </div>
+                <div>
+                    <div class="del-profile-name">@Model.HoTen</div>
+                    @if (!string.IsNullOrEmpty(Model.ChuyenMon))
+                    {
+                        <div class="del-profile-major">@Model.ChuyenMon</div>
+                    }
+                    <div class="del-profile-id">
+                        <i class="fa-solid fa-fingerprint"></i> ID #@Model.Id
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info table -->
+            <div class="del-info-table">
+                <div class="del-info-title">Thông tin sẽ bị xóa</div>
+                <div class="del-info-rows">
+                    <div class="del-info-row">
+                        <div class="del-info-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="del-info-key">Email</div>
+                        <div class="del-info-val @(string.IsNullOrEmpty(Model.Email) ? "empty" : "")">
+                            @(string.IsNullOrEmpty(Model.Email) ? "Không có" : Model.Email)
+                        </div>
+                    </div>
+                    <div class="del-info-row">
+                        <div class="del-info-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="del-info-key">Điện thoại</div>
+                        <div class="del-info-val @(string.IsNullOrEmpty(Model.SoDienThoai) ? "empty" : "")">
+                            @(string.IsNullOrEmpty(Model.SoDienThoai) ? "Không có" : Model.SoDienThoai)
+                        </div>
+                    </div>
+                    <div class="del-info-row">
+                        <div class="del-info-icon"><i class="fa-solid fa-scroll"></i></div>
+                        <div class="del-info-key">Bằng cấp</div>
+                        <div class="del-info-val @(string.IsNullOrEmpty(Model.BangCap) ? "empty" : "")">
+                            @(string.IsNullOrEmpty(Model.BangCap) ? "Không có" : Model.BangCap)
+                        </div>
+                    </div>
+                    <div class="del-info-row">
+                        <div class="del-info-icon"><i class="fa-solid fa-briefcase"></i></div>
+                        <div class="del-info-key">Kinh nghiệm</div>
+                        <div class="del-info-val @(string.IsNullOrEmpty(Model.KinhNghiem) ? "empty" : "")">
+                            @(string.IsNullOrEmpty(Model.KinhNghiem) ? "Không có" : Model.KinhNghiem)
+                        </div>
+                    </div>
+                    <div class="del-info-row">
+                        <div class="del-info-icon"><i class="fa-solid fa-toggle-on"></i></div>
+                        <div class="del-info-key">Trạng thái</div>
+                        <div class="del-info-val">
+                            @(isActive ? "Đang công tác" : "Đã nghỉ")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consequences -->
+            <div class="del-consequences">
+                <div class="del-cons-title">Hậu quả khi xóa</div>
+                <div class="del-cons-list">
+                    <div class="del-cons-item">
+                        <div class="del-cons-dot"><i class="fa-solid fa-xmark"></i></div>
+                        Hồ sơ giảng viên sẽ bị xóa vĩnh viễn khỏi hệ thống.
+                    </div>
+                    <div class="del-cons-item">
+                        <div class="del-cons-dot"><i class="fa-solid fa-xmark"></i></div>
+                        Các liên kết đến hồ sơ này sẽ không còn hoạt động.
+                    </div>
+                    <div class="del-cons-item">
+                        <div class="del-cons-dot"><i class="fa-solid fa-xmark"></i></div>
+                        Dữ liệu không thể khôi phục sau khi xác nhận xóa.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirm input -->
+            <div class="del-confirm-block">
+                <div class="del-confirm-label">
+                    Nhập tên giảng viên để xác nhận:
+                    <span>"@Model.HoTen"</span>
+                </div>
+                <input type="text" class="del-confirm-input" id="confirmInput"
+                       placeholder="Nhập chính xác tên giảng viên..."
+                       oninput="checkConfirm()" autocomplete="off">
+                <div class="del-confirm-hint">
+                    <i class="fa-solid fa-circle-info me-1"></i>
+                    Tên phải khớp chính xác để kích hoạt nút xóa.
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="del-footer">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="del-cancel-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Hủy, giữ lại
+                </a>
+                <form asp-action="Delete" style="margin:0">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="del-submit-btn" id="deleteBtn">
+                        <i class="fa-solid fa-trash"></i> Xóa vĩnh viễn
+                    </button>
+                </form>
+            </div>
+
+        </div><!-- /del-card -->
+    </div><!-- /del-center -->
 </div>
+
+<script>
+    const TARGET = "@Model.HoTen".trim();
+
+    function checkConfirm() {
+        const val = document.getElementById('confirmInput').value.trim();
+        const btn = document.getElementById('deleteBtn');
+        const match = val === TARGET;
+        btn.classList.toggle('ready', match);
+    }
+</script>

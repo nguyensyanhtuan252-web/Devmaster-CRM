@@ -274,3 +274,4 @@ C:\TT Đồ án\DoAn\ITPRO_CRM_upgraded_full\crm_upgraded\ITPRO_CRM\ITPRO_CRM\ob
 C:\TT Đồ án\DoAn\ITPRO_CRM_upgraded_full\crm_upgraded\ITPRO_CRM\ITPRO_CRM\obj\Debug\net8.0\ITPRO_CRM.pdb
 C:\TT Đồ án\DoAn\ITPRO_CRM_upgraded_full\crm_upgraded\ITPRO_CRM\ITPRO_CRM\obj\Debug\net8.0\ITPRO_CRM.genruntimeconfig.cache
 C:\TT Đồ án\DoAn\ITPRO_CRM_upgraded_full\crm_upgraded\ITPRO_CRM\ITPRO_CRM\obj\Debug\net8.0\ref\ITPRO_CRM.dll
+C:\TT Đồ án\DoAn\ITPRO_CRM_upgraded_full\crm_upgraded\ITPRO_CRM\ITPRO_CRM\obj\Debug\net8.0\ITPRO_CRM.sourcelink.json

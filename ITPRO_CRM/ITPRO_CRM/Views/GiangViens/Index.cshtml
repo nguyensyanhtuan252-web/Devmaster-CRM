@@ -7,164 +7,770 @@
     var inactive = Model.Count(x => x.TrangThai != 1);
 }
 
+
+
 <style>
-    .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px; }
-    .page-title { font-size:20px; font-weight:700; color:var(--text); }
-    .page-sub { font-size:12px; color:var(--text2); margin-top:2px; }
-    .stat-strip { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
-    .stat-chip { display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 16px; flex:1; min-width:130px; }
-    .stat-chip-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
-    .stat-chip-val { font-size:20px; font-weight:700; font-family:'DM Mono',monospace; line-height:1; }
-    .stat-chip-lbl { font-size:11px; color:var(--text2); margin-top:2px; }
-    .filter-bar { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
-    .filter-bar input { background:var(--surface); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:7px 12px; font-size:12.5px; outline:none; width:220px; transition:border-color .15s; }
-    .filter-bar input:focus { border-color:var(--accent); }
-    .filter-bar input::placeholder { color:var(--text3); }
-    .filter-btn { padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--surface); color:var(--text2); cursor:pointer; transition:all .13s; }
-    .filter-btn.active,.filter-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
-    .gv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
-    /* Teacher card */
-    .gv-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; text-align:center; transition:transform .2s,box-shadow .2s,border-color .2s; position:relative; overflow:hidden; }
-    .gv-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--border2); }
-    .gv-card.inactive { opacity:.65; }
-    /* Status indicator strip at top */
-    .gv-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--success); border-radius:3px 3px 0 0; }
-    .gv-card.inactive::before { background:var(--text3); }
-    .gv-avatar-wrap { position:relative; display:inline-block; margin-bottom:12px; }
-    .gv-avatar { width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--border); }
-    .gv-status-dot { position:absolute; bottom:4px; right:4px; width:14px; height:14px; border-radius:50%; border:2px solid var(--surface); }
-    .gv-status-dot.active { background:var(--success); }
-    .gv-status-dot.inactive { background:var(--text3); }
-    .gv-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
-    .gv-major { font-size:12px; font-weight:600; color:var(--accent); margin-bottom:8px; }
-    .gv-degree { font-size:11px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:3px 10px; display:inline-block; color:var(--text2); margin-bottom:10px; }
-    .gv-bio { font-size:12px; color:var(--text2); line-height:1.5; margin-bottom:14px; text-align:left; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-    .gv-tags { display:flex; flex-wrap:wrap; gap:4px; justify-content:center; margin-bottom:14px; }
-    .gv-tag { font-size:10px; background:var(--accent-dim); color:var(--accent); border-radius:4px; padding:2px 6px; font-weight:600; }
-    .gv-contacts { display:flex; justify-content:center; gap:8px; margin-bottom:12px; }
-    .gv-contact-btn { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); display:flex; align-items:center; justify-content:center; color:var(--text2); text-decoration:none; transition:all .12s; font-size:13px; }
-    .gv-contact-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
-    .gv-actions { display:flex; gap:6px; }
-    .gv-action-btn { flex:1; padding:6px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; text-align:center; text-decoration:none; cursor:pointer; transition:all .12s; }
-    .gv-action-btn:hover { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
-    .gv-action-btn.danger:hover { background:var(--danger-dim); color:var(--danger); border-color:var(--danger); }
-    .add-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; background:var(--accent); color:#fff; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; border:none; cursor:pointer; transition:background .13s; }
-    .add-btn:hover { background:var(--accent-h); color:#fff; }
-    .empty-state { text-align:center; padding:60px 20px; color:var(--text2); grid-column:1/-1; }
-    .empty-state i { font-size:48px; color:var(--text3); display:block; margin-bottom:16px; }
-</style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-<div class="page-header">
-    <div>
-        <div class="page-title"><i class="fa-solid fa-chalkboard-user me-2" style="color:var(--accent)"></i>Đội ngũ Giảng viên</div>
-        <div class="page-sub">@total giảng viên — @active đang công tác, @inactive đã nghỉ</div>
-    </div>
-    <a asp-action="Create" class="add-btn">
-        <i class="fa-solid fa-user-plus"></i> Thêm Giảng viên
-    </a>
-</div>
+    .gv-wrap * {
+        font-family: 'Be Vietnam Pro', sans-serif;
+        box-sizing: border-box;
+    }
 
-<!-- Stats -->
-<div class="stat-strip">
-    <div class="stat-chip">
-        <div class="stat-chip-icon" style="background:var(--accent-dim);color:var(--accent)"><i class="fa-solid fa-users"></i></div>
-        <div><div class="stat-chip-val">@total</div><div class="stat-chip-lbl">Tổng giảng viên</div></div>
-    </div>
-    <div class="stat-chip">
-        <div class="stat-chip-icon" style="background:var(--success-dim);color:var(--success)"><i class="fa-solid fa-circle-check"></i></div>
-        <div><div class="stat-chip-val" style="color:var(--success)">@active</div><div class="stat-chip-lbl">Đang công tác</div></div>
-    </div>
-    <div class="stat-chip">
-        <div class="stat-chip-icon" style="background:var(--danger-dim);color:var(--danger)"><i class="fa-solid fa-circle-xmark"></i></div>
-        <div><div class="stat-chip-val" style="color:var(--danger)">@inactive</div><div class="stat-chip-lbl">Đã nghỉ</div></div>
-    </div>
-</div>
+    .gv-wrap i {
+        font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+    }
 
-<!-- Filter bar -->
-<div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên, chuyên môn..." oninput="filterGV()">
-    <button class="filter-btn active" id="btn-all" onclick="setFilter('all')">Tất cả</button>
-    <button class="filter-btn" id="btn-active" onclick="setFilter('active')">Đang công tác</button>
-    <button class="filter-btn" id="btn-inactive" onclick="setFilter('inactive')">Đã nghỉ</button>
-</div>
+    /* ── Page Header ── */
+    .gv-page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
 
-<!-- Teacher grid -->
-<div class="gv-grid" id="gvGrid">
-    @foreach (var item in Model)
-    {
-        var avatarUrl = string.IsNullOrEmpty(item.AnhDaiDien)
-            ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(item.HoTen)}&background=1d4ed8&color=fff&size=160"
+    .gv-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: var(--text3);
+        margin-bottom: 6px;
+        font-weight: 500;
+        letter-spacing: .3px;
+    }
+
+        .gv-breadcrumb i {
+            font-size: 10px;
+        }
+
+    .gv-page-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -.4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .gv-page-title-icon {
+        width: 38px;
+        height: 38px;
+        background: var(--accent);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .gv-page-sub {
+        font-size: 12.5px;
+        color: var(--text2);
+        margin-top: 4px;
+        margin-left: 48px;
+        font-weight: 400;
+    }
+
+    .gv-add-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: var(--accent);
+        color: #fff !important;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all .18s;
+        box-shadow: 0 4px 14px rgba(var(--accent-rgb, 29,78,216), .3);
+        letter-spacing: .1px;
+        flex-shrink: 0;
+        margin-top: 4px;
+    }
+
+        .gv-add-btn:hover {
+            background: var(--accent-h);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(var(--accent-rgb, 29,78,216), .38);
+        }
+
+        .gv-add-btn i {
+            font-size: 12px;
+        }
+
+    /* ── Stat Strip ── */
+    .gv-stat-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .gv-stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        transition: border-color .15s, box-shadow .15s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .gv-stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .gv-stat-card.s-total::after {
+            background: var(--accent);
+        }
+
+        .gv-stat-card.s-active::after {
+            background: var(--success);
+        }
+
+        .gv-stat-card.s-inactive::after {
+            background: var(--text3);
+        }
+
+        .gv-stat-card:hover {
+            border-color: var(--border2);
+            box-shadow: var(--shadow);
+        }
+
+    .gv-stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        flex-shrink: 0;
+    }
+
+        .gv-stat-icon.t {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .gv-stat-icon.a {
+            background: var(--success-dim);
+            color: var(--success);
+        }
+
+        .gv-stat-icon.i {
+            background: var(--surface2);
+            color: var(--text3);
+        }
+
+    .gv-stat-val {
+        font-size: 26px;
+        font-weight: 800;
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -1px;
+        line-height: 1;
+    }
+
+    .gv-stat-lbl {
+        font-size: 11.5px;
+        color: var(--text2);
+        margin-top: 3px;
+        font-weight: 500;
+    }
+
+    /* ── Toolbar ── */
+    .gv-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .gv-search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+        max-width: 320px;
+    }
+
+        .gv-search-wrap i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+    .gv-search {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        padding: 9px 12px 9px 34px;
+        font-size: 13px;
+        outline: none;
+        transition: border-color .15s;
+        font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+        .gv-search:focus {
+            border-color: var(--accent);
+        }
+
+        .gv-search::placeholder {
+            color: var(--text3);
+        }
+
+    .gv-filter-group {
+        display: flex;
+        gap: 4px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 3px;
+    }
+
+    .gv-filter-btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        background: transparent;
+        color: var(--text2);
+        cursor: pointer;
+        transition: all .13s;
+        white-space: nowrap;
+        font-family: 'Be Vietnam Pro', sans-serif;
+    }
+
+        .gv-filter-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(var(--accent-rgb, 29,78,216),.25);
+        }
+
+        .gv-filter-btn:not(.active):hover {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+    .gv-result-count {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--text3);
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    /* ── Grid ── */
+    .gv-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+    }
+
+    /* ── Card ── */
+    .gv-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s, border-color .22s;
+        animation: cardIn .3s ease both;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @@keyframes cardIn {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .gv-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px rgba(0,0,0,.12);
+        border-color: var(--border2);
+    }
+
+    .gv-card.inactive {
+        opacity: .7;
+    }
+
+    /* Card top accent bar */
+    .gv-card-bar {
+        height: 4px;
+        width: 100%;
+    }
+
+        .gv-card-bar.active {
+            background: linear-gradient(90deg, var(--success), #34d399);
+        }
+
+        .gv-card-bar.inactive {
+            background: var(--border);
+        }
+
+    .gv-card-body {
+        padding: 20px;
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Avatar */
+    .gv-avatar-ring {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 14px;
+    }
+
+    .gv-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--surface);
+        box-shadow: 0 0 0 2px var(--border);
+        display: block;
+    }
+
+    .gv-card:hover .gv-avatar {
+        box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .gv-dot {
+        position: absolute;
+        bottom: 3px;
+        right: 3px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 2.5px solid var(--surface);
+    }
+
+        .gv-dot.on {
+            background: var(--success);
+        }
+
+        .gv-dot.off {
+            background: var(--text3);
+        }
+
+    .gv-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 3px;
+    }
+
+    .gv-major {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 8px;
+    }
+
+    .gv-degree-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 3px 10px;
+        color: var(--text2);
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+
+    .gv-exp-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10.5px;
+        background: var(--accent-dim);
+        color: var(--accent);
+        border-radius: 5px;
+        padding: 3px 8px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .gv-bio {
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.6;
+        margin-bottom: 14px;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        flex: 1;
+    }
+
+    /* Contact row */
+    .gv-contacts {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    .gv-icon-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text2);
+        text-decoration: none;
+        transition: all .12s;
+        font-size: 12.5px;
+    }
+
+        .gv-icon-btn:hover {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+    /* Card footer actions */
+    .gv-card-footer {
+        display: flex;
+        border-top: 1px solid var(--border);
+    }
+
+    .gv-foot-btn {
+        flex: 1;
+        padding: 10px 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        color: var(--text2);
+        cursor: pointer;
+        transition: all .12s;
+        border: none;
+        background: transparent;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+
+        .gv-foot-btn + .gv-foot-btn {
+            border-left: 1px solid var(--border);
+        }
+
+        .gv-foot-btn:hover {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .gv-foot-btn.del:hover {
+            background: var(--danger-dim);
+            color: var(--danger);
+        }
+
+    /* Status badge */
+    .gv-status-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        letter-spacing: .3px;
+    }
+
+        .gv-status-badge.on {
+            background: var(--success-dim);
+            color: var(--success);
+        }
+
+        .gv-status-badge.off {
+            background: var(--surface2);
+            color: var(--text3);
+        }
+
+    /* Empty state */
+    .gv-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--text2);
+    }
+
+    .gv-empty-icon {
+        width: 72px;
+        height: 72px;
+        background: var(--surface2);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: var(--text3);
+        margin: 0 auto 20px;
+    }
+
+    .gv-empty h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .gv-empty p {
+        font-size: 13px;
+        color: var(--text2);
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 640px) {
+        .gv-stat-strip {
+            grid-template-columns: 1fr;
+        }
+
+        .gv-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .gv-result-count {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 400px) {
+        .gv-grid {
+            grid-template-columns: 1fr;
+        }
+    }</style>
+
+<div class="gv-wrap">
+
+    <!-- Header -->
+    <div class="gv-page-header">
+        <div>
+            <div class="gv-breadcrumb">
+                <i class="fa-solid fa-house"></i> Trang chủ
+                <i class="fa-solid fa-chevron-right"></i> Quản lý
+                <i class="fa-solid fa-chevron-right"></i> Giảng viên
+            </div>
+            <div class="gv-page-title">
+                <div class="gv-page-title-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                Đội ngũ Giảng viên
+            </div>
+            <div class="gv-page-sub">@total giảng viên — @active đang công tác · @inactive đã nghỉ</div>
+        </div>
+        <a asp-action="Create" class="gv-add-btn">
+            <i class="fa-solid fa-user-plus"></i> Thêm Giảng viên
+        </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="gv-stat-strip">
+        <div class="gv-stat-card s-total">
+            <div class="gv-stat-icon t"><i class="fa-solid fa-users"></i></div>
+            <div>
+                <div class="gv-stat-val">@total</div>
+                <div class="gv-stat-lbl">Tổng giảng viên</div>
+            </div>
+        </div>
+        <div class="gv-stat-card s-active">
+            <div class="gv-stat-icon a"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+                <div class="gv-stat-val" style="color:var(--success)">@active</div>
+                <div class="gv-stat-lbl">Đang công tác</div>
+            </div>
+        </div>
+        <div class="gv-stat-card s-inactive">
+            <div class="gv-stat-icon i"><i class="fa-solid fa-circle-xmark"></i></div>
+            <div>
+                <div class="gv-stat-val" style="color:var(--text3)">@inactive</div>
+                <div class="gv-stat-lbl">Đã nghỉ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="gv-toolbar">
+        <div class="gv-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="gv-search" id="gvSearch" placeholder="Tìm theo tên, chuyên môn..." oninput="filterGV()">
+        </div>
+        <div class="gv-filter-group">
+            <button class="gv-filter-btn active" id="btn-all" onclick="setFilter('all')">Tất cả</button>
+            <button class="gv-filter-btn" id="btn-active" onclick="setFilter('active')">Đang công tác</button>
+            <button class="gv-filter-btn" id="btn-inactive" onclick="setFilter('inactive')">Đã nghỉ</button>
+        </div>
+        <div class="gv-result-count" id="gvCount"></div>
+    </div>
+
+    <!-- Grid -->
+    <div class="gv-grid" id="gvGrid">
+        @foreach (var item in Model)
+        {
+            var avatarUrl = string.IsNullOrEmpty(item.AnhDaiDien)
+            ? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(item.HoTen)}&background=1d4ed8&color=fff&size=160&bold=true&font-size=0.35"
             : item.AnhDaiDien;
-        var isActive = item.TrangThai == 1;
+            var isActive = item.TrangThai == 1;
+            var statusClass = isActive ? "active" : "inactive";
 
-        <div class="gv-card @(!isActive ? "inactive" : "")"
-             data-name="@item.HoTen.ToLower()"
-             data-major="@(item.ChuyenMon?.ToLower() ?? "")"
-             data-status="@(isActive ? "active" : "inactive")">
-            <div class="gv-avatar-wrap">
-                <img src="@avatarUrl" class="gv-avatar" alt="@item.HoTen">
-                <span class="gv-status-dot @(isActive ? "active" : "inactive")" title="@(isActive ? "Đang công tác" : "Đã nghỉ")"></span>
-            </div>
-            <div class="gv-name">@item.HoTen</div>
-            @if (!string.IsNullOrEmpty(item.ChuyenMon))
-            {
-                <div class="gv-major">@item.ChuyenMon</div>
-            }
-            @if (!string.IsNullOrEmpty(item.BangCap))
-            {
-                <div class="gv-degree"><i class="fa-solid fa-graduation-cap me-1"></i>@item.BangCap</div>
-            }
-            @if (!string.IsNullOrEmpty(item.KinhNghiem))
-            {
-                <div class="gv-tags">
-                    <span class="gv-tag"><i class="fa-solid fa-briefcase me-1"></i>@item.KinhNghiem</span>
+            <div class="gv-card @(!isActive ? "inactive" : "")"
+                 data-name="@item.HoTen.ToLower()"
+                 data-major="@(item.ChuyenMon?.ToLower() ?? "")"
+                 data-status="@(isActive ? "active" : "inactive")">
+
+                <div class="gv-card-bar @statusClass"></div>
+
+                <div class="gv-card-body">
+                    <span class="gv-status-badge @(isActive ? "on" : "off")">
+                        @(isActive ? "Đang công tác" : "Đã nghỉ")
+                    </span>
+
+                    <div class="gv-avatar-ring">
+                        <img src="@avatarUrl" class="gv-avatar" alt="@item.HoTen">
+                        <span class="gv-dot @(isActive ? "on" : "off")"></span>
+                    </div>
+
+                    <div class="gv-name">@item.HoTen</div>
+
+                    @if (!string.IsNullOrEmpty(item.ChuyenMon))
+                    {
+                        <div class="gv-major">@item.ChuyenMon</div>
+                    }
+                    @if (!string.IsNullOrEmpty(item.BangCap))
+                    {
+                        <div class="gv-degree-badge">
+                            <i class="fa-solid fa-graduation-cap"></i>@item.BangCap
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(item.KinhNghiem))
+                    {
+                        <div>
+                            <span class="gv-exp-tag"><i class="fa-solid fa-briefcase"></i>@item.KinhNghiem</span>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(item.TieuSu))
+                    {
+                        <div class="gv-bio">@item.TieuSu</div>
+                    }
+
+                    <div class="gv-contacts">
+                        @if (!string.IsNullOrEmpty(item.Email))
+                        {
+                            <a href="mailto:@item.Email" class="gv-icon-btn" title="@item.Email">
+                                <i class="fa-solid fa-envelope"></i>
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(item.SoDienThoai))
+                        {
+                            <a href="tel:@item.SoDienThoai" class="gv-icon-btn" title="@item.SoDienThoai">
+                                <i class="fa-solid fa-phone"></i>
+                            </a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.Id" class="gv-icon-btn" title="Xem hồ sơ">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                    </div>
                 </div>
-            }
-            @if (!string.IsNullOrEmpty(item.TieuSu))
-            {
-                <div class="gv-bio">@item.TieuSu</div>
-            }
-            <div class="gv-contacts">
-                @if (!string.IsNullOrEmpty(item.Email))
-                {
-                    <a href="mailto:@item.Email" class="gv-contact-btn" title="@item.Email"><i class="fa-solid fa-envelope"></i></a>
-                }
-                @if (!string.IsNullOrEmpty(item.SoDienThoai))
-                {
-                    <a href="tel:@item.SoDienThoai" class="gv-contact-btn" title="@item.SoDienThoai"><i class="fa-solid fa-phone"></i></a>
-                }
-                <a asp-action="Details" asp-route-id="@item.Id" class="gv-contact-btn" title="Xem hồ sơ chi tiết"><i class="fa-solid fa-eye"></i></a>
+
+                <div class="gv-card-footer">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="gv-foot-btn">
+                        <i class="fa-solid fa-pen"></i> Chỉnh sửa
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="gv-foot-btn del">
+                        <i class="fa-solid fa-trash"></i> Xóa
+                    </a>
+                </div>
             </div>
-            <div class="gv-actions">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="gv-action-btn"><i class="fa-solid fa-pen me-1"></i>Sửa</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="gv-action-btn danger"><i class="fa-solid fa-trash"></i></a>
+        }
+        @if (!Model.Any())
+        {
+            <div class="gv-empty">
+                <div class="gv-empty-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <h3>Chưa có giảng viên nào</h3>
+                <p>Thêm giảng viên đầu tiên để bắt đầu quản lý đội ngũ.</p>
+                <a asp-action="Create" class="gv-add-btn" style="display:inline-flex">
+                    <i class="fa-solid fa-user-plus"></i> Thêm Giảng viên
+                </a>
             </div>
-        </div>
-    }
-    @if (!Model.Any())
-    {
-        <div class="empty-state">
-            <i class="fa-solid fa-chalkboard-user"></i>
-            <div style="font-size:15px;font-weight:600;margin-bottom:8px">Chưa có giảng viên nào</div>
-            <a asp-action="Create" class="add-btn" style="display:inline-flex;margin-top:12px">Thêm giảng viên đầu tiên</a>
-        </div>
-    }
+        }
+    </div>
+
 </div>
 
 <script>
     let gvFilter = 'all';
+
+    function updateCount() {
+        const visible = document.querySelectorAll('.gv-card:not([style*="none"])').length;
+        const total = document.querySelectorAll('.gv-card').length;
+        const el = document.getElementById('gvCount');
+        if (el) el.textContent = visible < total ? `Hiển thị ${visible}/${total}` : `${total} giảng viên`;
+    }
+
     function filterGV() {
-        const q = document.getElementById('searchInput').value.toLowerCase();
+        const q = document.getElementById('gvSearch').value.toLowerCase().trim();
         document.querySelectorAll('.gv-card').forEach(card => {
             const nameOk = !q || (card.dataset.name || '').includes(q) || (card.dataset.major || '').includes(q);
             const statusOk = gvFilter === 'all' || card.dataset.status === gvFilter;
             card.style.display = (nameOk && statusOk) ? '' : 'none';
         });
+        updateCount();
     }
+
     function setFilter(f) {
         gvFilter = f;
-        document.querySelectorAll('.filter-btn[id^="btn-"]').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.gv-filter-btn[id^="btn-"]').forEach(b => b.classList.remove('active'));
         document.getElementById('btn-' + f).classList.add('active');
         filterGV();
     }
+
+    // Stagger card animations
+    document.querySelectorAll('.gv-card').forEach((c, i) => {
+        c.style.animationDelay = (i * 40) + 'ms';
+    });
+
+    updateCount();
 </script>
