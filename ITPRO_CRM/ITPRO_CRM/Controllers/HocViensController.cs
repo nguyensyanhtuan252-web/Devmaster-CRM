@@ -13,9 +13,11 @@ using OfficeOpenXml.Style;
 using System.Drawing;
 using ClosedXML.Excel;
 using System.IO;
+using ITPRO_CRM.Filters; // BẢN SỬA: Thêm thư viện Ổ khóa phân quyền
 
 namespace ITPRO_CRM.Controllers
 {
+    [PhanQuyen(LoaiVaiTro.Admin, LoaiVaiTro.Sale, LoaiVaiTro.KeToan, LoaiVaiTro.GiangVien)] // Cấp quyền vào Controller
     public class HocViensController : Controller
     {
         private readonly ITPRO_CRMContext _context;
@@ -35,12 +37,13 @@ namespace ITPRO_CRM.Controllers
             ViewData["TitlePage"] = "Danh sách Tiềm năng";
             ViewData["CurrentStatus"] = 0;
 
-            var userName = HttpContext.Session.GetString("UserName");
-            if (userName == null) return RedirectToAction("Login", "Access");
+            // BẢN SỬA: Lấy thẳng quyền và ID từ Session cho nhanh, không cần chọc Database tìm nhân viên nữa
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userIdSession = HttpContext.Session.GetInt32("UserId");
+            if (userIdSession == null) return RedirectToAction("Login", "Access");
 
-            var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
-            int currentUserId = currentEmployee?.Id ?? 0;
-            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+            int currentUserId = userIdSession.Value;
+            bool isAdmin = (roleId == (int)LoaiVaiTro.Admin || roleId == (int)LoaiVaiTro.KeToan);
 
             // Chỉ lấy Trạng thái 0
             var query = _context.HocVien
@@ -48,6 +51,7 @@ namespace ITPRO_CRM.Controllers
                 .Include(h => h.NhanVien)
                 .Where(h => h.TrangThai == 0);
 
+            // 🔐 Phân quyền Row-level: Không phải sếp/kế toán thì chỉ lấy khách của mình
             if (!isAdmin)
             {
                 query = query.Where(h => h.NhanVienId == currentUserId);
@@ -63,12 +67,13 @@ namespace ITPRO_CRM.Controllers
             ViewData["TitlePage"] = "Danh sách Đang tư vấn";
             ViewData["CurrentStatus"] = 1;
 
-            var userName = HttpContext.Session.GetString("UserName");
-            if (userName == null) return RedirectToAction("Login", "Access");
+            // BẢN SỬA: Áp dụng Session
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userIdSession = HttpContext.Session.GetInt32("UserId");
+            if (userIdSession == null) return RedirectToAction("Login", "Access");
 
-            var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
-            int currentUserId = currentEmployee?.Id ?? 0;
-            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+            int currentUserId = userIdSession.Value;
+            bool isAdmin = (roleId == (int)LoaiVaiTro.Admin || roleId == (int)LoaiVaiTro.KeToan);
 
             // Chỉ lấy Trạng thái 1
             var query = _context.HocVien
@@ -89,12 +94,13 @@ namespace ITPRO_CRM.Controllers
         // 🔵 HÀM INDEX TỔNG HỢP: Đã tích hợp bộ lọc Thẻ (Tabs) và tính Nợ thông minh
         public async Task<IActionResult> Index(int? trangThai, string filter)
         {
-            var userName = HttpContext.Session.GetString("UserName");
-            if (userName == null) return RedirectToAction("Login", "Access");
+            // BẢN SỬA: Áp dụng Session
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userIdSession = HttpContext.Session.GetInt32("UserId");
+            if (userIdSession == null) return RedirectToAction("Login", "Access");
 
-            var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
-            int currentUserId = currentEmployee?.Id ?? 0;
-            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+            int currentUserId = userIdSession.Value;
+            bool isAdmin = (roleId == (int)LoaiVaiTro.Admin || roleId == (int)LoaiVaiTro.KeToan);
 
             int status = trangThai ?? 2;
             ViewData["CurrentStatus"] = status;
@@ -167,6 +173,9 @@ namespace ITPRO_CRM.Controllers
         // ==========================================
         public async Task<IActionResult> Details(int? id)
         {
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userIdSession = HttpContext.Session.GetInt32("UserId");
+
             if (id == null) return NotFound();
 
             var hocVien = await _context.HocVien
@@ -179,6 +188,12 @@ namespace ITPRO_CRM.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (hocVien == null) return NotFound();
+
+            // 🔐 BẢO MẬT: CHẶN SALE XEM HỒ SƠ KHÁCH HÀNG CỦA NGƯỜI KHÁC (Chống gõ URL lén)
+            if (roleId == (int)LoaiVaiTro.Sale && hocVien.NhanVienId != userIdSession)
+            {
+                return RedirectToAction("Index", "Home", new { error = "unauthorized" });
+            }
 
             // Lấy danh sách các đợt đóng phí của học viên này
             ViewBag.CacDotThanhToan = await _context.DotThanhToan
@@ -196,7 +211,7 @@ namespace ITPRO_CRM.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNote(int HocVienId, string HinhThuc, string NoiDung, string KetQua, DateTime? NgayHen)
         {
-            var currentUser = HttpContext.Session.GetString("UserName") ?? "Admin";
+            var currentUser = HttpContext.Session.GetString("HoTen") ?? HttpContext.Session.GetString("UserName") ?? "Admin";
 
             // 1. Lưu nội dung lịch sử tư vấn
             var history = new LichSuTuVan
@@ -235,6 +250,7 @@ namespace ITPRO_CRM.Controllers
             TempData["ActiveTab"] = "history";
             return RedirectToAction("Details", new { id = HocVienId });
         }
+
         [HttpPost]
         public async Task<IActionResult> DatLichHen(int HocVienId, DateTime NgayHen, string NoiDungHen)
         {
@@ -245,7 +261,7 @@ namespace ITPRO_CRM.Controllers
                 hv.NoiDungHen = NoiDungHen;
 
                 // Tạo thêm 1 dòng lịch sử tư vấn để lưu lại vết "Đã đặt lịch hẹn"
-                var currentUser = HttpContext.Session.GetString("UserName") ?? "Admin";
+                var currentUser = HttpContext.Session.GetString("HoTen") ?? HttpContext.Session.GetString("UserName") ?? "Admin";
                 _context.Add(new LichSuTuVan
                 {
                     HocVienId = HocVienId,
@@ -344,14 +360,6 @@ namespace ITPRO_CRM.Controllers
                 }
                 // ===============================================================
 
-                if (currentUserId != null)
-                {
-                    var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                    var endOfMonth = startOfMonth.AddMonths(1);
-                    var totalLeadsThisMonth = _context.HocVien
-                        .Count(h => h.NhanVienId == currentUserId && h.NgayTao >= startOfMonth && h.NgayTao < endOfMonth);
-                }
-
                 TempData["Success"] = "🎉 Đã thêm thành công!";
 
                 if (hocVien.TrangThai == 0) return RedirectToAction(nameof(Leads));
@@ -369,11 +377,19 @@ namespace ITPRO_CRM.Controllers
         // ==========================================
         public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("UserName") == null) return RedirectToAction("Login", "Access");
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userIdSession = HttpContext.Session.GetInt32("UserId");
+            if (userIdSession == null) return RedirectToAction("Login", "Access");
             if (id == null) return NotFound();
 
             var hocVien = await _context.HocVien.FindAsync(id);
             if (hocVien == null) return NotFound();
+
+            // 🔐 BẢO MẬT: CHẶN SALE SỬA HỒ SƠ KHÁCH HÀNG CỦA NGƯỜI KHÁC
+            if (roleId == (int)LoaiVaiTro.Sale && hocVien.NhanVienId != userIdSession)
+            {
+                return RedirectToAction("Index", "Home", new { error = "unauthorized" });
+            }
 
             ViewData["LopHocId"] = new SelectList(_context.LopHoc, "Id", "TenLop", hocVien.LopHocId);
             ViewData["ChienDichId"] = new SelectList(_context.ChienDich, "Id", "TenChienDich", hocVien.ChienDichId);
@@ -409,6 +425,8 @@ namespace ITPRO_CRM.Controllers
             return View(hocVien);
         }
 
+        // 🔐 CHỈ ADMIN MỚI ĐƯỢC XÓA KHÁCH HÀNG
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -418,6 +436,7 @@ namespace ITPRO_CRM.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hocVien = await _context.HocVien.FindAsync(id);
@@ -473,11 +492,11 @@ namespace ITPRO_CRM.Controllers
         }
 
         private bool HocVienExists(int id) => _context.HocVien.Any(e => e.Id == id);
-        [HttpPost]
+
         [HttpPost]
         public async Task<IActionResult> ThemPhieuThu(int HocVienId, decimal SoTien, int HinhThuc, string NoiDung)
         {
-            var currentUser = HttpContext.Session.GetString("UserName") ?? "Admin";
+            var currentUser = HttpContext.Session.GetString("HoTen") ?? HttpContext.Session.GetString("UserName") ?? "Admin";
 
             // Lưu Phiếu thu vào lịch sử
             var phieuThu = new PhieuThu
@@ -514,6 +533,7 @@ namespace ITPRO_CRM.Controllers
             TempData["ActiveTab"] = "finance";
             return RedirectToAction("Details", new { id = HocVienId });
         }
+
         [HttpPost]
         public async Task<IActionResult> ImportExcel(IFormFile fileExcel)
         {
@@ -534,7 +554,7 @@ namespace ITPRO_CRM.Controllers
             try
             {
                 var listLeads = new List<HocVien>();
-                var currentUser = HttpContext.Session.GetString("UserName") ?? "Admin";
+                var currentUserId = HttpContext.Session.GetInt32("UserId"); // BẢN SỬA: Lấy từ Session
 
                 // 2. Mở file excel trực tiếp từ bộ nhớ đệm (MemoryStream)
                 using (var stream = new MemoryStream())
@@ -577,7 +597,8 @@ namespace ITPRO_CRM.Controllers
                                 MucTieuHocTap = mucTieu,
                                 TrangThai = 0, // 👉 0 = Tiềm năng (Chưa gọi)
                                 NgayTao = DateTime.Now,
-                                NgaySinh = new DateTime(2000, 1, 1) // Ngày sinh ảo mặc định tránh lỗi DB
+                                NgaySinh = new DateTime(2000, 1, 1), // Ngày sinh ảo mặc định tránh lỗi DB
+                                NhanVienId = currentUserId // BẢN SỬA: Gắn khách hàng này cho người vừa upload
                             };
 
                             // Add vào danh sách tạm
@@ -606,9 +627,14 @@ namespace ITPRO_CRM.Controllers
 
             return RedirectToAction("Leads");
         }
+
         [HttpGet]
         public async Task<IActionResult> ExportExcel(int? status)
         {
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var currentUserId = HttpContext.Session.GetInt32("UserId");
+            bool isAdmin = (roleId == (int)LoaiVaiTro.Admin || roleId == (int)LoaiVaiTro.KeToan);
+
             // 1. Lọc danh sách theo đúng tab đang đứng (Tiềm năng/Cơ hội/Học viên)
             var query = _context.HocVien
                 .Include(h => h.LopHoc)
@@ -619,6 +645,12 @@ namespace ITPRO_CRM.Controllers
             if (status.HasValue)
             {
                 query = query.Where(h => h.TrangThai == status.Value);
+            }
+
+            // 🔐 BẢN SỬA: Chặn Sale xuất Excel dữ liệu của toàn trung tâm
+            if (!isAdmin && currentUserId.HasValue)
+            {
+                query = query.Where(h => h.NhanVienId == currentUserId.Value);
             }
 
             var danhSach = await query.OrderByDescending(h => h.NgayTao).ToListAsync();
@@ -687,6 +719,7 @@ namespace ITPRO_CRM.Controllers
                 }
             }
         }
+
         [HttpGet]
         public IActionResult DownloadTemplate()
         {
@@ -723,8 +756,6 @@ namespace ITPRO_CRM.Controllers
                 worksheet.Cell(2, 7).Value = "0987654321";
                 worksheet.Cell(2, 8).Value = "Tư vấn khóa .NET";
 
-
-
                 // Ghi chú thêm cho Sale
                 worksheet.Cell(5, 1).Value = "LƯU Ý:";
                 worksheet.Cell(5, 1).Style.Font.Bold = true;
@@ -747,7 +778,7 @@ namespace ITPRO_CRM.Controllers
                 }
             }
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnrollStudent(int id, int lopHocId, decimal hocPhi, decimal giamTru, string lyDoGiamGia, decimal daNop, string hinhThuc, string ghiChu)
@@ -774,7 +805,7 @@ namespace ITPRO_CRM.Controllers
                         SoTien = giamTru,
                         NgayThu = DateTime.Now,
                         NoiDung = "Áp dụng giảm trừ / Khuyến mãi. Lý do: " + lyDoGiamGia,
-                        NguoiThu = HttpContext.Session.GetString("UserName") ?? "Hệ thống",
+                        NguoiThu = HttpContext.Session.GetString("HoTen") ?? HttpContext.Session.GetString("UserName") ?? "Hệ thống",
                         HinhThuc = 3 // Quy ước 3 là Mã khuyến mãi
                     });
                     tongDaNopVaGiam += giamTru;
@@ -790,7 +821,7 @@ namespace ITPRO_CRM.Controllers
                         SoTien = daNop,
                         NgayThu = DateTime.Now,
                         NoiDung = "Thu học phí nhập học." + (string.IsNullOrEmpty(ghiChu) ? "" : " Ghi chú: " + ghiChu),
-                        NguoiThu = HttpContext.Session.GetString("UserName") ?? "Admin",
+                        NguoiThu = HttpContext.Session.GetString("HoTen") ?? HttpContext.Session.GetString("UserName") ?? "Admin",
                         HinhThuc = hinhThuc == "Tiền mặt" ? 1 : 2
                     });
                     tongDaNopVaGiam += daNop;
@@ -832,6 +863,7 @@ namespace ITPRO_CRM.Controllers
             catch (Exception ex) { TempData["Error"] = "Lỗi: " + ex.Message; }
             return RedirectToAction("Details", new { id = id });
         }
+
         [HttpPost]
         public async Task<IActionResult> AddTeacherNote(int HocVienId, string GhiChuGiaoVien)
         {

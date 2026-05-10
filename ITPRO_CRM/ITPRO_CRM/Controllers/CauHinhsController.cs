@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ITPRO_CRM.Data;
 using ITPRO_CRM.Models;
+using ITPRO_CRM.Filters; // Để dùng được ổ khóa [PhanQuyen]
 
 namespace ITPRO_CRM.Controllers
 {
@@ -14,7 +15,7 @@ namespace ITPRO_CRM.Controllers
             _context = context;
         }
 
-        // Trang cấu hình chính (Tất cả dồn về đây)
+        // 1. TRANG XEM CẤU HÌNH: Ai cũng vào được
         public async Task<IActionResult> Index()
         {
             var cauHinh = await _context.CauHinh.FirstOrDefaultAsync();
@@ -27,20 +28,30 @@ namespace ITPRO_CRM.Controllers
             return View(cauHinh);
         }
 
-        // Xử lý lưu cấu hình ngay tại Index
+        // 2. XỬ LÝ LƯU CẤU HÌNH: Chỉ Admin mới được phép
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)] // Ổ khóa chặn các quyền khác ở bước lưu
         public async Task<IActionResult> Index(int id, CauHinh cauHinh)
         {
             if (id != cauHinh.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                _context.Update(cauHinh);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Cập nhật cấu hình thành công!";
+                try
+                {
+                    _context.Update(cauHinh);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Đã cập nhật cấu hình hệ thống thành công!";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.CauHinh.Any(e => e.Id == cauHinh.Id)) return NotFound();
+                    else throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
+            // Nếu có lỗi dữ liệu, trả về trang hiện tại để hiện thông báo lỗi
             return View(cauHinh);
         }
     }

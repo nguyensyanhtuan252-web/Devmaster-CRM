@@ -25,13 +25,31 @@ namespace ITPRO_CRM.Controllers
         // GET: PhieuThus
         public async Task<IActionResult> Index()
         {
-            // 1. Lấy danh sách phiếu thu để hiển thị ở bảng
-            var iTPRO_CRMContext = _context.PhieuThu.Include(p => p.HocVien).Include(p => p.LopHoc);
-            var listPhieuThu = await iTPRO_CRMContext.ToListAsync();
+            // --- A. LẤY QUYỀN TỪ SESSION ---
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+            var userId = HttpContext.Session.GetInt32("UserId");
 
-            // 2. Tính Tổng học phí dự kiến thu của toàn bộ học viên chính thức (Trạng thái 2)
-            // Lưu ý: Sum học phí từ bảng Lớp học mà học viên đó đang tham gia
-            var tongHocPhiDuKien = await _context.HocVien
+            // --- B. KHỞI TẠO CÂU TRUY VẤN GỐC ---
+            var phieuThuQuery = _context.PhieuThu.Include(p => p.HocVien).Include(p => p.LopHoc).AsQueryable();
+            var hocVienQuery = _context.HocVien.AsQueryable();
+
+            // --- C. ÁP DỤNG PHÂN QUYỀN DỮ LIỆU ---
+            // Nếu KHÔNG PHẢI Admin và KHÔNG PHẢI Kế toán -> Chỉ được xem của mình
+            if (roleId != (int)LoaiVaiTro.Admin && roleId != (int)LoaiVaiTro.KeToan)
+            {
+                // 1. Chỉ lấy phiếu thu của Học viên do nhân viên này (userId) quản lý
+                phieuThuQuery = phieuThuQuery.Where(p => p.HocVien.NhanVienId == userId);
+
+                // 2. Chỉ tính công nợ của những Học viên do nhân viên này quản lý
+                hocVienQuery = hocVienQuery.Where(h => h.NhanVienId == userId);
+            }
+
+            // --- D. THỰC THI LẤY DỮ LIỆU ---
+            // 1. Lấy danh sách phiếu thu (đã bị lọc nếu là Sale)
+            var listPhieuThu = await phieuThuQuery.OrderByDescending(p => p.NgayThu).ToListAsync();
+
+            // 2. Tính Tổng học phí dự kiến (đã bị lọc nếu là Sale)
+            var tongHocPhiDuKien = await hocVienQuery
                 .Where(h => h.TrangThai == 2 && h.LopHocId != null)
                 .SumAsync(h => h.LopHoc.HocPhi);
 

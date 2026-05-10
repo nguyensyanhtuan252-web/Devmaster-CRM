@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ITPRO_CRM.Data;
 using ITPRO_CRM.Models;
+using ITPRO_CRM.Filters; // 👈 Thêm để dùng [PhanQuyen]
 
 namespace ITPRO_CRM.Controllers
 {
+    // Cho phép Admin, Kế toán và Sale vào xem
+    [PhanQuyen(LoaiVaiTro.Admin, LoaiVaiTro.KeToan, LoaiVaiTro.Sale)]
     public class ChienDichsController : Controller
     {
         private readonly ITPRO_CRMContext _context;
@@ -19,7 +22,7 @@ namespace ITPRO_CRM.Controllers
             _context = context;
         }
 
-        // GET: ChienDichs
+        // GET: ChienDichs - Ai cũng xem được danh sách
         public async Task<IActionResult> Index()
         {
             return View(await _context.ChienDich.ToListAsync());
@@ -28,32 +31,21 @@ namespace ITPRO_CRM.Controllers
         // GET: ChienDichs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var chienDich = await _context.ChienDich
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (chienDich == null)
-            {
-                return NotFound();
-            }
+            var chienDich = await _context.ChienDich.FirstOrDefaultAsync(m => m.Id == id);
+            if (chienDich == null) return NotFound();
 
             return View(chienDich);
         }
 
-        // GET: ChienDichs/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // 🔐 CHỈ ADMIN MỚI ĐƯỢC TẠO/SỬA/XÓA CHIẾN DỊCH
+        [PhanQuyen(LoaiVaiTro.Admin)]
+        public IActionResult Create() => View();
 
-        // POST: ChienDichs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Create([Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa")] ChienDich chienDich)
         {
             if (ModelState.IsValid)
@@ -65,33 +57,21 @@ namespace ITPRO_CRM.Controllers
             return View(chienDich);
         }
 
-        // GET: ChienDichs/Edit/5
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
             var chienDich = await _context.ChienDich.FindAsync(id);
-            if (chienDich == null)
-            {
-                return NotFound();
-            }
+            if (chienDich == null) return NotFound();
             return View(chienDich);
         }
 
-        // POST: ChienDichs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa")] ChienDich chienDich)
         {
-            if (id != chienDich.Id)
-            {
-                return NotFound();
-            }
+            if (id != chienDich.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -102,80 +82,51 @@ namespace ITPRO_CRM.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ChienDichExists(chienDich.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ChienDichExists(chienDich.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(chienDich);
         }
 
-        // GET: ChienDichs/Delete/5
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var chienDich = await _context.ChienDich
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (chienDich == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var chienDich = await _context.ChienDich.FirstOrDefaultAsync(m => m.Id == id);
+            if (chienDich == null) return NotFound();
             return View(chienDich);
         }
 
-        // POST: ChienDichs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var chienDich = await _context.ChienDich.FindAsync(id);
-            if (chienDich != null)
-            {
-                _context.ChienDich.Remove(chienDich);
-            }
-
+            if (chienDich != null) _context.ChienDich.Remove(chienDich);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChienDichExists(int id)
-        {
-            return _context.ChienDich.Any(e => e.Id == id);
-        }
-        // GET: ChienDichs/BaoCao
+        private bool ChienDichExists(int id) => _context.ChienDich.Any(e => e.Id == id);
+
+        // Báo cáo chiến dịch (Sale xem được để biết hiệu quả nguồn khách)
         public async Task<IActionResult> BaoCao()
         {
-            // 1. Lấy dữ liệu Chiến dịch kèm theo Học viên và Lớp học (để tính tiền)
             var rawData = await _context.ChienDich
-                .Include(c => c.HocViens)
-                .ThenInclude(h => h.LopHoc) // Kèm lớp để lấy Học phí
+                .Include(c => c.HocViens).ThenInclude(h => h.LopHoc)
                 .ToListAsync();
 
-            // 2. Chế biến dữ liệu để vẽ biểu đồ
             var reportData = rawData.Select(x => new
             {
                 Ten = x.TenChienDich,
-                ChiPhi = x.NganSach, // Tiền chi ra (Ngân sách)
-
-                // Tiền thu về = Tổng học phí của tất cả học viên thuộc chiến dịch này
-                // (Chỉ tính những người đã xếp lớp, tức là LopHoc != null)
+                ChiPhi = x.NganSach,
                 DoanhThu = x.HocViens.Sum(h => h.LopHoc?.HocPhi ?? 0),
-
                 SoKhach = x.HocViens.Count
             }).ToList();
 
-            // 3. Đóng gói gửi sang View
             ViewBag.ChartLabel = Newtonsoft.Json.JsonConvert.SerializeObject(reportData.Select(x => x.Ten));
             ViewBag.ChartChiPhi = Newtonsoft.Json.JsonConvert.SerializeObject(reportData.Select(x => x.ChiPhi));
             ViewBag.ChartDoanhThu = Newtonsoft.Json.JsonConvert.SerializeObject(reportData.Select(x => x.DoanhThu));

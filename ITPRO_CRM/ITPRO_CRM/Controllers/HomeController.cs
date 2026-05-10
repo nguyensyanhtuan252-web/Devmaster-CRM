@@ -88,8 +88,13 @@ namespace ITPRO_CRM.Controllers
             // 6. GỬI DỮ LIỆU KHÁC SANG VIEW
             ViewBag.ActiveClasses = await _context.LopHoc.CountAsync(l => l.TrangThai == 1);
 
-            // 7. DOANH THU
-            var revQuery = _context.PhieuThu.AsQueryable();
+            // 7. DOANH THU (🔥 BẢN SỬA: Lọc phiếu thu theo NhanVienId nếu là Sale)
+            var revQuery = _context.PhieuThu.Include(p => p.HocVien).AsQueryable();
+            if (!isAdmin)
+            {
+                revQuery = revQuery.Where(p => p.HocVien != null && p.HocVien.NhanVienId == currentUserId);
+            }
+
             ViewBag.RevenueToday = await revQuery.Where(p => p.NgayThu >= today && p.NgayThu < today.AddDays(1)).SumAsync(p => (decimal?)p.SoTien) ?? 0;
             ViewBag.RevenueMonth = await revQuery.Where(p => p.NgayThu >= startOfMonth && p.NgayThu < endOfMonth).SumAsync(p => (decimal?)p.SoTien) ?? 0;
 
@@ -116,22 +121,40 @@ namespace ITPRO_CRM.Controllers
                 .Include(h => h.NhanVien) // Lấy thêm tên nhân viên để hiển thị ra bảng
                 .Where(h => isAdmin || h.NhanVienId == currentUserId)
                 .OrderByDescending(h => h.NgayTao).ToListAsync();
+
             var next7Days = DateTime.Today.AddDays(7);
-            var dsCanThanhToan = await _context.DotThanhToan
+
+            // 10. DANH SÁCH CẦN THANH TOÁN (🔥 BẢN SỬA: Lọc nợ theo nhân viên nếu là Sale)
+            var dsCanThanhToanQuery = _context.DotThanhToan
                 .Include(d => d.HocVien)
                 .ThenInclude(h => h.LopHoc)
-                .Where(d => d.TrangThai != 2 && d.HanThanhToan <= next7Days)
-                .OrderBy(d => d.HanThanhToan)
-                .Take(10)
-                .ToListAsync();
+                .Where(d => d.TrangThai != 2 && d.HanThanhToan <= next7Days);
 
-            ViewBag.DsCanThanhToan = dsCanThanhToan;
+            if (!isAdmin)
+            {
+                dsCanThanhToanQuery = dsCanThanhToanQuery.Where(d => d.HocVien != null && d.HocVien.NhanVienId == currentUserId);
+            }
+
+            ViewBag.DsCanThanhToan = await dsCanThanhToanQuery.OrderBy(d => d.HanThanhToan).Take(10).ToListAsync();
+
             return View(newStudentsList);
         }
 
         [HttpGet]
         public async Task<JsonResult> GetRevenueData(string period)
         {
+            // 🔥 BẢN SỬA: Phải kẹp bộ lọc nhân viên vào cả hàm gọi AJAX vẽ biểu đồ
+            var userName = HttpContext.Session.GetString("UserName");
+            var currentEmployee = await _context.NhanVien.FirstOrDefaultAsync(n => n.HoTen == userName || n.Email == userName);
+            int currentUserId = currentEmployee?.Id ?? 0;
+            bool isAdmin = (currentEmployee?.VaiTro == 0 || userName == "admin@devmaster.edu.vn");
+
+            var revQ = _context.PhieuThu.Include(p => p.HocVien).AsQueryable();
+            if (!isAdmin)
+            {
+                revQ = revQ.Where(p => p.HocVien != null && p.HocVien.NhanVienId == currentUserId);
+            }
+
             var labels = new List<string>();
             var data = new List<decimal>();
             var now = DateTime.Now;
@@ -142,7 +165,7 @@ namespace ITPRO_CRM.Controllers
                 {
                     var date = now.Date.AddDays(-i);
                     labels.Add(date.ToString("dd/MM"));
-                    data.Add(await _context.PhieuThu.Where(p => p.NgayThu.Date == date).SumAsync(p => (decimal?)p.SoTien) ?? 0);
+                    data.Add(await revQ.Where(p => p.NgayThu.Date == date).SumAsync(p => (decimal?)p.SoTien) ?? 0);
                 }
             }
             else if (period == "year")
@@ -151,14 +174,13 @@ namespace ITPRO_CRM.Controllers
                 {
                     var date = now.AddMonths(-i);
                     labels.Add("T" + date.Month);
-                    data.Add(await _context.PhieuThu.Where(p => p.NgayThu.Month == date.Month && p.NgayThu.Year == date.Year).SumAsync(p => (decimal?)p.SoTien) ?? 0);
+                    data.Add(await revQ.Where(p => p.NgayThu.Month == date.Month && p.NgayThu.Year == date.Year).SumAsync(p => (decimal?)p.SoTien) ?? 0);
                 }
             }
 
             return Json(new { labels, data });
         }
 
-        // ĐÃ CHUẨN HÓA LẠI HÀM CẬP NHẬT KPI ĐỂ KHỚP VỚI MODAL
         [HttpPost]
         public async Task<IActionResult> AssignKPI(int staffId, int newKpi)
         {

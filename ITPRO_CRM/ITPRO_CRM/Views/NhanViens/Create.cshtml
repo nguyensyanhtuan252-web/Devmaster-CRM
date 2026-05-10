@@ -1,0 +1,117 @@
+﻿@model ITPRO_CRM.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Thêm Nhân sự mới";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm" style="background: var(--surface); border-color: var(--border); color: var(--text);">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4" style="color: var(--text);">Thêm nhân sự mới</h4>
+
+                    <form asp-action="Create">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Họ và Tên</label>
+                                <input asp-for="HoTen" class="form-control dm-input" placeholder="Nhập họ tên đầy đủ" required />
+                                <span asp-validation-for="HoTen" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Số điện thoại</label>
+                                <input asp-for="SoDienThoai" class="form-control dm-input" placeholder="09xx xxx xxx" />
+                                <span asp-validation-for="SoDienThoai" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Email Đăng nhập</label>
+                                <input asp-for="Email" type="email" class="form-control dm-input" placeholder="email@devmaster.edu.vn" required />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Mật khẩu</label>
+                                <div class="input-group">
+                                    <input asp-for="MatKhau" type="password" id="passwordCreate" class="form-control dm-input" style="border-right: none;" placeholder="Nhập mật khẩu" required />
+                                    <span class="input-group-text dm-input" style="cursor: pointer; border-left: none;" onclick="togglePasswordCreate()">
+                                        <i class="fa-solid fa-eye" id="iconToggle" style="color: var(--text3); font-size: 14px;"></i>
+                                    </span>
+                                </div>
+                                <span asp-validation-for="MatKhau" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Vai trò hệ thống</label>
+                                <select asp-for="VaiTro" class="form-select dm-input">
+                                    <option value="0">Giám đốc / Admin</option>
+                                    <option value="1">Kế toán</option>
+                                    <option value="2">Nhân viên Sale</option>
+                                    <option value="3">Giảng viên</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold d-block" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Trạng thái làm việc</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input asp-for="TrangThai" class="form-check-input" type="checkbox" role="switch" checked style="cursor: pointer;">
+                                    <label class="form-check-label ms-2" style="color: var(--text);">Cho phép đăng nhập ngay</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" style="border-color: var(--border);" />
+
+                        <div class="d-flex justify-content-end gap-3">
+                            <a asp-action="Index" class="btn px-4 rounded-pill dm-btn-cancel">Hủy bỏ</a>
+                            <button type="submit" class="btn btn-primary px-4 rounded-pill">Tạo nhân sự</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Đồng bộ màu sắc nút Hủy bỏ */
+    .dm-btn-cancel {
+        background: var(--surface2);
+        color: var(--text);
+        border: 1px solid var(--border);
+        transition: 0.2s;
+    }
+
+        .dm-btn-cancel:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+    /* Đảm bảo ô icon mật khẩu khớp màu nền tối */
+    .input-group-text.dm-input {
+        background: var(--surface2) !important;
+        border-color: var(--border) !important;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Hàm xử lý Hiện/Ẩn mật khẩu cho trang Create
+        function togglePasswordCreate() {
+            const passInput = document.getElementById('passwordCreate');
+            const icon = document.getElementById('iconToggle');
+
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+}

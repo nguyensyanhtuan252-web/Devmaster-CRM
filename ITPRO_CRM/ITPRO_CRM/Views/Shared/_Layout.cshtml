@@ -616,6 +616,14 @@
             <a asp-controller="BaoCaos" asp-action="Index" class="nav-link @(ctrl=="BaoCaos"?"active":"")">
                 <i class="fa-solid fa-chart-line fa-fw"></i> Báo cáo
             </a>
+            @if (Context.Session.GetInt32("VaiTro") == (int)LoaiVaiTro.Admin)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="NhanViens" asp-action="Index">
+                        <i class="fa-solid fa-users-gear"></i> <span>Quản lý Nhân sự</span>
+                    </a>
+                </li>
+            }
             <a asp-controller="CauHinhs" asp-action="Index" class="nav-link @(ctrl=="CauHinhs"?"active":"")">
                 <i class="fa-solid fa-gear fa-fw"></i> Thiết lập
             </a>

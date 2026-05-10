@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ITPRO_CRM.Data;
 using ITPRO_CRM.Models;
+using ITPRO_CRM.Filters;
+using Microsoft.AspNetCore.Http; // Bắt buộc phải có để dùng Session
 
 namespace ITPRO_CRM.Controllers
 {
+    // CẤP QUYỀN TRUY CẬP CHUNG: Cả Admin và Sale đều được vào xem danh sách mẫu
+    [PhanQuyen(LoaiVaiTro.Admin, LoaiVaiTro.Sale)]
     public class MauEmailsController : Controller
     {
         private readonly ITPRO_CRMContext _context;
@@ -19,46 +23,41 @@ namespace ITPRO_CRM.Controllers
             _context = context;
         }
 
-        // GET: MauEmails
+        // ==========================================
+        // 1. XEM DANH SÁCH (AI CŨNG XEM ĐƯỢC)
+        // ==========================================
         public async Task<IActionResult> Index()
         {
             return View(await _context.MauEmail.ToListAsync());
         }
 
-        // GET: MauEmails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var mauEmail = await _context.MauEmail
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (mauEmail == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var mauEmail = await _context.MauEmail.FirstOrDefaultAsync(m => m.Id == id);
+            if (mauEmail == null) return NotFound();
             return View(mauEmail);
         }
 
-        // GET: MauEmails/Create
+        // ==========================================
+        // 2. TẠO MỚI (CHỈ ADMIN) - 🔐 Đã chặn bằng Session
+        // ==========================================
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) // 0 là Quyền Admin
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
-        // POST: MauEmails/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TenMau,TieuDe,NoiDung,NgayTao,LoaiMau")] MauEmail mauEmail)
+        public async Task<IActionResult> Create([Bind("Id,TenMau,TieuDe,NoiDung,MoTa")] MauEmail mauEmail)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid)
             {
-                mauEmail.NgayTao = DateTime.Now;
                 _context.Add(mauEmail);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -66,33 +65,27 @@ namespace ITPRO_CRM.Controllers
             return View(mauEmail);
         }
 
-        // GET: MauEmails/Edit/5
+        // ==========================================
+        // 3. CHỈNH SỬA (CHỈ ADMIN) - 🔐 Đã chặn bằng Session
+        // ==========================================
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (HttpContext.Session.GetInt32("VaiTro") != 0)
+                return RedirectToAction("Index", "Home");
 
+            if (id == null) return NotFound();
             var mauEmail = await _context.MauEmail.FindAsync(id);
-            if (mauEmail == null)
-            {
-                return NotFound();
-            }
+            if (mauEmail == null) return NotFound();
             return View(mauEmail);
         }
 
-        // POST: MauEmails/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TenMau,TieuDe,NoiDung,NgayTao,LoaiMau")] MauEmail mauEmail)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TenMau,TieuDe,NoiDung,MoTa")] MauEmail mauEmail)
         {
-            if (id != mauEmail.Id)
-            {
-                return NotFound();
-            }
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
+
+            if (id != mauEmail.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -103,56 +96,40 @@ namespace ITPRO_CRM.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MauEmailExists(mauEmail.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!MauEmailExists(mauEmail.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(mauEmail);
         }
 
-        // GET: MauEmails/Delete/5
+        // ==========================================
+        // 4. XÓA (CHỈ ADMIN) - 🔐 Đã chặn bằng Session
+        // ==========================================
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (HttpContext.Session.GetInt32("VaiTro") != 0)
+                return RedirectToAction("Index", "Home");
 
-            var mauEmail = await _context.MauEmail
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (mauEmail == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var mauEmail = await _context.MauEmail.FirstOrDefaultAsync(m => m.Id == id);
+            if (mauEmail == null) return NotFound();
             return View(mauEmail);
         }
 
-        // POST: MauEmails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mauEmail = await _context.MauEmail.FindAsync(id);
-            if (mauEmail != null)
-            {
-                _context.MauEmail.Remove(mauEmail);
-            }
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
 
+            var mauEmail = await _context.MauEmail.FindAsync(id);
+            if (mauEmail != null) _context.MauEmail.Remove(mauEmail);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MauEmailExists(int id)
-        {
-            return _context.MauEmail.Any(e => e.Id == id);
-        }
+        private bool MauEmailExists(int id) => _context.MauEmail.Any(e => e.Id == id);
     }
 }

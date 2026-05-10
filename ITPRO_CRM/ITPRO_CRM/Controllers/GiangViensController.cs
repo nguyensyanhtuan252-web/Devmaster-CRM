@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ITPRO_CRM.Data;
 using ITPRO_CRM.Models;
+using ITPRO_CRM.Filters; // 👈 Thêm để dùng bộ lọc
 
 namespace ITPRO_CRM.Controllers
 {
+    // Cấp quyền xem: Admin, Kế toán và Sale đều vào được trang chủ và chi tiết
+    [PhanQuyen(LoaiVaiTro.Admin, LoaiVaiTro.KeToan, LoaiVaiTro.Sale)]
     public class GiangViensController : Controller
     {
         private readonly ITPRO_CRMContext _context;
@@ -22,20 +25,11 @@ namespace ITPRO_CRM.Controllers
         // GET: GiangViens
         public async Task<IActionResult> Index()
         {
-            // 1. Kiểm tra đăng nhập
+            // Kiểm tra đăng nhập (Logic của bạn)
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Access");
             }
-
-            // 2. TẠM ẨN: Kiểm tra quyền (Để test cho dễ)
-            // Nếu bạn muốn mở lại tính năng "Chỉ Admin mới được xem", hãy bỏ comment đoạn dưới
-            /*
-            if (HttpContext.Session.GetInt32("UserRole") != 0) 
-            {
-               return RedirectToAction("Index", "Home");
-            }
-            */
 
             return View(await _context.GiangVien.ToListAsync());
         }
@@ -51,7 +45,10 @@ namespace ITPRO_CRM.Controllers
             return View(giangVien);
         }
 
+        // 🔐 CHỐT CHẶN: Chỉ Admin mới có quyền truy cập các hàm thay đổi dữ liệu bên dưới
+
         // GET: GiangViens/Create
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public IActionResult Create()
         {
             return View();
@@ -60,11 +57,11 @@ namespace ITPRO_CRM.Controllers
         // POST: GiangViens/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Create([Bind("Id,HoTen,Email,SoDienThoai,AnhDaiDien,BangCap,KinhNghiem,ThanhTich,ChuyenMon,TrangThai")] GiangVien giangVien)
         {
             if (ModelState.IsValid)
             {
-                // --- BỔ SUNG: Logic tự tạo ảnh nếu bỏ trống ---
                 if (string.IsNullOrEmpty(giangVien.AnhDaiDien))
                 {
                     giangVien.AnhDaiDien = "https://ui-avatars.com/api/?name=" + Uri.EscapeDataString(giangVien.HoTen) + "&background=random&size=128";
@@ -78,6 +75,7 @@ namespace ITPRO_CRM.Controllers
         }
 
         // GET: GiangViens/Edit/5
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -91,6 +89,7 @@ namespace ITPRO_CRM.Controllers
         // POST: GiangViens/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,HoTen,Email,SoDienThoai,AnhDaiDien,BangCap,KinhNghiem,ThanhTich,ChuyenMon,TrangThai")] GiangVien giangVien)
         {
             if (id != giangVien.Id) return NotFound();
@@ -99,7 +98,6 @@ namespace ITPRO_CRM.Controllers
             {
                 try
                 {
-                    // Giữ nguyên ảnh cũ nếu người dùng xóa trắng khi sửa (Optional)
                     if (string.IsNullOrEmpty(giangVien.AnhDaiDien))
                     {
                         giangVien.AnhDaiDien = "https://ui-avatars.com/api/?name=" + Uri.EscapeDataString(giangVien.HoTen) + "&background=random";
@@ -119,6 +117,7 @@ namespace ITPRO_CRM.Controllers
         }
 
         // GET: GiangViens/Delete/5
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -132,6 +131,7 @@ namespace ITPRO_CRM.Controllers
         // POST: GiangViens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PhanQuyen(LoaiVaiTro.Admin)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var giangVien = await _context.GiangVien.FindAsync(id);

@@ -1,4 +1,5 @@
 ﻿using ITPRO_CRM.Data;
+using ITPRO_CRM.Models; // THÊM DÒNG NÀY ĐỂ NHẬN DIỆN ENUM
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,12 +44,22 @@ namespace ITPRO_CRM.Controllers
                 // 2. Lưu ID (Để đếm KPI cá nhân và Lead cá nhân)
                 HttpContext.Session.SetInt32("UserId", nhanVien.Id);
 
-                // 3. Lưu vai trò
-                HttpContext.Session.SetInt32("VaiTro", nhanVien.VaiTro);
+                // 3. Lưu vai trò (ĐÃ SỬA: Ép kiểu Enum về Int)
+                HttpContext.Session.SetInt32("VaiTro", (int)nhanVien.VaiTro);
 
-                // ✅ THÊM MỚI: Lưu tên hiển thị và vai trò cho Layout
+                // 4. Lưu tên hiển thị
                 HttpContext.Session.SetString("HoTen", nhanVien.HoTen);
-                HttpContext.Session.SetString("UserRole", nhanVien.VaiTro == 0 ? "Quản trị viên" : "Nhân viên Sale");
+
+                // 5. Lưu tên vai trò cho Layout (ĐÃ SỬA: Dùng Switch case với Enum)
+                string roleName = nhanVien.VaiTro switch
+                {
+                    LoaiVaiTro.Admin => "Giám đốc / Admin",
+                    LoaiVaiTro.Sale => "Nhân viên Sale",
+                    LoaiVaiTro.KeToan => "Kế toán",
+                    LoaiVaiTro.GiangVien => "Giảng viên",
+                    _ => "Nhân viên"
+                };
+                HttpContext.Session.SetString("UserRole", roleName);
 
                 return RedirectToAction("Index", "Home");
             }

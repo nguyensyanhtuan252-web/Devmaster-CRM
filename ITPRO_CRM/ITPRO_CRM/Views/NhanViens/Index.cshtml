@@ -1,0 +1,241 @@
+﻿@model IEnumerable<ITPRO_CRM.Models.NhanVien>
+@using ITPRO_CRM.Models
+
+@{
+    ViewData["Title"] = "Quản lý nhân sự";
+}
+
+<style>
+    .staff-root {
+        padding: 1.5rem;
+        background: var(--surface-2);
+        min-height: 100vh;
+        font-family: 'Be Vietnam Pro', sans-serif;
+        color: var(--text-main);
+    }
+
+    .staff-card {
+        background: var(--surface);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .staff-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .staff-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .staff-table th {
+            background: var(--surface-2);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .staff-table td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main); /* Ép màu sáng cho toàn bộ chữ trong bảng */
+        }
+
+        .staff-table tr:hover td {
+            background: rgba(59, 127, 255, 0.02);
+        }
+
+    .avatar-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .badge-role {
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .role-0 {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+    }
+    /* Admin */
+    .role-1 {
+        background: rgba(59, 127, 255, 0.12);
+        color: #3b7fff;
+    }
+    /* Sale */
+    .role-2 {
+        background: rgba(34, 197, 94, 0.12);
+        color: #22c55e;
+    }
+    /* KeToan */
+    .role-3 {
+        background: rgba(245, 158, 11, 0.12);
+        color: #f59e0b;
+    }
+    /* GiangVien */
+
+    .btn-add {
+        background: linear-gradient(135deg, var(--accent) 0%, #1e40af 100%);
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.4rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        text-decoration: none;
+    }
+
+        .btn-add:hover {
+            transform: translateY(-1px);
+            color: #fff;
+            opacity: 0.9;
+        }
+
+    .action-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        transition: all 0.2s;
+        background: var(--surface);
+    }
+
+        .btn-action:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-action.btn-del:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+</style>
+
+<div class="staff-root">
+    <div class="staff-card">
+        <div class="staff-header">
+            <div>
+                <h4 class="fw-bold mb-1" style="color:var(--text-main)">Quản lý Nhân sự</h4>
+                <p class="mb-0 small" style="color: var(--text-light); opacity: 0.8;">Phân quyền và quản lý tài khoản vận hành hệ thống</p>
+            </div>
+            <a asp-action="Create" class="btn-add">
+                <i class="fa-solid fa-user-plus"></i> Thêm nhân viên
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="staff-table">
+                <thead>
+                    <tr>
+                        <th class="ps-5">Họ tên</th>
+                        <th>Email / Tài khoản</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th class="text-end pe-5">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-5">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-box">@item.HoTen.Substring(0, 1)</div>
+                                    <span class="fw-600" style="color: var(--text-main);">@item.HoTen</span>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-main);">@item.Email</td>
+
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.SoDienThoai))
+                                {
+                                    <span style="color: var(--text-main); font-weight: 500;">@item.SoDienThoai</span>
+                                }
+                                else
+                                {
+                                    <span style="color: var(--text-light); font-style: italic; opacity: 0.6;">Chưa cập nhật</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="badge-role role-@((int)item.VaiTro)">
+                                    <i class="fa-solid fa-shield-halved me-1"></i> @item.VaiTro
+                                </span>
+                            </td>
+                            <td>
+                                @if (item.TrangThai)
+                                {
+                                    <span class="small fw-600" style="color: #22c55e;">● Đang hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="small fw-600" style="color: var(--text-light); opacity: 0.7;">● Đã khóa</span>
+                                }
+                            </td>
+                            <td class="pe-5">
+                                <div class="action-group justify-content-end">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action" title="Chỉnh sửa">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" onclick="confirmDelete(@item.Id, '@item.HoTen')" class="btn-action btn-del" title="Xóa">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(id, name) {
+        if (confirm(`Bạn có chắc chắn muốn xóa nhân viên "${name}" khỏi hệ thống?`)) {
+            window.location.href = '@Url.Action("Delete", "NhanViens")/' + id;
+        }
+    }
+</script>

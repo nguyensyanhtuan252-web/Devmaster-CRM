@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ITPRO_CRM.Models;
 using ITPRO_CRM.Data;
+using Microsoft.AspNetCore.Http; // Bắt buộc cho Session
+using ITPRO_CRM.Filters; // Cho [PhanQuyen]
 
 namespace ITPRO_CRM.Controllers
 {
+    [PhanQuyen(LoaiVaiTro.Admin, LoaiVaiTro.KeToan, LoaiVaiTro.Sale, LoaiVaiTro.GiangVien)]
     public class LopHocsController : Controller
     {
         private readonly ITPRO_CRMContext _context;
@@ -19,17 +22,16 @@ namespace ITPRO_CRM.Controllers
             _context = context;
         }
 
-        // =========================================================
-        // GET: LopHocs — Dashboard danh sách lớp (có lọc & tìm kiếm)
-        // =========================================================
         public async Task<IActionResult> Index(string? search, int? trangThai, int? giangVienId, int? khoaHocId)
         {
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
+
             ViewBag.Search = search;
             ViewBag.TrangThai = trangThai;
             ViewBag.GiangVienId = giangVienId;
             ViewBag.KhoaHocId = khoaHocId;
 
-            // Dropdown filters
+            // ĐỌC CHUẨN TỪ BẢNG GiangVien ĐỂ KHỚP VỚI DATABASE
             ViewBag.GiangViens = new SelectList(await _context.GiangVien.OrderBy(g => g.HoTen).ToListAsync(), "Id", "HoTen");
             ViewBag.KhoaHocs = new SelectList(await _context.KhoaHoc.OrderBy(k => k.TenKhoaHoc).ToListAsync(), "Id", "TenKhoaHoc");
 
@@ -53,7 +55,6 @@ namespace ITPRO_CRM.Controllers
 
             var danhSach = await query.OrderByDescending(l => l.NgayKhaiGiang).ToListAsync();
 
-            // Thống kê cho dashboard header
             var allLops = await _context.LopHoc.Include(l => l.HocViens).ToListAsync();
             ViewBag.TongSoLop = allLops.Count;
             ViewBag.LopDangHoc = allLops.Count(l => l.TrangThai == 1);
@@ -63,57 +64,48 @@ namespace ITPRO_CRM.Controllers
             return View(danhSach);
         }
 
-        // =========================================================
-        // GET: LopHocs/Details/5
-        // =========================================================
         public async Task<IActionResult> Details(int? id)
         {
+            var roleId = HttpContext.Session.GetInt32("VaiTro");
             if (id == null) return NotFound();
 
             var lopHoc = await _context.LopHoc
                 .Include(l => l.HocViens)
                 .Include(l => l.GiangVien)
                 .Include(l => l.KhoaHoc)
-                .Include(l => l.DiemDanhs)
-                    .ThenInclude(d => d.HocVien)
+                .Include(l => l.DiemDanhs).ThenInclude(d => d.HocVien)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (lopHoc == null) return NotFound();
 
-            // Tính thống kê điểm danh
             if (lopHoc.DiemDanhs != null && lopHoc.DiemDanhs.Any())
             {
                 ViewBag.TongBuoiDiemDanh = lopHoc.DiemDanhs.Select(d => d.NgayDiemDanh.Date).Distinct().Count();
-                ViewBag.TyLeCoMat = lopHoc.DiemDanhs.Any()
-                    ? (int)((double)lopHoc.DiemDanhs.Count(d => d.TrangThai == 1) / lopHoc.DiemDanhs.Count() * 100)
-                    : 0;
+                ViewBag.TyLeCoMat = lopHoc.DiemDanhs.Any() ? (int)((double)lopHoc.DiemDanhs.Count(d => d.TrangThai == 1) / lopHoc.DiemDanhs.Count() * 100) : 0;
             }
-            else
-            {
-                ViewBag.TongBuoiDiemDanh = 0;
-                ViewBag.TyLeCoMat = 0;
-            }
+            else { ViewBag.TongBuoiDiemDanh = 0; ViewBag.TyLeCoMat = 0; }
 
-            // Tính doanh thu thu được (số HV * học phí) — sơ bộ
-            ViewBag.DoanhThuUocTinh = (lopHoc.HocViens?.Count ?? 0) * lopHoc.HocPhi;
+            // ẨN DOANH THU LỚP NẾU KHÔNG PHẢI ADMIN HOẶC KẾ TOÁN
+            ViewBag.DoanhThuUocTinh = (roleId == 0 || roleId == 2) ? (lopHoc.HocViens?.Count ?? 0) * lopHoc.HocPhi : 0;
 
             return View(lopHoc);
         }
 
         // =========================================================
-        // GET: LopHocs/Create
+        // 🔐 KHÓA CỨNG: CÁC HÀM QUẢN TRỊ (CHỈ ADMIN MỚI VƯỢT QUA ĐƯỢC)
         // =========================================================
         public async Task<IActionResult> Create()
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             await LoadDropdowns();
             return View();
         }
 
-        // POST: LopHocs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TenLop,KhoaHocId,GiangVienId,NgayKhaiGiang,NgayKetThuc,LichHoc,GioBatDau,GioKetThuc,HocPhi,SiSoToiDa,PhongHoc,MoTa,TrangThai")] LopHoc lopHoc)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
                 lopHoc.NgayTao = DateTime.Now;
@@ -126,11 +118,9 @@ namespace ITPRO_CRM.Controllers
             return View(lopHoc);
         }
 
-        // =========================================================
-        // GET: LopHocs/Edit/5
-        // =========================================================
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             if (id == null) return NotFound();
             var lopHoc = await _context.LopHoc.FindAsync(id);
             if (lopHoc == null) return NotFound();
@@ -138,43 +128,28 @@ namespace ITPRO_CRM.Controllers
             return View(lopHoc);
         }
 
-        // POST: LopHocs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TenLop,KhoaHocId,GiangVienId,NgayKhaiGiang,NgayKetThuc,LichHoc,GioBatDau,GioKetThuc,HocPhi,SiSoToiDa,PhongHoc,MoTa,TrangThai,NgayTao")] LopHoc lopHoc)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             if (id != lopHoc.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(lopHoc);
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = $"Đã cập nhật lớp <strong>{lopHoc.TenLop}</strong> thành công!";
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LopHocExists(lopHoc.Id)) return NotFound();
-                    else throw;
-                }
+                try { _context.Update(lopHoc); await _context.SaveChangesAsync(); TempData["Success"] = $"Đã cập nhật thành công!"; }
+                catch (DbUpdateConcurrencyException) { if (!LopHocExists(lopHoc.Id)) return NotFound(); else throw; }
                 return RedirectToAction(nameof(Index));
             }
             await LoadDropdowns(lopHoc.GiangVienId, lopHoc.KhoaHocId);
             return View(lopHoc);
         }
 
-        // =========================================================
-        // GET/POST: LopHocs/Delete/5
-        // =========================================================
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             if (id == null) return NotFound();
-            var lopHoc = await _context.LopHoc
-                .Include(l => l.GiangVien)
-                .Include(l => l.KhoaHoc)
-                .Include(l => l.HocViens)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var lopHoc = await _context.LopHoc.Include(l => l.GiangVien).Include(l => l.KhoaHoc).Include(l => l.HocViens).FirstOrDefaultAsync(m => m.Id == id);
             if (lopHoc == null) return NotFound();
             return View(lopHoc);
         }
@@ -183,22 +158,17 @@ namespace ITPRO_CRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return RedirectToAction("Index", "Home");
             var lopHoc = await _context.LopHoc.FindAsync(id);
-            if (lopHoc != null)
-            {
-                _context.LopHoc.Remove(lopHoc);
-                TempData["Success"] = $"Đã xóa lớp <strong>{lopHoc.TenLop}</strong>.";
-            }
+            if (lopHoc != null) { _context.LopHoc.Remove(lopHoc); TempData["Success"] = "Đã xóa thành công."; }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // =========================================================
-        // AJAX: Đổi trạng thái nhanh (không cần vào trang Edit)
-        // =========================================================
         [HttpPost]
         public async Task<IActionResult> DoiTrangThai(int id, int trangThai)
         {
+            if (HttpContext.Session.GetInt32("VaiTro") != 0) return Json(new { success = false });
             var lopHoc = await _context.LopHoc.FindAsync(id);
             if (lopHoc == null) return NotFound();
             lopHoc.TrangThai = trangThai;
@@ -206,13 +176,11 @@ namespace ITPRO_CRM.Controllers
             return Json(new { success = true, trangThai = lopHoc.TrangThai, text = lopHoc.TrangThaiText });
         }
 
-        // =========================================================
-        // Helpers
-        // =========================================================
         private bool LopHocExists(int id) => _context.LopHoc.Any(e => e.Id == id);
 
         private async Task LoadDropdowns(int? giangVienId = null, int? khoaHocId = null)
         {
+            // BẢO ĐẢM LẤY TỪ BẢNG GIẢNG VIÊN ĐỂ TRÁNH LỖI FOREIGN KEY
             ViewBag.GiangVienId = new SelectList(
                 await _context.GiangVien.Where(g => g.TrangThai == 1).OrderBy(g => g.HoTen).ToListAsync(),
                 "Id", "HoTen", giangVienId);
