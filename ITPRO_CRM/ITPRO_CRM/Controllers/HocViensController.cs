@@ -865,9 +865,14 @@ namespace ITPRO_CRM.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddTeacherNote(int HocVienId, string GhiChuGiaoVien)
         {
-            // Lấy buổi điểm danh gần nhất của học viên để gắn ghi chú vào
+            // 1. Tìm thông tin học viên để lấy tên và ID của Sale phụ trách
+            var hv = await _context.HocVien.FindAsync(HocVienId);
+            if (hv == null) return NotFound();
+
+            // 2. Lấy buổi điểm danh gần nhất của học viên để gắn ghi chú vào
             var diemDanh = await _context.DiemDanh
                 .Where(d => d.HocVienId == HocVienId)
                 .OrderByDescending(d => d.NgayDiemDanh)
@@ -894,8 +899,25 @@ namespace ITPRO_CRM.Controllers
                 _context.Add(newDiemDanh);
             }
 
+            // 3. 🔥 GẮN NGÒI NỔ: BẮN THÔNG BÁO CHO SALE PHỤ TRÁCH
+            if (hv.NhanVienId != null)
+            {
+                var noti = new ThongBao
+                {
+                    NhanVienId = hv.NhanVienId.Value, // Bắn cho ông Sale đang quản lý học viên này
+                    TieuDe = "⚠️ Phản ánh từ Giảng viên",
+                    NoiDung = $"Học viên {hv.HoTen} bị phản ánh: {GhiChuGiaoVien}",
+                    LinkUrl = $"/HocViens/Details/{hv.Id}", // Bấm vào chuông nhảy thẳng đến trang chi tiết
+                    NgayTao = DateTime.Now,
+                    DaDoc = false
+                };
+                _context.ThongBao.Add(noti);
+            }
+
+            // 4. Lưu tất cả thay đổi (Ghi chú điểm danh + Cảnh báo Sale) vào Database cùng 1 lúc
             await _context.SaveChangesAsync();
-            TempData["Success"] = "📢 Đã gửi phản ánh của Giáo viên cho bộ phận Sale!";
+
+            TempData["Success"] = "📢 Đã lưu phản ánh và gửi thông báo nhắc nhở cho bộ phận Sale!";
             TempData["ActiveTab"] = "academic"; // Load lại giữ nguyên Tab điểm danh
 
             return RedirectToAction("Details", new { id = HocVienId });

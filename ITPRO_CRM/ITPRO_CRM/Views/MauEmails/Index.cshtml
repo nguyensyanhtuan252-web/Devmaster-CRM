@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<ITPRO_CRM.Models.MauEmail>
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Quản lý mẫu Email";
+    // Lấy quyền của người dùng đang đăng nhập
+    var roleId = Context.Session.GetInt32("VaiTro");
+
     var tongMau = Model.Count();
     var mktCount = Model.Count(x => x.LoaiMau == "Marketing");
     var tcCount = Model.Count(x => x.LoaiMau == "Tài chính");
@@ -356,9 +360,13 @@
             <h5 class="page-title"><i class="fa-solid fa-envelopes-bulk text-info me-2"></i>Kho mẫu Email</h5>
             <p class="page-subtitle">Danh sách các kịch bản email được định sẵn trong hệ thống</p>
         </div>
-        <a asp-action="Create" class="btn-create">
-            <i class="fa-solid fa-plus"></i> Tạo mẫu mới
-        </a>
+
+        @if (roleId == 0)
+        {
+            <a asp-action="Create" class="btn-create">
+                <i class="fa-solid fa-plus"></i> Tạo mẫu mới
+            </a>
+        }
     </div>
 
     <div class="stats-bar" id="statsBar">
@@ -441,15 +449,23 @@
                         </td>
                         <td>
                             <div class="action-btns">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit" title="Chỉnh sửa">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
+                                @if (roleId == 0)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-action btn-edit" title="Chỉnh sửa">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                }
+
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn-action btn-details" title="Chi tiết">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete" title="Xoá">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+
+                                @if (roleId == 0)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-action btn-delete" title="Xoá">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -461,7 +477,13 @@
         {
             <div class="empty-state">
                 <i class="fa-solid fa-envelope-open-text"></i>
-                <p>Chưa có mẫu email nào. <a asp-action="Create" style="color:#60a5fa;">Tạo mẫu đầu tiên</a></p>
+                <p>
+                    Chưa có mẫu email nào.
+                    @if (roleId == 0)
+                    {
+                        <a asp-action="Create" style="color:#60a5fa;">Tạo mẫu đầu tiên</a>
+                    }
+                </p>
             </div>
         }
     </div>
@@ -482,7 +504,6 @@
 
             var q = removeAccents(searchBox.value.trim());
             var rows = document.querySelectorAll('.mau-row');
-
             rows.forEach(function(row) {
                 // Quét toàn bộ nội dung chữ trong dòng
                 var text = removeAccents(row.textContent || row.innerText);

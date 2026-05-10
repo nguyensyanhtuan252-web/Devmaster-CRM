@@ -199,6 +199,26 @@
         gap: 4px;
         border: 1px solid rgba(16, 185, 129, 0.2);
     }
+    /* Các class tạo viền màu phía trên cho đồng bộ hệ thống */
+    .accent-blue {
+        border-top: 3px solid #4f6ef7 !important;
+    }
+
+    .accent-cyan {
+        border-top: 3px solid #0dcaf0 !important;
+    }
+
+    .accent-green {
+        border-top: 3px solid #10b981 !important;
+    }
+
+    .accent-orange {
+        border-top: 3px solid #f59e0b !important;
+    }
+
+    .accent-purple {
+        border-top: 3px solid #8b5cf6 !important;
+    }
 </style>
 
 <div class="container-fluid px-4 mt-3 crm-wrapper">
@@ -215,22 +235,25 @@
     </div>
 
     <div class="stats-row">
-        <div class="crm-card stat-box">
+        <div class="crm-card stat-box accent-blue">
             <div class="stat-label"><i class="ti ti-mail text-primary"></i> Tổng thư</div>
             <div class="stat-value" id="countDisplay">@Model.Count()</div>
             <div class="crm-text-sub mt-1">Đang hiển thị trên bảng</div>
         </div>
-        <div class="crm-card stat-box">
+
+        <div class="crm-card stat-box accent-cyan">
             <div class="stat-label"><i class="ti ti-users text-info"></i> Lượt nhận</div>
             <div class="stat-value">@Model.Count()</div>
             <div class="crm-text-sub mt-1">Học viên tiếp cận</div>
         </div>
-        <div class="crm-card stat-box">
+
+        <div class="crm-card stat-box accent-green">
             <div class="stat-label"><i class="ti ti-circle-check text-success"></i> Thành công</div>
             <div class="stat-value text-success">100%</div>
             <div class="crm-text-sub mt-1">Hệ thống thông suốt</div>
         </div>
-        <div class="crm-card stat-box">
+
+        <div class="crm-card stat-box accent-orange">
             <div class="stat-label"><i class="ti ti-calendar-event text-warning"></i> Gần nhất</div>
             <div class="stat-value">@(Model.FirstOrDefault()?.NgayGui.ToString("dd/MM") ?? "--/--")</div>
             <div class="crm-text-sub mt-1">Ngày gửi gần đây</div>

@@ -28,6 +28,7 @@ namespace ITPRO_CRM.Data
         public DbSet<EmailMarketing> EmailMarketing { get; set; }
         public DbSet<ITPRO_CRM.Models.MauEmail> MauEmail { get; set; }
         public DbSet<ITPRO_CRM.Models.DotThanhToan> DotThanhToan { get; set; }
+        public DbSet<ThongBao> ThongBao { get; set; }
 
         // 👇 ĐOẠN ĐƯỢC THÊM MỚI (CẤU HÌNH KHÓA NGOẠI) 👇
         protected override void OnModelCreating(ModelBuilder modelBuilder)

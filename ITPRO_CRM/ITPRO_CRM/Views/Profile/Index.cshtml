@@ -4,211 +4,781 @@
 }
 
 <style>
-    /* 1. Ảnh bìa Gradient sang trọng */
-    .profile-cover {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        height: 160px;
-        border-radius: 15px 15px 0 0;
+    /* ─── CSS VARIABLES – light & dark ─────────────────────────────── */
+    :root {
+        --profile-bg: transparent;
+        --card-bg: #ffffff;
+        --card-bg-alt: #f8f9fc;
+        --card-border: rgba(0,0,0,0.07);
+        --card-shadow: 0 4px 30px rgba(0,0,0,0.08);
+        --card-shadow-hover: 0 8px 40px rgba(0,0,0,0.13);
+        --cover-start: #1a2f5e;
+        --cover-end: #2d5be3;
+        --cover-accent: #4f8ef7;
+        --text-primary: #12172b;
+        --text-secondary: #5a6480;
+        --text-muted: #8c95ae;
+        --label-color: #7a84a0;
+        --input-bg: #f4f6fb;
+        --input-bg-focus: #ffffff;
+        --input-border: #dde1ef;
+        --input-border-focus: #2d5be3;
+        --input-shadow-focus: rgba(45,91,227,0.12);
+        --input-disabled-bg: #eceff7;
+        --input-disabled-text: #9aa0bb;
+        --divider: rgba(0,0,0,0.07);
+        --badge-admin-bg: rgba(45,91,227,0.12);
+        --badge-admin-text: #1d46c9;
+        --badge-active-bg: rgba(16,185,129,0.12);
+        --badge-active-text: #047857;
+        --section-title: #2d5be3;
+        --icon-muted: #8c95ae;
+        --btn-primary-bg: #2d5be3;
+        --btn-primary-hover: #1d46c9;
+        --btn-light-bg: #eef0f8;
+        --btn-light-text: #5a6480;
+        --btn-light-hover: #e2e5f2;
+        --btn-outline-border: #2d5be3;
+        --btn-outline-text: #2d5be3;
+        --btn-outline-hover-bg: rgba(45,91,227,0.07);
+        --avatar-ring: #ffffff;
+        --info-hint: #6b74a0;
+        --separator-line: rgba(90,100,128,0.15);
+        --stat-label: #8c95ae;
+        --stat-value: #12172b;
+        --alert-success-bg: #ecfdf5;
+        --alert-success-border: #6ee7b7;
+        --alert-success-text: #065f46;
+        --scrollbar-thumb: #c5cade;
+    }
+
+    [data-theme="dark"] {
+        --profile-bg: transparent;
+        --card-bg: #161b27;
+        --card-bg-alt: #1c2333;
+        --card-border: rgba(255,255,255,0.06);
+        --card-shadow: 0 4px 30px rgba(0,0,0,0.35);
+        --card-shadow-hover: 0 8px 40px rgba(0,0,0,0.5);
+        --cover-start: #0f1c3a;
+        --cover-end: #1a3a8f;
+        --cover-accent: #2d5be3;
+        --text-primary: #e8ecf8;
+        --text-secondary: #8c9abf;
+        --text-muted: #5e6a8a;
+        --label-color: #6b78a0;
+        --input-bg: #1c2333;
+        --input-bg-focus: #212c42;
+        --input-border: rgba(255,255,255,0.08);
+        --input-border-focus: #4f8ef7;
+        --input-shadow-focus: rgba(79,142,247,0.15);
+        --input-disabled-bg: #161b27;
+        --input-disabled-text: #3d4a6a;
+        --divider: rgba(255,255,255,0.06);
+        --badge-admin-bg: rgba(79,142,247,0.15);
+        --badge-admin-text: #7fb3ff;
+        --badge-active-bg: rgba(52,211,153,0.12);
+        --badge-active-text: #34d399;
+        --section-title: #4f8ef7;
+        --icon-muted: #4a5880;
+        --btn-primary-bg: #2d5be3;
+        --btn-primary-hover: #4f8ef7;
+        --btn-light-bg: #1c2333;
+        --btn-light-text: #8c9abf;
+        --btn-light-hover: #212c42;
+        --btn-outline-border: #4f8ef7;
+        --btn-outline-text: #4f8ef7;
+        --btn-outline-hover-bg: rgba(79,142,247,0.08);
+        --avatar-ring: #161b27;
+        --info-hint: #5e6a8a;
+        --separator-line: rgba(255,255,255,0.07);
+        --stat-label: #5e6a8a;
+        --stat-value: #c8d0ec;
+        --alert-success-bg: rgba(52,211,153,0.08);
+        --alert-success-border: rgba(52,211,153,0.25);
+        --alert-success-text: #34d399;
+        --scrollbar-thumb: #2a3450;
+    }
+
+    /* ─── GLOBAL SCOPING ────────────────────────────────────────────── */
+    .profile-page-wrapper {
+        font-family: 'Inter', sans-serif;
+        background: var(--profile-bg);
+        min-height: 100%;
+        padding: 2rem 0 3rem;
+        transition: background 0.3s ease;
+    }
+
+    /* ─── ALERT ─────────────────────────────────────────────────────── */
+    .profile-alert {
+        background: var(--alert-success-bg);
+        border: 1px solid var(--alert-success-border);
+        color: var(--alert-success-text);
+        border-radius: 12px;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        animation: slideDown 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ─── CARDS ─────────────────────────────────────────────────────── */
+    .pcard {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        height: 100%;
+    }
+
+    /* ─── LEFT CARD – IDENTITY ──────────────────────────────────────── */
+    .cover-area {
+        background: linear-gradient(135deg, var(--cover-start) 0%, var(--cover-end) 70%, var(--cover-accent) 100%);
+        height: 140px;
         position: relative;
+        
     }
 
-    /* 2. Avatar đè lên ảnh bìa */
-    .profile-avatar-container {
+        .cover-area::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 75% 30%, rgba(255,255,255,0.06) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(255,255,255,0.04) 0%, transparent 50%);
+        }
+
+    .cover-dots {
         position: absolute;
-        bottom: -50px;
-        left: 40px;
-        border: 5px solid #fff;
+        right: 20px;
+        top: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 8px);
+        gap: 6px;
+        opacity: 0.2;
+    }
+
+        .cover-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+            display: block;
+        }
+
+    .avatar-wrap {
+        position: absolute;
+        bottom: -46px;
+        left: 36px;
         border-radius: 50%;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        padding: 4px;
+        background: var(--avatar-ring);
+        box-shadow: 0 0 0 2px var(--card-border), 0 8px 24px rgba(0,0,0,0.18);
+        transition: background 0.3s ease;
     }
 
-    /* 3. Card tổng thể */
-    .profile-card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.05);
-        overflow: hidden; /* Để bo góc ảnh bìa */
-    }
-
-    /* 4. Input đẹp hơn */
-    .form-control-custom {
-        border: 1px solid #e2e8f0;
-        background-color: #f8f9fa;
-        padding: 12px 15px;
-        border-radius: 10px;
-        font-size: 0.95rem;
-        transition: all 0.3s;
-    }
-
-        .form-control-custom:focus {
-            background-color: #fff;
-            border-color: #2a5298;
-            box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.1);
+        .avatar-wrap img {
+            border-radius: 50%;
+            display: block;
+            width: 90px;
+            height: 90px;
         }
 
-        .form-control-custom:disabled {
-            background-color: #e9ecef;
-            opacity: 0.8;
-        }
-
-    /* 5. Nhãn label */
-    .form-label-custom {
-        font-weight: 600;
-        color: #4a5568;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
+    .identity-body {
+        padding: 58px 32px 28px;
     }
 
-    /* 6. Badge trạng thái */
-    .status-badge {
+    .identity-name {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 10px;
+        line-height: 1.2;
+        transition: color 0.3s ease;
+    }
+
+    .badge-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .pbadge {
         display: inline-flex;
         align-items: center;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
+        gap: 5px;
+        padding: 4px 11px;
+        border-radius: 30px;
+        font-size: 11.5px;
         font-weight: 600;
+        letter-spacing: 0.3px;
     }
 
-    .status-active {
-        background-color: #d1fae5;
-        color: #065f46;
+    .pbadge-role {
+        background: var(--badge-admin-bg);
+        color: var(--badge-admin-text);
+    }
+
+    .pbadge-active {
+        background: var(--badge-active-bg);
+        color: var(--badge-active-text);
+    }
+
+        .pbadge-active::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            display: inline-block;
+        }
+
+    .identity-desc {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-bottom: 24px;
+        transition: color 0.3s ease;
+    }
+
+    .stat-row {
+        border-top: 1px solid var(--divider);
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 11px 0;
+        border-bottom: 1px solid var(--divider);
+    }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+    .stat-label {
+        font-size: 11.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--stat-label);
+        transition: color 0.3s ease;
+    }
+
+    .stat-value {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--stat-value);
+        font-variant-numeric: tabular-nums;
+        transition: color 0.3s ease;
+    }
+
+    .btn-change-pass {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 22px;
+        padding: 11px 20px;
+        border-radius: 12px;
+        border: 1.5px solid var(--btn-outline-border);
+        color: var(--btn-outline-text);
+        background: transparent;
+        font-size: 0.87rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .btn-change-pass:hover {
+            background: var(--btn-outline-hover-bg);
+            color: var(--btn-outline-text);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45,91,227,0.15);
+        }
+
+    /* ─── RIGHT CARD – FORM ─────────────────────────────────────────── */
+    .form-card-header {
+        padding: 22px 30px;
+        border-bottom: 1px solid var(--divider);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--card-bg);
+        transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .form-card-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--badge-admin-bg);
+        color: var(--section-title);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .form-card-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+        transition: color 0.3s ease;
+    }
+
+    .form-card-subtitle {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin: 0;
+        transition: color 0.3s ease;
+    }
+
+    .form-card-body {
+        padding: 28px 30px 30px;
+    }
+
+    .section-label {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--section-title);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--separator-line);
+        }
+
+    .field-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--label-color);
+        margin-bottom: 7px;
+        display: block;
+        transition: color 0.3s ease;
+    }
+
+    .field-group {
+        display: flex;
+        align-items: center;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.22s ease;
+    }
+
+        .field-group:focus-within {
+            background: var(--input-bg-focus);
+            border-color: var(--input-border-focus);
+            box-shadow: 0 0 0 4px var(--input-shadow-focus);
+        }
+
+        .field-group.is-disabled {
+            background: var(--input-disabled-bg);
+            opacity: 0.75;
+        }
+
+    .field-icon {
+        padding: 0 14px;
+        color: var(--icon-muted);
+        font-size: 14px;
+        flex-shrink: 0;
+        transition: color 0.2s ease;
+    }
+
+    .field-group:focus-within .field-icon {
+        color: var(--section-title);
+    }
+
+    .field-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 11px 14px 11px 0;
+        font-size: 0.9rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-primary);
+        outline: none;
+        min-width: 0;
+        transition: color 0.3s ease;
+    }
+
+        .field-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .field-input:disabled,
+        .field-input[readonly] {
+            color: var(--input-disabled-text);
+            cursor: default;
+        }
+
+    .field-hint {
+        font-size: 11px;
+        color: var(--info-hint);
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: color 0.3s ease;
+    }
+
+    .field-disabled-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--input-disabled-text);
+        background: var(--input-disabled-bg);
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-left: 8px;
+    }
+
+    .textarea-input {
+        width: 100%;
+        border: none;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--input-disabled-text);
+        resize: none;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .form-sep {
+        height: 1px;
+        background: var(--separator-line);
+        margin: 24px 0;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid var(--divider);
+    }
+
+    .btn-reset {
+        padding: 10px 22px;
+        border-radius: 11px;
+        border: 1px solid var(--input-border);
+        background: transparent;
+        color: var(--btn-light-text);
+        font-size: 0.87rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .btn-reset:hover {
+            background: var(--btn-light-bg);
+        }
+
+    .btn-save {
+        padding: 10px 28px;
+        border-radius: 11px;
+        border: none;
+        background: var(--btn-primary-bg);
+        color: #fff;
+        font-size: 0.87rem;
+        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(45,91,227,0.3);
+        letter-spacing: 0.2px;
+    }
+
+        .btn-save:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(45,91,227,0.4);
+        }
+
+        .btn-save:active {
+            transform: translateY(0);
+        }
+
+    /* ─── VALIDATION ERRORS ─────────────────────────────────────────── */
+    .field-error {
+        font-size: 11.5px;
+        color: #ef4444;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────────────── */
+    .pcard {
+        animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .col-xl-4 .pcard {
+        animation-delay: 0.05s;
+    }
+
+    .col-xl-8 .pcard {
+        animation-delay: 0.12s;
+    }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────────── */
+    @@media (max-width: 768px) {
+        .identity-body {
+            padding: 52px 22px 24px;
+        }
+
+        .form-card-body {
+            padding: 22px 20px 22px;
+        }
+
+        .form-card-header {
+            padding: 18px 20px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-save, .btn-reset {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 
-<div class="container py-4">
+<div class="profile-page-wrapper">
+    <div class="container-lg">
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success border-0 shadow-sm mb-4 d-flex align-items-center">
-            <i class="fa-solid fa-circle-check fs-4 me-3 text-success"></i>
-            <div>
-                <strong>Thành công!</strong> @TempData["Success"]
+        @if (TempData["Success"] != null)
+        {
+            <div class="profile-alert">
+                <i class="fa-solid fa-circle-check fs-5"></i>
+                <span>@TempData["Success"]</span>
             </div>
-        </div>
-    }
+        }
 
-    <div class="row">
-        <div class="col-xl-4 col-lg-5 mb-4">
-            <div class="card profile-card bg-white h-100">
-                <div class="profile-cover">
-                    <div class="profile-avatar-container">
-                        <img src="https://ui-avatars.com/api/?name=@Model.HoTen&background=fff&color=1e3c72&size=128&font-size=0.4"
-                             class="rounded-circle" width="100" height="100" alt="Avatar">
+        <div class="row g-4">
+
+            <div class="col-xl-4 col-lg-5">
+                <div class="pcard">
+                    <div class="cover-area">
+                        <div class="cover-dots">
+                            @for (int i = 0; i < 20; i++)
+                            {
+                                <span></span>
+                            }
+                        </div>
+                        <div class="avatar-wrap">
+                            <img src="https://ui-avatars.com/api/?name=@Uri.EscapeDataString(Model.HoTen)&background=2d5be3&color=fff&size=180&font-size=0.38&bold=true"
+                                 alt="Avatar @Model.HoTen" />
+                        </div>
                     </div>
-                </div>
 
-                <div class="card-body pt-5 mt-3 px-4">
-                    <h4 class="fw-bold text-dark mb-1">@Model.HoTen</h4>
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="badge bg-primary me-2">
-                            @if (Model.VaiTro == 0)
-                            {
-                                <i class="fa-solid fa-shield-halved me-1"></i> <span>Administrator</span>
-                            }
-                            else
-                            {
-                                <i class="fa-solid fa-user-tie me-1"></i> <span>Nhân viên Sale</span>
-                            }
-                        </span>
+                    <div class="identity-body">
+                        <h2 class="identity-name">@Model.HoTen</h2>
 
-                        @if (Model.TrangThai)
-                        {
-                            <span class="status-badge status-active">
-                                <i class="fa-solid fa-circle me-1" style="font-size: 8px;"></i> Đang hoạt động
+                        <div class="badge-row">
+                            <span class="pbadge pbadge-role">
+                                @if (Model.VaiTro == 0)
+                                {
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span>Administrator</span>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span>Nhân viên Sale</span>
+                                }
                             </span>
-                        }
-                    </div>
+                            @if (Model.TrangThai)
+                            {
+                                <span class="pbadge pbadge-active">Đang hoạt động</span>
+                            }
+                        </div>
 
-                    <p class="text-muted small mb-4">
-                        Chào mừng trở lại hệ thống CRM. Hãy cập nhật thông tin cá nhân đầy đủ để công việc thuận tiện hơn.
-                    </p>
+                        
 
-                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
-                        <span class="fw-bold text-muted small">Ngày tham gia</span>
-                        <span class="text-dark small fw-bold">01/01/2026</span>
-                    </div>
-                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
-                        <span class="fw-bold text-muted small">Mã nhân viên</span>
-                        <span class="text-dark small fw-bold">#NV-@(Model.Id.ToString("D4"))</span>
-                    </div>
+                        <div class="stat-row">
+                            <div class="stat-item">
+                                <span class="stat-label">Mã nhân viên</span>
+                                <span class="stat-value">#NV-@(Model.Id.ToString("D4"))</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Email</span>
+                                <span class="stat-value" style="font-size:11.5px; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">@Model.Email</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Ngày tham gia</span>
+                                <span class="stat-value">01/01/2026</span>
+                            </div>
+                        </div>
 
-                    <div class="d-grid mt-4">
-                        <a asp-action="ChangePassword" class="btn btn-outline-primary py-2 rounded-pill fw-bold">
-                            <i class="fa-solid fa-key me-2"></i> Đổi mật khẩu
+                        <a asp-action="ChangePassword" class="btn-change-pass">
+                            <i class="fa-solid fa-key"></i> Đổi mật khẩu
                         </a>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-8 col-lg-7">
-            <div class="card profile-card bg-white h-100">
-                <div class="card-header bg-white py-3 px-4 border-bottom">
-                    <h6 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-user-gear me-2 text-primary"></i> Thông tin chi tiết</h6>
-                </div>
-
-                <div class="card-body p-4">
-                    <form asp-action="UpdateProfile" method="post">
-                        <input type="hidden" asp-for="Id" />
-
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <h6 class="text-primary fw-bold mb-3 small text-uppercase"><i class="fa-solid fa-lock me-2"></i> Tài khoản đăng nhập</h6>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label-custom">Email (User)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text border-0 bg-light text-muted ps-3 rounded-start-3"><i class="fa-solid fa-envelope"></i></span>
-                                    <input type="text" class="form-control form-control-custom border-start-0 rounded-end-3" value="@Model.Email" readonly disabled />
-                                </div>
-                                <div class="form-text ms-2"><i class="fa-solid fa-circle-info me-1"></i> Email không thể thay đổi.</div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label-custom">Vai trò hệ thống</label>
-                                <div class="input-group">
-                                    <span class="input-group-text border-0 bg-light text-muted ps-3 rounded-start-3"><i class="fa-solid fa-user-tag"></i></span>
-                                    <input type="text" class="form-control form-control-custom border-start-0 rounded-end-3 text-primary fw-bold"
-                                           value="@(Model.VaiTro == 0 ? "Quản trị viên (Admin)" : "Nhân viên Kinh doanh")" readonly disabled />
-                                </div>
-                            </div>
-
-                            <div class="col-12"><hr class="text-muted opacity-25"></div>
-
-                            <div class="col-12">
-                                <h6 class="text-primary fw-bold mb-3 small text-uppercase"><i class="fa-solid fa-address-card me-2"></i> Thông tin cá nhân</h6>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label-custom">Họ và Tên</label>
-                                <input asp-for="HoTen" class="form-control form-control-custom" placeholder="Nhập họ tên đầy đủ..." />
-                                <span asp-validation-for="HoTen" class="text-danger small mt-1 d-block"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label-custom">Số điện thoại</label>
-                                <input asp-for="SoDienThoai" class="form-control form-control-custom" placeholder="Nhập số điện thoại liên hệ..." />
-                                <span asp-validation-for="SoDienThoai" class="text-danger small mt-1 d-block"></span>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label-custom">Giới thiệu bản thân (Bio)</label>
-                                <textarea class="form-control form-control-custom" rows="3" placeholder="Viết vài dòng giới thiệu về bạn..." disabled>Tính năng đang phát triển...</textarea>
-                            </div>
+            <div class="col-xl-8 col-lg-7">
+                <div class="pcard" style="overflow:visible;">
+                    <div class="form-card-header">
+                        <div class="form-card-icon">
+                            <i class="fa-solid fa-user-gear"></i>
                         </div>
-
-                        <div class="d-flex justify-content-end align-items-center mt-5">
-                            <button type="reset" class="btn btn-light px-4 py-2 me-3 rounded-pill fw-bold text-muted">Hủy bỏ</button>
-                            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-bold shadow-sm">
-                                <i class="fa-solid fa-floppy-disk me-2"></i> Lưu thay đổi
-                            </button>
+                        <div>
+                            <p class="form-card-title">Thông tin cá nhân</p>
+                            <p class="form-card-subtitle">Cập nhật hồ sơ và thông tin liên hệ của bạn</p>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="form-card-body">
+                        <form asp-action="UpdateProfile" method="post">
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="section-label">
+                                <i class="fa-solid fa-lock" style="font-size:10px;"></i>
+                                Tài khoản đăng nhập
+                            </div>
+
+                            <div class="row g-3 mb-2">
+                                <div class="col-md-6">
+                                    <label class="field-label">Email (Tên đăng nhập)</label>
+                                    <div class="field-group is-disabled">
+                                        <span class="field-icon"><i class="fa-solid fa-envelope"></i></span>
+                                        <input type="text" class="field-input" value="@Model.Email" disabled readonly />
+                                    </div>
+                                    <span class="field-hint">
+                                        <i class="fa-solid fa-circle-info" style="font-size:10px;"></i>
+                                        Email không thể thay đổi
+                                    </span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="field-label">
+                                        Vai trò hệ thống
+                                    </label>
+                                    <div class="field-group is-disabled">
+                                        <span class="field-icon"><i class="fa-solid fa-user-tag"></i></span>
+                                        <input type="text" class="field-input" style="font-weight:600;"
+                                               value="@(Model.VaiTro == 0 ? "Quản trị viên (Admin)" : "Nhân viên Kinh doanh")" disabled readonly />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-sep"></div>
+
+                            <div class="section-label">
+                                <i class="fa-solid fa-address-card" style="font-size:10px;"></i>
+                                Thông tin cá nhân
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="field-label">Họ và tên đầy đủ</label>
+                                    <div class="field-group">
+                                        <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+                                        <input asp-for="HoTen" class="field-input" placeholder="Nhập họ tên đầy đủ..." />
+                                    </div>
+                                    <span asp-validation-for="HoTen" class="field-error"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="field-label">Số điện thoại</label>
+                                    <div class="field-group">
+                                        <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
+                                        <input asp-for="SoDienThoai" class="field-input" placeholder="" />
+                                    </div>
+                                    <span asp-validation-for="SoDienThoai" class="field-error"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="field-label">
+                                        Giới thiệu bản thân
+                                        
+                                    </label>
+                                    <textarea class="textarea-input" rows="3"
+                                              placeholder="" disabled></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="reset" class="btn-reset">Hủy bỏ</button>
+                                <button type="submit" class="btn-save">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    Lưu thay đổi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

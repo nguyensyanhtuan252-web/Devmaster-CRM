@@ -314,14 +314,17 @@
         }
 
     /* Shared components */
+    /* Tìm và sửa đoạn này (khoảng dòng 68-70) */
     .av {
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        color: #fff;
         flex-shrink: 0;
         border-radius: 8px;
+        /* THÊM 2 DÒNG NÀY ĐỂ CỐ ĐỊNH 1 MÀU (Nền xanh nhạt, chữ xanh đậm) */
+        background-color: #e0e7ff !important;
+        color: #1e40af !important;
     }
 
     .av-34 {
@@ -888,7 +891,7 @@
             <table class="crm-tbl">
                 <thead>
                     <tr>
-                        <th style="width:36px"><input type="checkbox" id="checkAll" onchange="toggleAll(this)" style="accent-color:var(--accent)"></th>
+                        
                         <th>Khách hàng</th>
                         <th>Liên hệ</th>
                         <th>Nguồn</th>
@@ -901,15 +904,14 @@
                 <tbody id="tableBody">
                     @if (!displayModel.Any())
                     {
-                        <tr><td colspan="8"><div class="empty-st"><i class="fa-solid fa-bolt"></i><p>Chưa có tiềm năng nào. Nhấn "Thêm tiềm năng" để bắt đầu.</p></div></td></tr>
+                        <tr><td colspan="7"><div class="empty-st"><i class="fa-solid fa-bolt"></i><p>Chưa có tiềm năng nào. Nhấn "Thêm tiềm năng" để bắt đầu.</p></div></td></tr>
                     }
                     @foreach (var item in displayModel)
                     {
                         bool isNew = item.NgayTao.HasValue && item.NgayTao.Value.Date == DateTime.Today;
                         bool isCold = item.LichSuTuVans == null || !item.LichSuTuVans.Any();
                         bool hasSoc = !string.IsNullOrEmpty(item.FacebookLink) || !string.IsNullOrEmpty(item.ZaloLink);
-                        var avColors = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
-                        var avc = avColors[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avColors.Length];
+                        
                         string src = item.NguonGoc ?? item.ChienDich?.TenChienDich ?? "Tự nhiên";
                         string srcLower = src.ToLower();
 
@@ -923,10 +925,10 @@
                             data-phone="@(item.SoDienThoai?.ToLower() ?? "")"
                             data-email="@(item.Email?.ToLower() ?? "")"
                             data-source="@srcLower">
-                            <td><input type="checkbox" class="row-chk" style="accent-color:var(--accent)"></td>
+                            
                             <td>
                                 <div style="display:flex;align-items:center;gap:10px">
-                                    <div class="av av-34" style="background:@avc">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div class="av av-34">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
                                     <div>
                                         <div style="font-size:13px;font-weight:600;color:var(--text)">@item.HoTen</div>
                                         <div style="font-size:10px;color:var(--text3);margin-top:1px">
@@ -1020,7 +1022,7 @@
         new { title="Quá hạn",  icon="fa-triangle-exclamation", cls="kh-danger", cardCls="lo", pillCls="pill-danger", pillTxt="Quá hạn",
         items=displayModel.Where(x=>x.NgayHen.HasValue&&x.NgayHen.Value.Date<DateTime.Today).ToList(), dateColor="var(--danger)" },
         };
-                var avColors2 = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
+                
             }
             @foreach (var col in cols)
             {
@@ -1038,11 +1040,11 @@
                         }
                         @foreach (var item in col.items)
                         {
-                            var avc2 = avColors2[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avColors2.Length];
+                            
                             var dayLate = col.cardCls == "lo" ? (int)(DateTime.Today - (item.NgayHen?.Date ?? DateTime.Today)).TotalDays : 0;
                             <a href="@Url.Action("Details",new{id=item.Id})" class="k-card @col.cardCls">
                                 <div style="display:flex;gap:8px;align-items:flex-start">
-                                    <div class="av av-28" style="background:@avc2">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div class="av av-28">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
                                     <div style="flex:1;min-width:0">
                                         <div class="k-name">@item.HoTen</div>
                                         <div class="k-phone">@item.SoDienThoai</div>
@@ -1093,12 +1095,12 @@
                         {
                             bool isToday2 = item.NgayHen?.Date == DateTime.Today;
                             bool isOverdue2 = item.NgayHen.HasValue && item.NgayHen.Value.Date < DateTime.Today;
-                            var avc3 = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" }[Math.Abs((item.HoTen ?? "A").GetHashCode()) % 6];
+                            
                             string lrCls = "list-row all " + (isToday2 ? "today" : "") + (isOverdue2 ? " overdue" : "") + (!item.NgayHen.HasValue ? " unset" : "");
                             <tr class="@lrCls" data-name="@(item.HoTen?.ToLower())" data-phone="@(item.SoDienThoai?.ToLower() ?? "")">
                                 <td>
                                     <div style="display:flex;align-items:center;gap:9px">
-                                        <div class="av av-28" style="background:@avc3">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                        <div class="av av-28">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
                                         <div>
                                             <div style="font-weight:600;color:var(--text);font-size:13px">@item.HoTen</div>
                                             <div style="font-size:10px;color:var(--text3);font-family:monospace">@(item.NguonGoc ?? "Tự nhiên")</div>
@@ -1172,7 +1174,7 @@
             <table class="crm-tbl">
                 <thead>
                     <tr>
-                        <th style="width:36px"><input type="checkbox" id="checkAll" onchange="toggleAll(this)" style="accent-color:var(--accent)"></th>
+                        
                         <th>Học viên</th>
                         <th>Liên hệ</th>
                         <th>Lớp học</th>
@@ -1188,7 +1190,7 @@
                 <tbody id="tableBody">
                     @if (!displayModel.Any())
                     {
-                        <tr><td colspan="8"><div class="empty-st"><i class="fa-solid fa-users"></i><p>Chưa có học viên nào.</p></div></td></tr>
+                        <tr><td colspan="7"><div class="empty-st"><i class="fa-solid fa-users"></i><p>Chưa có học viên nào.</p></div></td></tr>
                     }
                     @foreach (var item in displayModel)
                     {
@@ -1196,8 +1198,7 @@
                         var dt = item.PhieuThus?.Sum(p => p.SoTien) ?? 0m;
                         var no = hp - dt;
                         var pct = hp > 0 ? (int)(dt * 100 / hp) : 100;
-                        var avcs = new[] { "#3b82f6", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444" };
-                        var avc4 = avcs[Math.Abs((item.HoTen ?? "A").GetHashCode()) % avcs.Length];
+                        
                         bool debt2 = no > 0; bool hasCls = item.LopHocId != null;
                         string rcls = "tbl-row all" + (hasCls ? " classed" : " noclass") + (debt2 ? " debt" : "");
                         <tr class="@rcls"
@@ -1205,10 +1206,10 @@
                             data-phone="@(item.SoDienThoai?.ToLower() ?? "")"
                             data-code="@(item.MaHocVien?.ToLower() ?? "")"
                             data-lop="@(item.LopHoc?.TenLop ?? "")">
-                            <td><input type="checkbox" class="row-chk" style="accent-color:var(--accent)"></td>
+                            
                             <td>
                                 <div style="display:flex;align-items:center;gap:10px">
-                                    <div class="av av-34" style="background:@avc4">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
+                                    <div class="av av-34">@((item.HoTen ?? "?")[0].ToString().ToUpper())</div>
                                     <div>
                                         <div style="font-size:13px;font-weight:600;color:var(--text)">@item.HoTen</div>
                                         <div style="font-size:10px;margin-top:1px">

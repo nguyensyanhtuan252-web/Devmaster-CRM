@@ -3,171 +3,729 @@
 }
 
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập hệ thống CRM</title>
+    <title>Đăng nhập — ITPRO CRM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --sidebar-bg: #07111f;
+            --sidebar-border: rgba(255,255,255,0.06);
+            --sidebar-text: rgba(255,255,255,0.92);
+            --sidebar-muted: rgba(255,255,255,0.42);
+            --sidebar-pill-bg: rgba(255,255,255,0.07);
+            --sidebar-pill-bdr: rgba(255,255,255,0.10);
+            --sidebar-pill-clr: rgba(255,255,255,0.65);
+            --sidebar-accent: #2d5be3;
+            --grid-line: rgba(255,255,255,0.03);
+            /* Màu Light Mode */
+            --form-bg: #ffffff;
+            --form-surface: #f5f7fc;
+            --form-border: rgba(0,0,0,0.06);
+            --form-text: #0f1629;
+            --form-muted: #7a84a0;
+            --form-hint: #b0b8d4;
+            --label-clr: #6b78a0;
+            --input-bg: #f2f4fb;
+            --input-bg-f: #ffffff;
+            --input-border: #dde1ef;
+            --input-border-f: #2d5be3;
+            --input-shadow-f: rgba(45,91,227,0.13);
+            --input-text: #0f1629;
+            --btn-bg: #1636c6;
+            --btn-hover: #0f28a8;
+            --btn-shadow: rgba(22,54,198,0.32);
+            --error-bg: rgba(239,68,68,0.07);
+            --error-bdr: rgba(239,68,68,0.22);
+            --error-clr: #c0392b;
+            --link-clr: #2d5be3;
+            --divider: rgba(0,0,0,0.07);
+            --logo-bg: rgba(22,54,198,0.10);
+            --logo-clr: #1636c6;
+        }
+
+        /* Đồng bộ Dark Mode theo thuộc tính data-theme của hệ thống */
+        [data-theme="dark"] {
+            --form-bg: #0f1629;
+            --form-surface: #161f35;
+            --form-border: rgba(255,255,255,0.05);
+            --form-text: #e4eaf8;
+            --form-muted: #7a88b0;
+            --form-hint: #3d4a68;
+            --label-clr: #606b8f;
+            --input-bg: #1a2440;
+            --input-bg-f: #1f2b4a;
+            --input-border: rgba(255,255,255,0.08);
+            --input-border-f: #4f8ef7;
+            --input-shadow-f: rgba(79,142,247,0.15);
+            --input-text: #ccd5f0;
+            --btn-bg: #2d5be3;
+            --btn-hover: #4f8ef7;
+            --btn-shadow: rgba(45,91,227,0.28);
+            --error-bg: rgba(239,68,68,0.10);
+            --error-bdr: rgba(239,68,68,0.25);
+            --error-clr: #f87171;
+            --link-clr: #7fb3ff;
+            --divider: rgba(255,255,255,0.06);
+            --logo-bg: rgba(79,142,247,0.12);
+            --logo-clr: #7fb3ff;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Inter', sans-serif; /* Đã đổi sang Inter */
             overflow: hidden;
-            background-color: #fff;
+            -webkit-font-smoothing: antialiased; /* Làm mượt font */
         }
 
-        .login-container {
-            height: 100vh;
+        /* ── LAYOUT ─────────────────────────────────── */
+        .login-wrap {
             display: flex;
-            flex-wrap: wrap;
+            height: 100vh;
         }
 
-        /* PHẦN BÊN TRÁI: HÌNH ẢNH & THƯƠNG HIỆU */
-        .login-sidebar {
-            background-color: #0f172a; /* Màu xanh than thương hiệu */
-            color: white;
+        /* ── LEFT PANEL ─────────────────────────────── */
+        .l-panel {
+            flex: 0 0 52%;
+            background: var(--sidebar-bg);
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 50px;
-            position: relative;
+            justify-content: space-between;
+            padding: 44px 52px;
             overflow: hidden;
         }
 
-            /* Họa tiết trang trí mờ phía sau */
-            .login-sidebar::before {
+            /* grid overlay */
+            .l-panel::before {
                 content: '';
                 position: absolute;
-                width: 150%;
-                height: 150%;
-                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 60%);
-                top: -25%;
-                left: -25%;
+                inset: 0;
+                background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+                background-size: 48px 48px;
+                pointer-events: none;
             }
 
-        .brand-content {
+            /* blue glow blob */
+            .l-panel::after {
+                content: '';
+                position: absolute;
+                width: 560px;
+                height: 560px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(45,91,227,0.18) 0%, transparent 70%);
+                bottom: -140px;
+                right: -120px;
+                pointer-events: none;
+            }
+
+        .l-top {
             position: relative;
             z-index: 2;
-            max-width: 450px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
         }
 
-        /* PHẦN BÊN PHẢI: FORM ĐĂNG NHẬP */
-        .login-form-wrapper {
+        .l-logo-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: #2d5be3;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #ffffff;
         }
 
-        .login-card {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-
-        .form-control {
-            height: 48px;
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-            .form-control:focus {
-                background-color: #fff;
-                border-color: #3b82f6;
-                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            .l-logo-mark svg {
+                width: 18px;
+                height: 18px;
+                fill: #fff;
             }
 
-        .btn-primary {
-            height: 48px;
-            background-color: #2563eb;
-            border: none;
+        .l-brand {
+            font-size: 15px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.92);
+            letter-spacing: -0.2px;
+        }
+
+        .l-center {
+            position: relative;
+            z-index: 2;
+        }
+
+        .l-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(45,91,227,0.18);
+            border: 1px solid rgba(45,91,227,0.3);
+            border-radius: 30px;
+            padding: 4px 13px;
+            font-size: 11.5px;
             font-weight: 600;
-            border-radius: 8px;
-            font-size: 14px;
-            letter-spacing: 0.5px;
+            color: #7fb3ff;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
         }
 
-            .btn-primary:hover {
-                background-color: #1d4ed8;
+            .l-eyebrow span.dot {
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: #4f8ef7;
+                animation: pulse 2s ease infinite;
             }
 
-        /* Responsive: Trên điện thoại thì ẩn bên trái đi */
-        @@media (max-width: 768px) {
-            .login-sidebar {
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.7);
+            }
+        }
+
+        .l-headline {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 3.2vw, 2.75rem);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+            margin-bottom: 22px;
+        }
+
+            .l-headline em {
+                font-style: italic;
+                color: #7fb3ff;
+            }
+
+        .l-desc {
+            font-size: 14.5px;
+            color: var(--sidebar-muted);
+            line-height: 1.7;
+            max-width: 380px;
+            margin-bottom: 38px;
+        }
+
+        .feature-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .feature-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--sidebar-pill-bg);
+            border: 1px solid var(--sidebar-pill-bdr);
+            border-radius: 30px;
+            padding: 7px 15px;
+            font-size: 12.5px;
+            color: var(--sidebar-pill-clr);
+            font-weight: 500;
+        }
+
+            .feature-pill i {
+                font-size: 12px;
+                color: #4f8ef7;
+            }
+
+        .l-bottom {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .l-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .l-stat-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .l-stat-lbl {
+            font-size: 11.5px;
+            color: var(--sidebar-muted);
+            font-weight: 500;
+        }
+
+        .l-stat-sep {
+            width: 1px;
+            height: 32px;
+            background: var(--sidebar-border);
+        }
+
+        /* ── RIGHT PANEL ─────────────────────────────── */
+        .r-panel {
+            flex: 1;
+            background: var(--form-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            transition: background 0.3s ease;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 390px;
+            animation: riseUp 0.5s cubic-bezier(0.16,1,0.3,1) both 0.08s;
+        }
+
+        @@keyframes riseUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* form header */
+        .form-logo-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--logo-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            transition: background 0.3s ease;
+        }
+
+            .form-logo-wrap i {
+                font-size: 20px;
+                color: var(--logo-clr);
+                transition: color 0.3s;
+            }
+
+        .form-greeting {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--form-text);
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+            transition: color 0.3s ease;
+        }
+
+        .form-sub {
+            font-size: 13.5px;
+            color: var(--form-muted);
+            margin-bottom: 32px;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+
+        /* error */
+        .login-error {
+            background: var(--error-bg);
+            border: 1px solid var(--error-bdr);
+            border-radius: 11px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--error-clr);
+            font-weight: 500;
+            margin-bottom: 22px;
+            animation: riseUp 0.3s ease;
+        }
+
+        /* field */
+        .field-wrap {
+            margin-bottom: 18px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.65px;
+            text-transform: uppercase;
+            color: var(--label-clr);
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .field-row {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.22s ease;
+        }
+
+            .field-row:focus-within {
+                background: var(--input-bg-f);
+                border-color: var(--input-border-f);
+                box-shadow: 0 0 0 4px var(--input-shadow-f);
+            }
+
+        .field-icon {
+            padding: 0 14px;
+            color: var(--form-hint);
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+
+        .field-row:focus-within .field-icon {
+            color: var(--input-border-f);
+        }
+
+        .field-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 13px 14px 13px 0;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: var(--input-text);
+            outline: none;
+            min-width: 0;
+            transition: color 0.3s;
+        }
+
+            .field-input::placeholder {
+                color: var(--form-hint);
+            }
+
+        .field-toggle {
+            padding: 0 14px;
+            border: none;
+            background: transparent;
+            color: var(--form-hint);
+            font-size: 14px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+
+            .field-toggle:hover {
+                color: var(--input-border-f);
+            }
+
+        /* remember + forgot row */
+        .meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 26px;
+            margin-top: -4px;
+        }
+
+        .remember-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--form-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+            .remember-label input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+                accent-color: var(--btn-bg);
+                cursor: pointer;
+            }
+
+        .forgot-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--link-clr);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+            .forgot-link:hover {
+                opacity: 0.75;
+            }
+
+        /* submit */
+        .btn-login {
+            width: 100%;
+            padding: 13.5px 20px;
+            border: none;
+            border-radius: 12px;
+            background: var(--btn-bg);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            box-shadow: 0 5px 20px var(--btn-shadow);
+            transition: all 0.22s ease;
+            letter-spacing: 0.2px;
+            margin-bottom: 22px;
+        }
+
+            .btn-login:hover {
+                background: var(--btn-hover);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 28px var(--btn-shadow);
+            }
+
+            .btn-login:active {
+                transform: translateY(0);
+            }
+
+        /* footer note */
+        .form-footer {
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--form-muted);
+        }
+
+            .form-footer a {
+                color: var(--link-clr);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+        .form-divider {
+            height: 1px;
+            background: var(--divider);
+            margin: 26px 0;
+        }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            font-size: 12px;
+            color: var(--form-muted);
+        }
+
+            .secure-note i {
+                font-size: 12px;
+            }
+
+        /* ── MOBILE ──────────────────────────────────── */
+        @@media (max-width: 767px) {
+            .l-panel {
                 display: none;
+            }
+
+            html, body {
+                overflow: auto;
+            }
+
+            .r-panel {
+                min-height: 100vh;
+                align-items: flex-start;
+                padding-top: 60px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container-fluid p-0">
-        <div class="row g-0 login-container">
+    <div class="login-wrap">
 
-            <div class="col-md-6 col-lg-7 login-sidebar">
-                <div class="brand-content">
-                    <h1 class="display-4 fw-bold mb-4">Quản lý trung tâm<br>Hiệu quả & Dễ dàng.</h1>
-                    <p class="lead opacity-75 mb-5">Hệ thống CRM giúp tối ưu hóa quy trình tuyển sinh, chăm sóc học viên và quản lý doanh thu tập trung.</p>
+        <div class="l-panel">
 
-                    <div class="d-flex align-items-center gap-4 opacity-75 small">
-                        <div><i class="fa-solid fa-check-circle text-success me-2"></i> Quản lý Lead</div>
-                        <div><i class="fa-solid fa-check-circle text-success me-2"></i> Báo cáo Realtime</div>
-                        <div><i class="fa-solid fa-check-circle text-success me-2"></i> Bảo mật cao</div>
-                    </div>
+            <div class="l-top">
+                <div class="l-logo-mark">
+                    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 2L3 6v8l7 4 7-4V6L10 2zm0 2.24L15.12 7 10 9.76 4.88 7 10 4.24zM4.5 8.62l5 2.88v5.26L4.5 13.88V8.62zm6.5 8.14v-5.26l5-2.88v5.26l-5 2.88z" />
+                    </svg>
+                </div>
+                <span class="l-brand">ITPRO CRM</span>
+            </div>
+
+            <div class="l-center">
+                <div class="l-eyebrow">
+                    <span class="dot"></span>
+                    Hệ thống đang hoạt động
+                </div>
+
+                <h1 class="l-headline">
+                    Quản lý trung tâm<br>
+                    <em>hiệu quả & thông minh.</em>
+                </h1>
+
+                <p class="l-desc">
+                    Nền tảng CRM tích hợp tối ưu hóa quy trình tuyển sinh, chăm sóc học viên và quản lý doanh thu — tất cả trong một giao diện duy nhất.
+                </p>
+
+                <div class="feature-pills">
+                    <div class="feature-pill"><i class="fa-solid fa-users-line"></i> Quản lý Lead</div>
+                    <div class="feature-pill"><i class="fa-solid fa-chart-line"></i> Báo cáo Realtime</div>
+                    <div class="feature-pill"><i class="fa-solid fa-shield-halved"></i> Bảo mật cao</div>
+                    <div class="feature-pill"><i class="fa-solid fa-bell"></i> Thông báo tức thì</div>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-5 login-form-wrapper">
-                <div class="login-card">
-                    <div class="mb-4">
-                        <i class="fa-solid fa-cube fa-2x text-primary"></i>
-                    </div>
-
-                    <h3 class="fw-bold text-dark mb-1">Xin chào,</h3>
-                    <p class="text-muted mb-4">Vui lòng đăng nhập để tiếp tục làm việc.</p>
-
-                    <form asp-action="Login" method="post">
-
-                        @if (ViewBag.Error != null)
-                        {
-                            <div class="alert alert-danger py-2 small border-0 bg-danger bg-opacity-10 text-danger">
-                                <i class="fa-solid fa-circle-exclamation me-1"></i> @ViewBag.Error
-                            </div>
-                        }
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-secondary">Email hoặc Tên đăng nhập</label>
-                            <input type="text" name="user" class="form-control" placeholder="admin@gmail.com" value="@ViewBag.User" required autofocus>
-                        </div>
-
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between">
-                                <label class="form-label small fw-bold text-secondary">Mật khẩu</label>
-                                <a href="#" class="small text-decoration-none text-primary">Quên mật khẩu?</a>
-                            </div>
-                            <input type="password" name="pass" class="form-control" placeholder="••••••" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100 mb-3">
-                            ĐĂNG NHẬP
-                        </button>
-
-                        <div class="text-center small text-muted">
-                            Bạn gặp sự cố? <a href="#" class="text-decoration-none fw-bold text-dark">Liên hệ kỹ thuật</a>
-                        </div>
-                    </form>
+            <div class="l-bottom">
+                <div class="l-stat">
+                    <span class="l-stat-num">1,240+</span>
+                    <span class="l-stat-lbl">Học viên quản lý</span>
+                </div>
+                <div class="l-stat-sep"></div>
+                <div class="l-stat">
+                    <span class="l-stat-num">98.5%</span>
+                    <span class="l-stat-lbl">Uptime hệ thống</span>
+                </div>
+                <div class="l-stat-sep"></div>
+                <div class="l-stat">
+                    <span class="l-stat-num">4.9★</span>
+                    <span class="l-stat-lbl">Đánh giá nội bộ</span>
                 </div>
             </div>
 
         </div>
+
+        <div class="r-panel">
+            <div class="form-box">
+
+                <h2 class="form-greeting" id="greeting-text">Xin chào, 👋</h2>
+                <p class="form-sub">Đăng nhập để tiếp tục làm việc trên hệ thống ITPRO CRM.</p>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="login-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>@ViewBag.Error</span>
+                    </div>
+                }
+
+                <form asp-action="Login" method="post" autocomplete="on">
+
+                    <div class="field-wrap">
+                        <label class="field-label">Email hoặc Tên đăng nhập</label>
+                        <div class="field-row">
+                            <span class="field-icon"><i class="fa-regular fa-envelope"></i></span>
+                            <input type="text" name="user" id="fUser" class="field-input"
+                                   placeholder="admin@itpro.vn"
+                                   value="@ViewBag.User"
+                                   required autofocus autocomplete="username" />
+                        </div>
+                    </div>
+
+                    <div class="field-wrap" style="margin-bottom:14px;">
+                        <label class="field-label">Mật khẩu</label>
+                        <div class="field-row">
+                            <span class="field-icon"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" name="pass" id="fPass" class="field-input"
+                                   placeholder="••••••••"
+                                   required autocomplete="current-password" />
+                            <button type="button" class="field-toggle" onclick="togglePass()" aria-label="Hiện/ẩn mật khẩu">
+                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="meta-row">
+                        <label class="remember-label">
+                            <input type="checkbox" name="remember" />
+                            Ghi nhớ đăng nhập
+                        </label>
+                        <a asp-action="ForgotPassword" class="forgot-link">Quên mật khẩu?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        Đăng nhập ngay
+                    </button>
+
+                    <div class="form-divider"></div>
+
+                    <div class="secure-note" style="margin-bottom:14px;">
+                        <i class="fa-solid fa-shield-halved" style="color:#22c55e;"></i>
+                        <span>Kết nối được mã hóa SSL 256-bit</span>
+                    </div>
+
+                    <div class="form-footer">
+                        Gặp sự cố? <a href="#">Liên hệ bộ phận kỹ thuật</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        // KẾT NỐI VỚI THEME CỦA HỆ THỐNG
+        const html = document.documentElement;
+        const TKEY = 'dm_theme';
+        const savedTheme = localStorage.getItem(TKEY) || 'dark'; // Lấy cài đặt Theme mà user đã lưu
+        html.setAttribute('data-theme', savedTheme); // Áp dụng ngay lập tức trước khi load
+
+        function togglePass() {
+            const p = document.getElementById('fPass');
+            const i = document.getElementById('eyeIcon');
+            const show = p.type === 'password';
+            p.type = show ? 'text' : 'password';
+            i.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+        }
+            function updateGreeting() {
+            const greetingElement = document.getElementById('greeting-text');
+            const hour = new Date().getHours(); // Lấy giờ hiện tại (0-23)
+            let message = "";
+            let emoji = "";
+
+            if (hour >= 5 && hour < 12) {
+                message = "Xin chào buổi sáng";
+                emoji = "☀️";
+            } else if (hour >= 12 && hour < 18) {
+                message = "Xin chào buổi chiều";
+                emoji = "🌤️";
+            } else if (hour >= 18 && hour < 22) {
+                message = "Xin chào buổi tối";
+                emoji = "🌙";
+            } else {
+                message = "Xin chào đêm muộn";
+                emoji = "🦉";
+            }
+
+            greetingElement.innerHTML = `${message}, ${emoji}`;
+        }
+        document.addEventListener('DOMContentLoaded', updateGreeting);
+    </script>
 
 </body>
 </html>

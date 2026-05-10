@@ -214,6 +214,21 @@
                         <i class="fa-solid fa-chalkboard-user me-1"></i> @(Model.LopHoc?.TenLop ?? "Chưa có lớp")
                     </span>
                     <div style="font-size: 11px; color: var(--text2); margin-top: 4px;"><i class="fa-solid fa-phone me-1"></i> @Model.SoDienThoai</div>
+
+                    <div style="margin-top: 8px;">
+                        @if (Model.NhanVien != null)
+                        {
+                            <span style="font-size: 10px; font-weight: 600; background: var(--accent-dim); color: var(--accent); padding: 3px 10px; border-radius: 20px;">
+                                <i class="fa-solid fa-headset me-1"></i> Sale: @Model.NhanVien.HoTen
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="font-size: 10px; font-weight: 600; background: rgba(239,68,68,0.1); color: var(--danger); padding: 3px 10px; border-radius: 20px;">
+                                <i class="fa-solid fa-headset me-1"></i> Chưa có Sale
+                            </span>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -263,7 +278,6 @@
 
         <div class="tab-content" style="padding: 24px;">
             <div class="tab-pane fade @(activeTab == "finance" ? "show active" : "")" id="finance">
-
                 <h6 class="fw-bold m-0 mb-3" style="color: var(--text); font-size: 14px;">Lộ trình đóng học phí</h6>
                 <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px;">
                     <table class="dm-table">
@@ -381,9 +395,14 @@
                         <h6 class="fw-bold m-0" style="color: var(--text); font-size: 13px;">
                             <i class="fa-regular fa-comments me-2" style="color: var(--accent);"></i>GHI CHÚ / PHẢN ÁNH TỪ GIÁO VIÊN
                         </h6>
-                        <button type="button" class="btn btn-sm dm-btn-outline" data-bs-toggle="modal" data-bs-target="#modalGiaoVienNote">
-                            <i class="fa-solid fa-plus me-1"></i> Thêm ghi chú
-                        </button>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm" style="background: var(--surface); border: 1px solid var(--border); color: var(--text2);" data-bs-toggle="modal" data-bs-target="#modalLichSuGhiChu" title="Xem lịch sử phản ánh">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm dm-btn-outline" data-bs-toggle="modal" data-bs-target="#modalGiaoVienNote">
+                                <i class="fa-solid fa-plus me-1"></i> Thêm ghi chú
+                            </button>
+                        </div>
                     </div>
 
                     @{
@@ -489,16 +508,79 @@
             <div class="tab-pane fade @(activeTab == "profile" ? "show active" : "")" id="profile">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <div style="font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin liên lạc</div>
-                        <div class="mb-3"><div class="dm-info-label">Email</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.Email) ? "--" : Model.Email)</div></div>
-                        <div class="mb-3"><div class="dm-info-label">Ngày sinh</div><div class="dm-info-value">@(Model.NgaySinh.ToString("dd/MM/yyyy") == "01/01/0001" ? "--" : Model.NgaySinh.ToString("dd/MM/yyyy"))</div></div>
-                        <div class="mb-3"><div class="dm-info-label">Địa chỉ</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.DiaChi) ? "--" : Model.DiaChi)</div></div>
+                        <div style="font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; letter-spacing: 0.5px;">
+                            <i class="fa-solid fa-address-book me-1"></i> Thông tin cá nhân
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Email</div>
+                            <div class="col-8 dm-info-value text-break">@(string.IsNullOrEmpty(Model.Email) ? "--" : Model.Email)</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Ngày sinh</div>
+                            <div class="col-8 dm-info-value">@(Model.NgaySinh.ToString("dd/MM/yyyy") == "01/01/0001" ? "--" : Model.NgaySinh.ToString("dd/MM/yyyy"))</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Địa chỉ</div>
+                            <div class="col-8 dm-info-value">@(string.IsNullOrEmpty(Model.DiaChi) ? "--" : Model.DiaChi)</div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <div class="col-4 dm-info-label mb-0">Facebook</div>
+                            <div class="col-8 dm-info-value">
+                                @if (!string.IsNullOrEmpty(Model.FacebookLink))
+                                {
+                                    <a href="@Model.FacebookLink" target="_blank" style="color: #1877f2; text-decoration: none; font-weight: 600;">
+                                        <i class="fa-brands fa-facebook me-1"></i> Truy cập trang
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span style="color: var(--text3);">--</span>
+                                }
+                            </div>
+                        </div>
                     </div>
+
                     <div class="col-md-6">
-                        <div style="font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;">Thông tin Học tập/Công việc</div>
-                        <div class="mb-3"><div class="dm-info-label">Trường học / Công ty</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.TruongHoc) ? "--" : Model.TruongHoc)</div></div>
-                        <div class="mb-3"><div class="dm-info-label">Chuyên ngành</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.NganhHoc) ? "--" : Model.NganhHoc)</div></div>
-                        <div class="mb-3"><div class="dm-info-label">Mục tiêu</div><div class="dm-info-value">@(string.IsNullOrEmpty(Model.MucTieuHocTap) ? "--" : Model.MucTieuHocTap)</div></div>
+                        <div style="font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; letter-spacing: 0.5px;">
+                            <i class="fa-solid fa-graduation-cap me-1"></i> Học tập & Quản lý
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Trường/Công ty</div>
+                            <div class="col-8 dm-info-value">@(string.IsNullOrEmpty(Model.TruongHoc) ? "--" : Model.TruongHoc)</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Chuyên ngành</div>
+                            <div class="col-8 dm-info-value">@(string.IsNullOrEmpty(Model.NganhHoc) ? "--" : Model.NganhHoc)</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4 dm-info-label mb-0 pt-1">Mục tiêu</div>
+                            <div class="col-8 dm-info-value">@(string.IsNullOrEmpty(Model.MucTieuHocTap) ? "--" : Model.MucTieuHocTap)</div>
+                        </div>
+
+                        <div class="row mb-2 align-items-center">
+                            <div class="col-4 dm-info-label mb-0">Sale phụ trách</div>
+                            <div class="col-8 dm-info-value">
+                                @if (Model.NhanVien != null)
+                                {
+                                    <span style="background: var(--accent-dim); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 700;">
+                                        <i class="fa-solid fa-headset me-1"></i> @Model.NhanVien.HoTen
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="background: rgba(239,68,68,0.1); color: #ef4444; padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;">
+                                        Chưa phân bổ
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -527,7 +609,6 @@
                 </div>
 
                 <div class="modal-body p-4">
-
                     <div class="p-3 mb-4" style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;">
                         <div class="row">
                             <div class="col-7">
@@ -740,6 +821,54 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalLichSuGhiChu" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content dm-modal-content" style="background: var(--surface); border: 1px solid var(--border);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                <h6 class="fw-bold m-0" style="color: var(--text);"><i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i> LỊCH SỬ PHẢN ÁNH CỦA GIÁO VIÊN</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: var(--bs-btn-close-white-filter, invert(1));"></button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                @{
+                    // Lọc ra tất cả các buổi điểm danh có chứa lời nhắn của giáo viên, xếp từ mới nhất đến cũ nhất
+                    var lichSuPhanAnh = Model.DiemDanhs?
+                    .Where(d => !string.IsNullOrEmpty(d.GhiChuGiaoVien))
+                    .OrderByDescending(d => d.NgayGhiChu ?? d.NgayDiemDanh)
+                    .ToList();
+                }
+
+                @if (lichSuPhanAnh != null && lichSuPhanAnh.Any())
+                {
+                    <div style="position: relative; border-left: 2px solid var(--border); margin-left: 10px; padding-left: 20px;">
+                        @foreach (var item in lichSuPhanAnh)
+                        {
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <span style="position: absolute; left: -27px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--warning); border: 2px solid var(--surface);"></span>
+
+                                <div style="font-size: 11px; color: var(--text3); font-weight: 600; margin-bottom: 4px;">
+                                    <i class="fa-regular fa-clock me-1"></i>
+                                    @(item.NgayGhiChu?.ToString("dd/MM/yyyy - HH:mm") ?? item.NgayDiemDanh.ToString("dd/MM/yyyy"))
+                                </div>
+
+                                <div style="background: var(--surface2); padding: 12px; border-radius: 8px; font-size: 13px; color: var(--text); border: 1px solid var(--border);">
+                                    @item.GhiChuGiaoVien
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fa-regular fa-folder-open mb-2" style="font-size: 30px; color: var(--text3);"></i>
+                        <p style="font-size: 13px; color: var(--text2); margin: 0;">Chưa có lịch sử phản ánh nào.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
@@ -748,10 +877,11 @@
         // --- 1. FIX LỖI BÓNG MỜ CHO TẤT CẢ CÁC MODAL ---
         // Đẩy tất cả các modal ra ngoài body để không bị kẹt hiệu ứng CSS
         document.body.appendChild(document.getElementById('quickEmailModal'));
-        document.body.appendChild(document.getElementById('modalGiaoVienNote')); // Fix mờ cho Ghi chú Giáo viên
+        document.body.appendChild(document.getElementById('modalGiaoVienNote'));
         document.body.appendChild(document.getElementById('modalViewPhieu'));
         document.body.appendChild(document.getElementById('modalThuTien'));
         document.body.appendChild(document.getElementById('enrollModal'));
+        document.body.appendChild(document.getElementById('modalLichSuGhiChu')); // Thêm modal lịch sử ra ngoài
 
         // --- 2. CÁC HÀM FORMAT VÀ TÍNH TOÁN TIỀN ---
         function formatTien(input) {
@@ -762,8 +892,8 @@
                 return;
             }
             let num = parseInt(val, 10);
-            input.value = num.toLocaleString('en-US'); // Tự động thêm dấu phẩy
-            document.getElementById('valSoTienGuiLen').value = num; // Ghi số gốc vào thẻ ẩn
+            input.value = num.toLocaleString('en-US');
+            document.getElementById('valSoTienGuiLen').value = num;
         }
 
         function tuDongDienHocPhi(sel) {

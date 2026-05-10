@@ -52,7 +52,7 @@ namespace ITPRO_CRM.Controllers
             if (isAdmin)
             {
                 // 1. Lấy danh sách nhân viên Sale
-                var allSales = await _context.NhanVien.Where(n => n.VaiTro != 0).ToListAsync();
+                var allSales = await _context.NhanVien.Where(n => n.VaiTro == LoaiVaiTro.Sale).ToListAsync();
                 ViewBag.AllStaff = allSales;
 
                 // 2. TÍNH TOÁN TIẾN ĐỘ TỪNG NGƯỜI
@@ -198,6 +198,15 @@ namespace ITPRO_CRM.Controllers
             {
                 staff.KpiThang = newKpi;
                 _context.Update(staff);
+                
+                var noti = new ThongBao
+                {
+                    NhanVienId = staff.Id, // Đảm bảo chỉ đúng người này nhận được
+                    TieuDe = "🎯 Chỉ tiêu KPI mới",
+                    NoiDung = $"Bạn vừa được Giám đốc giao chỉ tiêu tháng là {newKpi} học viên.",
+                    LinkUrl = "/Home/Index" // Bấm vào nhảy về trang chủ xem bảng KPI
+                };
+                _context.ThongBao.Add(noti);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = $"🎯 Đã cập nhật chỉ tiêu KPI thành công cho nhân viên {staff.HoTen}!";
             }

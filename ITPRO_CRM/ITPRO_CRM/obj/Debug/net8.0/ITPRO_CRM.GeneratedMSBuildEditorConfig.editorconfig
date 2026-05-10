@@ -28,8 +28,16 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/TT Đồ án/DoAn/ITPRO_CRM_upgraded_full/crm_upgraded/ITPRO_CRM/ITPRO_CRM/Views/Access/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNzXEZvcmdvdFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/TT Đồ án/DoAn/ITPRO_CRM_upgraded_full/crm_upgraded/ITPRO_CRM/ITPRO_CRM/Views/Access/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNzXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/TT Đồ án/DoAn/ITPRO_CRM_upgraded_full/crm_upgraded/ITPRO_CRM/ITPRO_CRM/Views/Access/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNzXFJlc2V0UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/TT Đồ án/DoAn/ITPRO_CRM_upgraded_full/crm_upgraded/ITPRO_CRM/ITPRO_CRM/Views/BaoCaos/Index.cshtml]

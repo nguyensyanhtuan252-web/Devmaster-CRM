@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITPRO_CRM")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e3e93f7a4568f8221ed97bf57358b105cbeaa61")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10672645856476c459aa737125a0f9e3646a8729")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITPRO_CRM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITPRO_CRM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

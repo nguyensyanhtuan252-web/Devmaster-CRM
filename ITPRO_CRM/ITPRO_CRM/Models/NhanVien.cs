@@ -53,5 +53,8 @@ namespace ITPRO_CRM.Models
 
         [Display(Name = "KPI Tháng")]
         public int? KpiThang { get; set; }
+        // Thêm 2 thuộc tính này để phục vụ chức năng Quên mật khẩu
+        public string? ResetToken { get; set; }
+        public DateTime? ResetTokenExpiry { get; set; }
     }
 }

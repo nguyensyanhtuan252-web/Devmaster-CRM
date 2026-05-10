@@ -128,27 +128,24 @@
         overflow: hidden;
     }
 
-        .gv-stat-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            border-radius: 0 0 12px 12px;
+        /* Đổ viền trực tiếp vào thẻ Card - Đảm bảo không bao giờ mất viền */
+        .gv-stat-card.s-total {
+            border-top: 4px solid var(--accent) !important;
         }
 
-        .gv-stat-card.s-total::after {
-            background: var(--accent);
+        .gv-stat-card.s-active {
+            border-top: 4px solid var(--success) !important;
         }
 
-        .gv-stat-card.s-active::after {
-            background: var(--success);
+        .gv-stat-card.s-inactive {
+            border-top: 4px solid var(--text3) !important;
         }
 
-        .gv-stat-card.s-inactive::after {
-            background: var(--text3);
-        }
+    /* Chỉnh nhẹ bo góc để viền trên không bị lòi ra ngoài */
+    .gv-stat-card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
 
         .gv-stat-card:hover {
             border-color: var(--border2);
