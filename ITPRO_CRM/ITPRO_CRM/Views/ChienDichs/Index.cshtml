@@ -7,6 +7,7 @@
     var tongNganSach = Model.Sum(x => x.NganSachDuKien);
     var tongKyVong = Model.Sum(x => x.DoanhThuKyVong);
     var roiPct = tongNganSach > 0 ? Math.Round(((tongKyVong - tongNganSach) / tongNganSach) * 100, 1) : 0;
+    var currentDomain = $"{Context.Request.Scheme}://{Context.Request.Host}";
 
     // Đã bỏ việc lọc trên Server để load toàn bộ dữ liệu cho Javascript tự động lọc Real-time
     var displayList = Model.ToList();
@@ -544,6 +545,7 @@
                         <th>Thời gian</th>
                         <th>Ngân sách / Kỳ vọng</th>
                         <th>ROI ước tính</th>
+                        <th>Link Tracking</th>
                         <th>Trạng thái</th>
                         <th style="text-align:right">Hành động</th>
                     </tr>
@@ -615,6 +617,24 @@
                                     </div>
                                 </div>
                             </td>
+                            <td>
+                                <div style="text-align:center;width:90px">...</div>
+                            </td>
+
+                            <td>
+                                <div style="display:flex; align-items:center; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; max-width: 200px;">
+                                    <input type="text" value="@($"{currentDomain}/DangKy?cid={item.MaTracking}")" readonly id="link-@item.Id" style="border:none; outline:none; font-size:11px; padding:4px 8px; width:100%; color:var(--text2); background:var(--surface2);">
+
+                                    <button type="button" onclick="copyLink('link-@item.Id', 'msg-@item.Id')" title="Copy Link" style="border:none; background:var(--accent-dim); color:var(--accent); padding:4px 10px; cursor:pointer;">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                </div>
+
+                                <div id="msg-@item.Id" style="color: #10b981; font-size: 11px; font-weight: 600; display: none; margin-top: 4px; padding-left: 2px;">
+                                    <i class="fa-solid fa-check"></i> Đã sao chép
+                                </div>
+                            </td>
+                            
                             <td>
                                 @if (isQuaHan)
                                 {
@@ -708,6 +728,25 @@
 
             document.getElementById('sumChiPhi').innerText = sumChiPhi.toLocaleString('en-US') + " đ";
             document.getElementById('sumKyVong').innerText = sumKyVong.toLocaleString('en-US') + " đ";
+        }
+        // BỔ SUNG HÀM COPY LINK
+        function copyLink(inputId, msgId) {
+            // 1. Thực hiện copy
+            var copyText = document.getElementById(inputId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // Dành cho mobile
+            navigator.clipboard.writeText(copyText.value);
+
+            // 2. Hiển thị dòng chữ "Đã sao chép"
+            var msgObj = document.getElementById(msgId);
+            if (msgObj) {
+                msgObj.style.display = 'block'; // Hiện chữ lên
+
+                // 3. Tự động ẩn đi sau 2 giây (2000 milliseconds)
+                setTimeout(function() {
+                    msgObj.style.display = 'none';
+                }, 2000);
+            }
         }
     </script>
 }

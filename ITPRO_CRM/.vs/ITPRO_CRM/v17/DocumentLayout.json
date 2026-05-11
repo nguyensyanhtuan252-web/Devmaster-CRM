@@ -3,6 +3,46 @@
   "WorkspaceRootPath": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\publiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\publiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\thongbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\thongbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\chiendichscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\chiendichscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\public\\camon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\public\\camon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\public\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\public\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\chiendich.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\chiendich.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -51,14 +91,6 @@
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\access\\resetpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260510162952_AddResetToken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ITPRO_CRM\\Migrations\\20260510162952_AddResetToken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\hocviens\\detailsstudent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\hocviens\\detailsstudent.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -105,14 +137,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\thongbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\thongbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260510151510_AddThongBao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ITPRO_CRM\\Migrations\\20260510151510_AddThongBao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\data\\itpro_crmcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -166,16 +190,8 @@
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\mauemailscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\controllers\\chiendichscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\controllers\\chiendichscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\lophocs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\lophocs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\hocvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\phieuthus\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -258,10 +274,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\models\\diemdanh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\models\\diemdanh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\views\\chiendichs\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\views\\mauemails\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -384,6 +396,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\migrations\\20260510060049_updateroleenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\migrations\\20260510060049_updateroleenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\migrations\\20260510162952_addresettoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\migrations\\20260510162952_addresettoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|c:\\tt \u0111\u1ED3 \u00E1n\\doan\\itpro_crm_upgraded_full\\crm_upgraded\\itpro_crm\\itpro_crm\\migrations\\20260510151510_addthongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A9A3A22-B2E0-403B-A6C5-8448CBAF3276}|ITPRO_CRM\\ITPRO_CRM.csproj|solutionrelative:itpro_crm\\migrations\\20260510151510_addthongbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -401,59 +421,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "EmailMarketing.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\EmailMarketing.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\EmailMarketing.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\EmailMarketing.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Models\\EmailMarketing.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T16:41:36.312Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "MauEmail.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\MauEmail.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\MauEmail.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\MauEmail.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Models\\MauEmail.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T16:41:34.141Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "EmailMarketingController.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAAYwLAAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-08T02:48:42.692Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AccessController.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\AccessController.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Controllers\\AccessController.cs",
-              "ViewState": "AgIAAEYAAAAAAAAAAAAkwA0AAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T04:19:21.585Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "PublicController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\PublicController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\PublicController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\PublicController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\PublicController.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAYwGQAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T05:15:06.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Access\\Login.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Access\\Login.cshtml",
@@ -461,12 +442,127 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Access\\Login.cshtml",
               "ViewState": "AgIAALoCAAAAAAAAAAAYwNYCAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-10T14:49:00.48Z",
+              "WhenOpened": "2026-05-10T14:49:00.48Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ThongBaosController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ThongBaosController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ThongBaosController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ThongBaosController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ThongBaosController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAYwDAAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T15:15:54.001Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
+              "ViewState": "AgIAAM0CAAAAAAAAAAAYwO0CAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-07T08:34:24.497Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CamOn.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Public\\CamOn.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Public\\CamOn.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Public\\CamOn.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Public\\CamOn.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-11T05:22:18.88Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "ChienDichsController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ChienDichsController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ChienDichsController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAlwEIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T08:02:21.425Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NhanVien.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\NhanVien.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\NhanVien.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\NhanVien.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\NhanVien.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T05:53:36.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ChienDich.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\ChienDich.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\ChienDich.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\ChienDich.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\ChienDich.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAgwAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T04:44:06.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20260511045045_CapNhatBangChienDich_Tracking.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260511045045_CapNhatBangChienDich_Tracking.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T04:50:45.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DangKy.cshtml",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Public\\DangKy.cshtml",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Public\\DangKy.cshtml",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Public\\DangKy.cshtml",
+              "RelativeToolTip": "ITPRO_CRM\\Views\\Public\\DangKy.cshtml",
+              "ViewState": "AgIAALMAAAAAAAAAAAAYwNMAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-11T05:18:09.292Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AccessController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\AccessController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\AccessController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\AccessController.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAkwA0AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T04:19:21.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
@@ -474,12 +570,60 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\EmailMarketing\\Index.cshtml",
               "ViewState": "AgIAAOUAAAAAAAAAAAAIwAQBAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-07T16:22:14.296Z",
+              "WhenOpened": "2026-05-07T16:22:14.296Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "EmailMarketingController.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Controllers\\EmailMarketingController.cs",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAYwLAAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T02:48:42.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "MauEmail.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\MauEmail.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\MauEmail.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\MauEmail.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\MauEmail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T16:41:34.141Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "HocVien.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\HocVien.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\HocVien.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAwwGEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T10:23:01.182Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 18,
+              "Title": "EmailMarketing.cs",
+              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\EmailMarketing.cs",
+              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\EmailMarketing.cs",
+              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\EmailMarketing.cs",
+              "RelativeToolTip": "ITPRO_CRM\\Models\\EmailMarketing.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T16:41:36.312Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Index.cshtml",
@@ -492,7 +636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 12,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\GiangViens\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\GiangViens\\Index.cshtml",
@@ -500,12 +644,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\GiangViens\\Index.cshtml",
               "ViewState": "AgIAAHgAAAAAAAAAAAAIwJMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-09T16:13:28.132Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T16:13:28.132Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 17,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\EmailMarketing\\Create.cshtml",
@@ -513,12 +656,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\EmailMarketing\\Create.cshtml",
               "ViewState": "AgIAAKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-10T16:42:18.232Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T16:42:18.232Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 15,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\appsettings.json",
               "RelativeDocumentMoniker": "ITPRO_CRM\\appsettings.json",
@@ -526,12 +668,11 @@
               "RelativeToolTip": "ITPRO_CRM\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-10T16:58:53.77Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T16:58:53.77Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 20,
               "Title": "ForgotPassword.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Access\\ForgotPassword.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Access\\ForgotPassword.cshtml",
@@ -539,12 +680,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Access\\ForgotPassword.cshtml",
               "ViewState": "AgIAABABAAAAAAAAAAAYwDABAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-10T16:31:24.962Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T16:31:24.962Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 22,
               "Title": "DetailsStudent.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
@@ -552,12 +692,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\DetailsStudent.cshtml",
               "ViewState": "AgIAAMADAAAAAAAAAAAYwN0DAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-07T08:59:22.013Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T08:59:22.013Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 25,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\GiangViens\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\GiangViens\\Edit.cshtml",
@@ -565,12 +704,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\GiangViens\\Edit.cshtml",
               "ViewState": "AgIAAOkCAAAAAAAAAAAYwAkDAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-09T16:13:44.657Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T16:13:44.657Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 21,
               "Title": "ResetPassword.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Access\\ResetPassword.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Access\\ResetPassword.cshtml",
@@ -578,12 +716,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Access\\ResetPassword.cshtml",
               "ViewState": "AgIAABoBAAAAAAAAAAAYwDoBAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-10T16:31:50.961Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T16:31:50.961Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 101,
               "Title": "20260510162952_AddResetToken.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260510162952_AddResetToken.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260510162952_AddResetToken.cs",
@@ -591,12 +728,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260510162952_AddResetToken.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T16:29:52.38Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T16:29:52.38Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 26,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
@@ -604,12 +740,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\DiemDanhs\\Index.cshtml",
               "ViewState": "AgIAAGQBAAAAAAAAAAAnwHcBAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-09T15:07:19.375Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T15:07:19.375Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 24,
               "Title": "HocViensController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HocViensController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HocViensController.cs",
@@ -617,12 +752,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\HocViensController.cs",
               "ViewState": "AgIAAKcAAAAAAAAAAAAnwLAAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T05:27:42.338Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T05:27:42.338Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 27,
               "Title": "CauHinhsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\CauHinhsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\CauHinhsController.cs",
@@ -630,25 +764,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\CauHinhsController.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAYwDkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-08T04:00:56.058Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-08T04:00:56.058Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "NhanVien.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\NhanVien.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\NhanVien.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\NhanVien.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Models\\NhanVien.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAkwDkAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T05:53:36.378Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 23,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
@@ -656,12 +776,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\HocViens\\Details.cshtml",
               "ViewState": "AgIAABwCAAAAAAAAAAAnwDICAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-07T08:59:06.956Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T08:59:06.956Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 28,
               "Title": "DiemDanhsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
@@ -669,12 +788,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\DiemDanhsController.cs",
               "ViewState": "AgIAAF4AAAAAAAAAAAAYwGkAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T07:32:09.799Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T07:32:09.799Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 29,
               "Title": "GiangViensController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\GiangViensController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\GiangViensController.cs",
@@ -682,12 +800,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\GiangViensController.cs",
               "ViewState": "AgIAAHQAAAAAAAAAAAAYwJcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T08:42:43.593Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T08:42:43.593Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 30,
               "Title": "KhoaHocsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\KhoaHocsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\KhoaHocsController.cs",
@@ -695,12 +812,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\KhoaHocsController.cs",
               "ViewState": "AgIAAKUAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T15:40:04.741Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T15:40:04.741Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 32,
               "Title": "LopHocsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\LopHocsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\LopHocsController.cs",
@@ -708,12 +824,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\LopHocsController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T10:43:33.711Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T10:43:33.711Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 31,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\HomeController.cs",
@@ -721,12 +836,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\HomeController.cs",
               "ViewState": "AgIAALcAAAAAAAAAAAAIwMYAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-09T08:17:05.74Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T08:17:05.74Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 33,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
@@ -734,25 +848,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAACcDAAAAAAAAAAAYwEcDAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-06T17:02:08.701Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T17:02:08.701Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "ThongBaosController.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ThongBaosController.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ThongBaosController.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ThongBaosController.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ThongBaosController.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAYwD8AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T15:15:54.001Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 102,
               "Title": "20260510151510_AddThongBao.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260510151510_AddThongBao.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260510151510_AddThongBao.cs",
@@ -760,12 +860,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Migrations\\20260510151510_AddThongBao.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T15:15:10.714Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T15:15:10.714Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 35,
               "Title": "ThongBao.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\ThongBao.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\ThongBao.cs",
@@ -773,12 +872,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Models\\ThongBao.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T15:13:56.41Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-10T15:13:56.41Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 36,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Profile\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Profile\\Index.cshtml",
@@ -786,12 +884,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Profile\\Index.cshtml",
               "ViewState": "AgIAAIgCAAAAAAAAAAAIwJcCAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-08T03:32:15.225Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-08T03:32:15.225Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 41,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\NhanViens\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\NhanViens\\Index.cshtml",
@@ -803,7 +900,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 43,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\NhanViens\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\NhanViens\\Edit.cshtml",
@@ -815,7 +912,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 37,
               "Title": "ChangePassword.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Profile\\ChangePassword.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Profile\\ChangePassword.cshtml",
@@ -823,12 +920,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Views\\Profile\\ChangePassword.cshtml",
               "ViewState": "AgIAAOwBAAAAAAAAAAAYwAwCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-09T17:25:31.016Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-09T17:25:31.016Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 42,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\NhanViens\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\NhanViens\\Create.cshtml",
@@ -840,7 +936,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 34,
               "Title": "ITPRO_CRMContext.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
@@ -848,12 +944,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Data\\ITPRO_CRMContext.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAA/wB4AAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T04:19:38.217Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T04:19:38.217Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 49,
               "Title": "PhieuThusController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\PhieuThusController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\PhieuThusController.cs",
@@ -865,7 +960,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 38,
               "Title": "ProfileController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ProfileController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ProfileController.cs",
@@ -873,12 +968,11 @@
               "RelativeToolTip": "ITPRO_CRM\\Controllers\\ProfileController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-07T04:19:28.886Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-07T04:19:28.886Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 39,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Index.cshtml",
@@ -890,7 +984,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 40,
               "Title": "_Layout_2.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\Downloads\\_Layout_2.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\Downloads\\_Layout_2.cshtml",
@@ -902,7 +996,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 44,
               "Title": "NhanViensController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\NhanViensController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\NhanViensController.cs",
@@ -914,7 +1008,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 45,
               "Title": "BaoCaosController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\BaoCaosController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\BaoCaosController.cs",
@@ -926,7 +1020,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 46,
               "Title": "MauEmailsController.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\MauEmailsController.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\MauEmailsController.cs",
@@ -938,19 +1032,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "ChienDichsController.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ChienDichsController.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ChienDichsController.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Controllers\\ChienDichsController.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAA1wIgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-10T08:02:21.425Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 47,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Index.cshtml",
@@ -962,7 +1044,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 48,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Index.cshtml",
@@ -974,19 +1056,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "HocVien.cs",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\HocVien.cs",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\HocVien.cs",
-              "RelativeToolTip": "ITPRO_CRM\\Models\\HocVien.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAArwCcAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-08T10:23:01.182Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 100,
               "Title": "20260510060049_UpdateRoleEnum.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260510060049_UpdateRoleEnum.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260510060049_UpdateRoleEnum.cs",
@@ -998,7 +1068,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 50,
               "Title": "PhanQuyenAttribute.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Filters\\PhanQuyenAttribute.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Filters\\PhanQuyenAttribute.cs",
@@ -1010,7 +1080,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 52,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\CauHinhs\\Edit.cshtml",
@@ -1022,7 +1092,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 59,
               "Title": "Privacy.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Privacy.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Home\\Privacy.cshtml",
@@ -1034,7 +1104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 53,
               "Title": "CauHinh.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\CauHinh.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\CauHinh.cs",
@@ -1046,7 +1116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 54,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\BaoCaos\\Index.cshtml",
@@ -1058,7 +1128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 57,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Services\\EmailService.cs",
@@ -1070,7 +1140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 51,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\CauHinhs\\Index.cshtml",
@@ -1082,7 +1152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 99,
               "Title": "20260509173912_AddCauHinhFields.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260509173912_AddCauHinhFields.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260509173912_AddCauHinhFields.cs",
@@ -1094,7 +1164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 55,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\CauHinhs\\Details.cshtml",
@@ -1106,7 +1176,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 61,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\GiangViens\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\GiangViens\\Delete.cshtml",
@@ -1118,7 +1188,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 56,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\CauHinhs\\Create.cshtml",
@@ -1130,7 +1200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 62,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\GiangViens\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\GiangViens\\Create.cshtml",
@@ -1142,7 +1212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 58,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\Home\\Index.cshtml",
@@ -1154,7 +1224,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 60,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\GiangViens\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\GiangViens\\Details.cshtml",
@@ -1166,7 +1236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 68,
               "Title": "DiemDanh.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DiemDanh.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\DiemDanh.cs",
@@ -1178,7 +1248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 67,
               "Title": "DotThanhToan.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\DotThanhToan.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\DotThanhToan.cs",
@@ -1190,7 +1260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 63,
               "Title": "Index_8.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\Downloads\\Index_8.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\Downloads\\Index_8.cshtml",
@@ -1202,7 +1272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 65,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Delete.cshtml",
@@ -1214,7 +1284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 64,
               "Title": "Index_7.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\Downloads\\Index_7.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\Downloads\\Index_7.cshtml",
@@ -1226,7 +1296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 66,
               "Title": "20260509080800_CapNhatHocPhiVaGhiChu.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260509080800_CapNhatHocPhiVaGhiChu.cs",
@@ -1238,19 +1308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
-              "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
-              "ToolTip": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
-              "RelativeToolTip": "ITPRO_CRM\\Views\\ChienDichs\\Index.cshtml",
-              "ViewState": "AgIAAKgCAAAAAAAAAAAIwMgCAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-07T08:34:24.497Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 69,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Edit.cshtml",
@@ -1262,7 +1320,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 70,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Create.cshtml",
@@ -1274,7 +1332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 71,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Edit.cshtml",
@@ -1286,7 +1344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 72,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Create.cshtml",
@@ -1298,7 +1356,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 73,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Create.cshtml",
@@ -1310,7 +1368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 74,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Edit.cshtml",
@@ -1322,7 +1380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 75,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Details.cshtml",
@@ -1334,7 +1392,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 77,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\6b2db81c-5efd-45ec-b373-f793f7cfb9ac_Cauhinh_upgraded_6.zip.9ac\\CauHinhs\\Details.cshtml",
@@ -1347,7 +1405,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 76,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\42d5cc98-3e41-46fc-8ed1-c2db69c208ea_Cauhinh_upgraded_6.zip.8ea\\CauHinhs\\Create.cshtml",
@@ -1360,7 +1418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
+              "DocumentIndex": 78,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\bb5acc6b-410b-48d9-a403-4b45823bc040_Cauhinh_upgraded_6.zip.040\\CauHinhs\\Index.cshtml",
@@ -1373,7 +1431,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
+              "DocumentIndex": 80,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\f4d157f7-3e0b-4703-8737-083828724dfc_Cauhinh_upgraded_6.zip.dfc\\CauHinhs\\Delete.cshtml",
@@ -1386,7 +1444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 79,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\74256aef-af0f-4221-af5c-724b68946ca3_Cauhinh_upgraded_6.zip.ca3\\CauHinhs\\Edit.cshtml",
@@ -1399,7 +1457,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 78,
+              "DocumentIndex": 81,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Details.cshtml",
@@ -1411,7 +1469,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 82,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\MauEmails\\Delete.cshtml",
@@ -1423,7 +1481,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 84,
               "Title": "20260507104758_AddLopHocUpgrade.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Migrations\\20260507104758_AddLopHocUpgrade.cs",
@@ -1435,7 +1493,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
+              "DocumentIndex": 83,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\EmailMarketing\\Details.cshtml",
@@ -1447,7 +1505,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
+              "DocumentIndex": 85,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Edit.cshtml",
@@ -1459,7 +1517,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 86,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Delete.cshtml",
@@ -1471,7 +1529,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 87,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\LopHocs\\Create.cshtml",
@@ -1483,7 +1541,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 88,
               "Title": "LopHoc.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Models\\LopHoc.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Models\\LopHoc.cs",
@@ -1495,7 +1553,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
+              "DocumentIndex": 93,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Create.cshtml",
@@ -1507,7 +1565,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 89,
               "Title": "Pipeline.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\HocViens\\Pipeline.cshtml",
@@ -1519,7 +1577,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
+              "DocumentIndex": 94,
               "Title": "BaoCao.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\BaoCao.cshtml",
@@ -1531,7 +1589,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 92,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Delete.cshtml",
@@ -1543,7 +1601,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
+              "DocumentIndex": 90,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Details.cshtml",
@@ -1555,7 +1613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 91,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\ChienDichs\\Edit.cshtml",
@@ -1567,7 +1625,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 92,
+              "DocumentIndex": 95,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Details.cshtml",
@@ -1579,7 +1637,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
+              "DocumentIndex": 96,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Views\\PhieuThus\\Delete.cshtml",
@@ -1591,7 +1649,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 94,
+              "DocumentIndex": 97,
               "Title": "BaoCaosController_New.cs",
               "DocumentMoniker": "C:\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\tuan252\\AppData\\Local\\Temp\\72178224-f7b7-48fe-84e3-58668ae7b887_files.zip.887\\BaoCaosController_New.cs",
@@ -1604,7 +1662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 98,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\TT \u0110\u1ED3 \u00E1n\\DoAn\\ITPRO_CRM_upgraded_full\\crm_upgraded\\ITPRO_CRM\\ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "ITPRO_CRM\\Controllers\\ApplicationDbContext.cs",

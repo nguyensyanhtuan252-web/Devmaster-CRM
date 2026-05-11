@@ -40,6 +40,14 @@ namespace ITPRO_CRM.Models
 
         [Display(Name = "Mô tả")]
         public string? MoTa { get; set; }
+        [Display(Name = "Mã Tracking (Link)")]
+        [StringLength(50)]
+        // Mã này dùng để nối vào link. VD: "java-he-2026" -> Link: itprocrm.com/dang-ky?cid=java-he-2026
+        public string? MaTracking { get; set; }
+
+        [Display(Name = "Sale phụ trách (Lead Routing)")]
+        // ID của nhân viên Sale sẽ tự động nhận khách từ chiến dịch này
+        public int? NhanVienSaleId { get; set; }
 
         // Mối quan hệ: 1 Chiến dịch đem về Nhiều Học viên
         public virtual ICollection<HocVien>? HocViens { get; set; }

@@ -46,10 +46,17 @@ namespace ITPRO_CRM.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PhanQuyen(LoaiVaiTro.Admin)]
-        public async Task<IActionResult> Create([Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa")] ChienDich chienDich)
+        // BỔ SUNG MaTracking và NhanVienSaleId vào Bind
+        public async Task<IActionResult> Create([Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa,MaTracking,NhanVienSaleId")] ChienDich chienDich)
         {
             if (ModelState.IsValid)
             {
+                // Sinh mã Tracking chống trùng lặp (Thêm ss - giây)
+                if (string.IsNullOrEmpty(chienDich.MaTracking))
+                {
+                    chienDich.MaTracking = "camp-" + DateTime.Now.ToString("MMddHHmmss");
+                }
+
                 _context.Add(chienDich);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,7 +76,7 @@ namespace ITPRO_CRM.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PhanQuyen(LoaiVaiTro.Admin)]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa")] ChienDich chienDich)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TenChienDich,LoaiChienDich,NgayBatDau,NgayKetThuc,NganSach,DoanhThuKyVong,DangHoatDong,MoTa,MaTracking,NhanVienSaleId")] ChienDich chienDich)
         {
             if (id != chienDich.Id) return NotFound();
 
