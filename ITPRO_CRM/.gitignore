@@ -1,0 +1,13 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Build files
+*.user
+*.suo
+*.cache
+*.log
+
+# ASP.NET
+appsettings.Development.json

@@ -492,6 +492,13 @@
                     }
                 });
             }
+            const emailForm = document.querySelector('form[asp-action="Create"]') || document.forms[0];
+
+        emailForm.addEventListener('submit', function() {
+            for (var instanceName in CKEDITOR.instances) {
+                CKEDITOR.instances[instanceName].updateElement();
+            }
+        });
 
             // Sync loại mẫu radio → hidden input
             document.querySelectorAll('input[name="_loai"]').forEach(function (r) {

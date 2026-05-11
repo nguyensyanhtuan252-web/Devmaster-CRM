@@ -44,11 +44,8 @@
 
                             <div class="col-md-6">
                                 <label class="form-label fw-bold" style="font-size: 11px; color: var(--text2); text-transform: uppercase;">Vai trò hệ thống</label>
-                                <select asp-for="VaiTro" class="form-select dm-input">
-                                    <option value="0">Giám đốc / Admin</option>
-                                    <option value="1">Kế toán</option>
-                                    <option value="2">Nhân viên Sale</option>
-                                    <option value="3">Giảng viên</option>
+                                <select asp-for="VaiTro" class="form-select dm-input"
+                                        asp-items="Html.GetEnumSelectList<LoaiVaiTro>()">
                                 </select>
                             </div>
                             <div class="col-md-6">

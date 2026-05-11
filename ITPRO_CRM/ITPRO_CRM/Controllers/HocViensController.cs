@@ -11,7 +11,7 @@ using ITPRO_CRM.Models;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
-using ClosedXML.Excel;
+
 using System.IO;
 using ITPRO_CRM.Filters; // BẢN SỬA: Thêm thư viện Ổ khóa phân quyền
 
@@ -537,7 +537,6 @@ namespace ITPRO_CRM.Controllers
         [HttpPost]
         public async Task<IActionResult> ImportExcel(IFormFile fileExcel)
         {
-            // 1. Kiểm tra file đầu vào
             if (fileExcel == null || fileExcel.Length == 0)
             {
                 TempData["Error"] = "❌ Vui lòng chọn file Excel để tải lên!";
@@ -545,84 +544,143 @@ namespace ITPRO_CRM.Controllers
             }
 
             var extension = Path.GetExtension(fileExcel.FileName).ToLower();
-            if (extension != ".xlsx" && extension != ".xls")
+            if (extension != ".xlsx")
             {
-                TempData["Error"] = "❌ Chỉ chấp nhận file định dạng .xlsx hoặc .xls!";
+                TempData["Error"] = "❌ Chỉ chấp nhận file định dạng chuẩn .xlsx!";
                 return RedirectToAction("Leads");
             }
 
             try
             {
                 var listLeads = new List<HocVien>();
-                var currentUserId = HttpContext.Session.GetInt32("UserId"); // BẢN SỬA: Lấy từ Session
 
-                // 2. Mở file excel trực tiếp từ bộ nhớ đệm (MemoryStream)
+                // Lấy danh sách Sale để chia vòng tròn (KHÔNG DÙNG SESSION NỮA)
+                var danhSachSale = await _context.NhanVien.Where(nv => (int)nv.VaiTro == 1).OrderBy(nv => nv.Id).ToListAsync();
+                if (!danhSachSale.Any())
+                {
+                    TempData["Error"] = "❌ Hệ thống chưa có nhân viên Sale nào để chia khách!";
+                    return RedirectToAction("Leads");
+                }
+
+                int indexSale = 0;
+                int tongSoSale = danhSachSale.Count;
+
+                // Cấp phép sử dụng thư viện EPPlus
+                // Khai báo bản quyền phi thương mại theo chuẩn EPPlus 8+
+                ExcelPackage.License.SetNonCommercialOrganization("ITPRO_CRM");
+
                 using (var stream = new MemoryStream())
                 {
                     await fileExcel.CopyToAsync(stream);
+                    stream.Position = 0;
 
-                    using (var workbook = new XLWorkbook(stream))
+                    using (var package = new ExcelPackage(stream))
                     {
-                        // Lấy Sheet đầu tiên trong file Excel
-                        var worksheet = workbook.Worksheet(1);
-                        var rowCount = worksheet.RowsUsed().Count();
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            TempData["Error"] = "❌ File Excel bị hỏng hoặc không có Sheet nào.";
+                            return RedirectToAction("Leads");
+                        }
 
-                        // 3. Vòng lặp đọc dữ liệu (Bắt đầu từ dòng 2 để chừa dòng 1 làm Tiêu đề cột)
+                        int rowCount = worksheet.Dimension?.Rows ?? 0;
+                        int soDongTrongLienTiep = 0;
+
                         for (int row = 2; row <= rowCount; row++)
                         {
-                            // Lấy dữ liệu từng cột (Cột 1: Tên, Cột 2: SĐT, Cột 3: Email, Cột 4: Giới tính)
-                            var hoTen = worksheet.Cell(row, 1).Value.ToString().Trim();
-                            var sdt = worksheet.Cell(row, 2).Value.ToString().Trim();
-                            var email = worksheet.Cell(row, 3).Value.ToString().Trim();
-                            var gioiTinh = worksheet.Cell(row, 4).Value.ToString().Trim();
-                            var diaChi = worksheet.Cell(row, 5).Value.ToString().Trim();
-                            var fb = worksheet.Cell(row, 6).Value.ToString().Trim();
-                            var zalo = worksheet.Cell(row, 7).Value.ToString().Trim();
-                            var mucTieu = worksheet.Cell(row, 8).Value.ToString().Trim();
+                            // Đọc dữ liệu cực kỳ an toàn với .Text của EPPlus
+                            var hoTen = worksheet.Cells[row, 1].Text.Trim();
+                            var sdt = worksheet.Cells[row, 2].Text.Trim();
 
-                            // Nếu dòng nào mà Tên và SĐT đều trống thì bỏ qua luôn (tránh đọc nhầm dòng trắng)
                             if (string.IsNullOrEmpty(hoTen) && string.IsNullOrEmpty(sdt))
+                            {
+                                soDongTrongLienTiep++;
+                                if (soDongTrongLienTiep >= 5) break; // Nếu gặp 5 dòng trống liên tiếp -> Đáy danh sách -> Đập vỡ vòng lặp ngay lập tức!
                                 continue;
+                            }
 
-                            // 4. Tạo đối tượng Tiềm năng (Lead) mới
-                            var newLead = new HocVien
+                            soDongTrongLienTiep = 0;
+
+                            listLeads.Add(new HocVien
                             {
                                 HoTen = string.IsNullOrEmpty(hoTen) ? "Khách hàng mới" : hoTen,
                                 SoDienThoai = sdt,
-                                Email = email,
-                                GioiTinh = string.IsNullOrEmpty(gioiTinh) ? "Chưa rõ" : gioiTinh,
-                                DiaChi = diaChi,
-                                FacebookLink = fb,
-                                ZaloLink = zalo,
-                                MucTieuHocTap = mucTieu,
-                                TrangThai = 0, // 👉 0 = Tiềm năng (Chưa gọi)
+                                Email = worksheet.Cells[row, 3].Text.Trim(),
+                                GioiTinh = string.IsNullOrEmpty(worksheet.Cells[row, 4].Text.Trim()) ? "Chưa rõ" : worksheet.Cells[row, 4].Text.Trim(),
+                                DiaChi = worksheet.Cells[row, 5].Text.Trim(),
+                                FacebookLink = worksheet.Cells[row, 6].Text.Trim(),
+                                ZaloLink = worksheet.Cells[row, 7].Text.Trim(),
+                                MucTieuHocTap = worksheet.Cells[row, 8].Text.Trim(),
+                                TrangThai = 0,
                                 NgayTao = DateTime.Now,
-                                NgaySinh = new DateTime(2000, 1, 1), // Ngày sinh ảo mặc định tránh lỗi DB
-                                NhanVienId = currentUserId // BẢN SỬA: Gắn khách hàng này cho người vừa upload
-                            };
+                                NgaySinh = new DateTime(2000, 1, 1),
+                                NhanVienId = danhSachSale[indexSale % tongSoSale].Id, // Chia đều khách cho từng Sale
+                                NguonGoc = "Import từ Excel"
+                            });
 
-                            // Add vào danh sách tạm
-                            listLeads.Add(newLead);
+                            indexSale++;
                         }
                     }
                 }
 
-                // 5. Lưu toàn bộ danh sách vào Database 1 lần duy nhất (Cực nhanh)
                 if (listLeads.Any())
                 {
+                    // 1. Lưu khách hàng trước để lấy ID (dùng cho LinkUrl trong thông báo)
                     await _context.HocVien.AddRangeAsync(listLeads);
                     await _context.SaveChangesAsync();
 
-                    TempData["Success"] = $"✅ Đã nhập thành công {listLeads.Count} Tiềm năng mới vào hệ thống!";
-                }
-                else
-                {
-                    TempData["Warning"] = "⚠️ File Excel không có dữ liệu hợp lệ (hoặc trống)!";
+                    // 2. TẠO DANH SÁCH THÔNG BÁO (NOTIFICATION)
+                    var listThongBao = new List<ThongBao>();
+
+                    // Thông báo cho từng Sale được chia khách
+                    foreach (var lead in listLeads)
+                    {
+                        if (lead.NhanVienId.HasValue)
+                        {
+                            listThongBao.Add(new ThongBao
+                            {
+                                NhanVienId = lead.NhanVienId.Value,
+                                TieuDe = "📥 Khách mới từ Excel",
+                                NoiDung = $"Bạn được chia khách: {lead.HoTen}",
+                                LinkUrl = $"/HocViens/Details/{lead.Id}", // Bấm vào chuông nhảy thẳng đến khách đó
+                                NgayTao = DateTime.Now,
+                                DaDoc = false
+                            });
+                        }
+                    }
+
+                    // Gửi 1 thông báo tổng hợp cho các Admin (VaiTro = 0)
+                    var adminIds = await _context.NhanVien
+                                                 .Where(nv => (int)nv.VaiTro == 0)
+                                                 .Select(nv => nv.Id)
+                                                 .ToListAsync();
+
+                    foreach (var adminId in adminIds)
+                    {
+                        listThongBao.Add(new ThongBao
+                        {
+                            NhanVienId = adminId,
+                            TieuDe = "📊 Hệ thống vừa nạp Excel",
+                            NoiDung = $"Vừa nhập thành công {listLeads.Count} khách hàng mới.",
+                            LinkUrl = "/HocViens/Leads",
+                            NgayTao = DateTime.Now,
+                            DaDoc = false
+                        });
+                    }
+
+                    // 3. Lưu tất cả thông báo vào DB
+                    if (listThongBao.Any())
+                    {
+                        await _context.ThongBao.AddRangeAsync(listThongBao);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    TempData["Success"] = $"✅ Đã nhập và chia đều {listLeads.Count} khách hàng thành công!";
                 }
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "❌ Lỗi khi đọc file: Chắc chắn rằng bạn đang dùng đúng file mẫu. Chi tiết: " + ex.Message;
+                TempData["Error"] = "❌ Lỗi hệ thống: " + ex.Message;
             }
 
             return RedirectToAction("Leads");
@@ -635,7 +693,7 @@ namespace ITPRO_CRM.Controllers
             var currentUserId = HttpContext.Session.GetInt32("UserId");
             bool isAdmin = (roleId == (int)LoaiVaiTro.Admin || roleId == (int)LoaiVaiTro.KeToan);
 
-            // 1. Lọc danh sách theo đúng tab đang đứng (Tiềm năng/Cơ hội/Học viên)
+            // 1. Lọc danh sách theo đúng tab đang đứng
             var query = _context.HocVien
                 .Include(h => h.LopHoc)
                 .Include(h => h.NhanVien)
@@ -647,7 +705,7 @@ namespace ITPRO_CRM.Controllers
                 query = query.Where(h => h.TrangThai == status.Value);
             }
 
-            // 🔐 BẢN SỬA: Chặn Sale xuất Excel dữ liệu của toàn trung tâm
+            // Chặn Sale xuất Excel dữ liệu của toàn trung tâm
             if (!isAdmin && currentUserId.HasValue)
             {
                 query = query.Where(h => h.NhanVienId == currentUserId.Value);
@@ -655,127 +713,127 @@ namespace ITPRO_CRM.Controllers
 
             var danhSach = await query.OrderByDescending(h => h.NgayTao).ToListAsync();
 
-            // 2. Dùng ClosedXML tạo file Excel
-            using (var workbook = new XLWorkbook())
+            // 2. Dùng EPPlus tạo file Excel
+            // Khai báo bản quyền phi thương mại theo chuẩn EPPlus 8+
+            ExcelPackage.License.SetNonCommercialOrganization("ITPRO_CRM");
+            using (var package = new ExcelPackage())
             {
-                var worksheet = workbook.Worksheets.Add("Danh_Sach_Data");
+                var worksheet = package.Workbook.Worksheets.Add("Danh_Sach_Data");
 
                 // Đổ tiêu đề cột
-                worksheet.Cell(1, 1).Value = "STT";
-                worksheet.Cell(1, 2).Value = "Họ và Tên";
-                worksheet.Cell(1, 3).Value = "Số điện thoại";
-                worksheet.Cell(1, 4).Value = "Email";
-                worksheet.Cell(1, 5).Value = "Giới tính";
-                worksheet.Cell(1, 6).Value = "Ngày sinh";
-                worksheet.Cell(1, 7).Value = "Lớp học";
-                worksheet.Cell(1, 8).Value = "Nguồn (Chiến dịch)";
-                worksheet.Cell(1, 9).Value = "Sale phụ trách";
-                worksheet.Cell(1, 10).Value = "Ngày tạo";
-                worksheet.Cell(1, 11).Value = "Địa chỉ";
-                worksheet.Cell(1, 12).Value = "Facebook";
+                worksheet.Cells[1, 1].Value = "STT";
+                worksheet.Cells[1, 2].Value = "Họ và Tên";
+                worksheet.Cells[1, 3].Value = "Số điện thoại";
+                worksheet.Cells[1, 4].Value = "Email";
+                worksheet.Cells[1, 5].Value = "Giới tính";
+                worksheet.Cells[1, 6].Value = "Ngày sinh";
+                worksheet.Cells[1, 7].Value = "Lớp học";
+                worksheet.Cells[1, 8].Value = "Nguồn (Chiến dịch)";
+                worksheet.Cells[1, 9].Value = "Sale phụ trách";
+                worksheet.Cells[1, 10].Value = "Ngày tạo";
+                worksheet.Cells[1, 11].Value = "Địa chỉ";
+                worksheet.Cells[1, 12].Value = "Facebook";
 
                 // Trang trí cho dòng tiêu đề nổi bật
-                var headerRow = worksheet.Row(1);
-                headerRow.Style.Font.Bold = true;
-                headerRow.Style.Fill.BackgroundColor = XLColor.Teal;
-                headerRow.Style.Font.FontColor = XLColor.White;
-                headerRow.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                using (var range = worksheet.Cells[1, 1, 1, 12])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Teal);
+                    range.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    range.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
 
-                // 3. Chạy vòng lặp để đắp dữ liệu vào các dòng bên dưới
+                // 3. Chạy vòng lặp để đắp dữ liệu
                 int row = 2;
                 int stt = 1;
                 foreach (var item in danhSach)
                 {
-                    worksheet.Cell(row, 1).Value = stt++;
-                    worksheet.Cell(row, 2).Value = item.HoTen;
-                    worksheet.Cell(row, 3).Value = "'" + item.SoDienThoai; // Thêm dấu nháy để Excel không mất số 0 ở đầu
-                    worksheet.Cell(row, 4).Value = item.Email;
-                    worksheet.Cell(row, 5).Value = item.GioiTinh;
-                    worksheet.Cell(row, 6).Value = item.NgaySinh.ToString("dd/MM/yyyy");
-                    worksheet.Cell(row, 7).Value = item.LopHoc?.TenLop ?? "Chưa có";
-                    worksheet.Cell(row, 8).Value = item.ChienDich?.TenChienDich ?? "Tự nhiên";
-                    worksheet.Cell(row, 9).Value = item.NhanVien?.HoTen ?? "Admin";
-                    worksheet.Cell(row, 10).Value = item.NgayTao?.ToString("dd/MM/yyyy") ?? "";
-                    worksheet.Cell(row, 11).Value = item.DiaChi;
-                    worksheet.Cell(row, 12).Value = item.FacebookLink;
+                    worksheet.Cells[row, 1].Value = stt++;
+                    worksheet.Cells[row, 2].Value = item.HoTen;
+                    worksheet.Cells[row, 3].Value = "'" + item.SoDienThoai; // Thêm nháy để không mất số 0
+                    worksheet.Cells[row, 4].Value = item.Email;
+                    worksheet.Cells[row, 5].Value = item.GioiTinh;
+                    worksheet.Cells[row, 6].Value = item.NgaySinh.ToString("dd/MM/yyyy");
+                    worksheet.Cells[row, 7].Value = item.LopHoc?.TenLop ?? "Chưa có";
+                    worksheet.Cells[row, 8].Value = item.ChienDich?.TenChienDich ?? "Tự nhiên";
+                    worksheet.Cells[row, 9].Value = item.NhanVien?.HoTen ?? "Admin";
+                    worksheet.Cells[row, 10].Value = item.NgayTao?.ToString("dd/MM/yyyy") ?? "";
+                    worksheet.Cells[row, 11].Value = item.DiaChi;
+                    worksheet.Cells[row, 12].Value = item.FacebookLink;
                     row++;
                 }
 
-                // Tự động căn chỉnh độ rộng cột cho đẹp
-                worksheet.Columns().AdjustToContents();
+                // Tự động căn chỉnh độ rộng cột
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                // 4. Trả file về cho trình duyệt tải xuống
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    var content = stream.ToArray();
+                // 4. Trả file về trình duyệt an toàn (Chống sập web)
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0; // Tua lại đầu file
 
-                    // Đặt tên file linh hoạt theo trạng thái
-                    string fileName = status == 0 ? "DanhSach_TiemNang.xlsx" :
-                                      status == 1 ? "DanhSach_CoHoi.xlsx" :
-                                      status == 2 ? "DanhSach_HocVien.xlsx" : "DanhSach_TongHop.xlsx";
+                string fileName = status == 0 ? "DanhSach_TiemNang.xlsx" :
+                                  status == 1 ? "DanhSach_CoHoi.xlsx" :
+                                  status == 2 ? "DanhSach_HocVien.xlsx" : "DanhSach_TongHop.xlsx";
 
-                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-                }
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
         }
 
         [HttpGet]
         public IActionResult DownloadTemplate()
         {
-            // Tạo một file Excel ảo trong bộ nhớ
-            using (var workbook = new XLWorkbook())
+            // Khai báo bản quyền phi thương mại theo chuẩn EPPlus 8+
+            ExcelPackage.License.SetNonCommercialOrganization("ITPRO_CRM");
+            using (var package = new ExcelPackage())
             {
-                // Đặt tên cho Sheet
-                var worksheet = workbook.Worksheets.Add("Mau_Nhap_Tiem_Nang");
+                var worksheet = package.Workbook.Worksheets.Add("Mau_Nhap_Tiem_Nang");
 
-                // 1. TẠO DÒNG TIÊU ĐỀ (Cột 1 đến 4 tương ứng A, B, C, D)
-                worksheet.Cell(1, 1).Value = "Họ và Tên (*)";
-                worksheet.Cell(1, 2).Value = "Số điện thoại (*)";
-                worksheet.Cell(1, 3).Value = "Email";
-                worksheet.Cell(1, 4).Value = "Giới tính (Nam/Nữ)";
-                worksheet.Cell(1, 5).Value = "Địa chỉ";
-                worksheet.Cell(1, 6).Value = "Link Facebook";
-                worksheet.Cell(1, 7).Value = "Số Zalo";
-                worksheet.Cell(1, 8).Value = "Mục tiêu/Ghi chú";
+                // 1. TẠO DÒNG TIÊU ĐỀ
+                worksheet.Cells[1, 1].Value = "Họ và Tên (*)";
+                worksheet.Cells[1, 2].Value = "Số điện thoại (*)";
+                worksheet.Cells[1, 3].Value = "Email";
+                worksheet.Cells[1, 4].Value = "Giới tính (Nam/Nữ)";
+                worksheet.Cells[1, 5].Value = "Địa chỉ";
+                worksheet.Cells[1, 6].Value = "Link Facebook";
+                worksheet.Cells[1, 7].Value = "Số Zalo";
+                worksheet.Cells[1, 8].Value = "Mục tiêu/Ghi chú";
 
-                // Trang trí dòng tiêu đề cho đẹp (In đậm, nền xanh lá, chữ trắng)
-                var headerRow = worksheet.Row(1);
-                headerRow.Style.Font.Bold = true;
-                headerRow.Style.Font.FontColor = XLColor.White;
-                headerRow.Style.Fill.BackgroundColor = XLColor.DarkCyan;
-                headerRow.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                // Trang trí dòng tiêu đề
+                using (var range = worksheet.Cells[1, 1, 1, 8])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkCyan);
+                    range.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
 
-                // 2. TẠO 2 DÒNG DỮ LIỆU MẪU ĐỂ SALE BIẾT ĐƯỜNG NHẬP
-                worksheet.Cell(2, 1).Value = "Nguyễn Văn A";
-                worksheet.Cell(2, 2).Value = "0987654321";
-                worksheet.Cell(2, 3).Value = "nguyenvana@gmail.com";
-                worksheet.Cell(2, 4).Value = "Nam";
-                worksheet.Cell(2, 5).Value = "Hà Nội";
-                worksheet.Cell(2, 6).Value = "facebook.com/nva";
-                worksheet.Cell(2, 7).Value = "0987654321";
-                worksheet.Cell(2, 8).Value = "Tư vấn khóa .NET";
+                // 2. TẠO DỮ LIỆU MẪU ĐỂ SALE BIẾT ĐƯỜNG NHẬP
+                worksheet.Cells[2, 1].Value = "Nguyễn Văn A";
+                worksheet.Cells[2, 2].Value = "0987654321";
+                worksheet.Cells[2, 3].Value = "nguyenvana@gmail.com";
+                worksheet.Cells[2, 4].Value = "Nam";
+                worksheet.Cells[2, 5].Value = "Hà Nội";
+                worksheet.Cells[2, 6].Value = "facebook.com/nva";
+                worksheet.Cells[2, 7].Value = "0987654321";
+                worksheet.Cells[2, 8].Value = "Tư vấn khóa .NET";
 
                 // Ghi chú thêm cho Sale
-                worksheet.Cell(5, 1).Value = "LƯU Ý:";
-                worksheet.Cell(5, 1).Style.Font.Bold = true;
-                worksheet.Cell(5, 1).Style.Font.FontColor = XLColor.Red;
-                worksheet.Cell(6, 1).Value = "- Không được xóa dòng tiêu đề đầu tiên.";
-                worksheet.Cell(7, 1).Value = "- Họ tên và Số điện thoại là bắt buộc phải nhập.";
+                worksheet.Cells[5, 1].Value = "LƯU Ý:";
+                worksheet.Cells[5, 1].Style.Font.Bold = true;
+                worksheet.Cells[5, 1].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                worksheet.Cells[6, 1].Value = "- Không được xóa dòng tiêu đề đầu tiên.";
+                worksheet.Cells[7, 1].Value = "- Họ tên và Số điện thoại là bắt buộc phải nhập.";
 
-                // Tự động kéo giãn độ rộng các cột cho vừa chữ
-                worksheet.Columns().AdjustToContents();
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                // 3. XUẤT THÀNH FILE .XLSX TRẢ VỀ CHO TRÌNH DUYỆT TẢI XUỐNG
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    var content = stream.ToArray();
-                    string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                // 3. XUẤT THÀNH FILE .XLSX
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
 
-                    // Tên file khi tải về máy
-                    return File(content, contentType, "FileMau_NhapTiemNang.xlsx");
-                }
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FileMau_NhapTiemNang.xlsx");
             }
         }
 

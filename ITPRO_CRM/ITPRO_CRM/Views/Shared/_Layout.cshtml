@@ -662,8 +662,32 @@
                     <div class="tb-user dropdown-toggle" data-bs-toggle="dropdown">
                         <div class="tb-avatar">@(ViewBag.UserAvatar ?? "A")</div>
                         <div class="d-none d-sm-block">
-                            <div class="tb-uname">@(ViewBag.UserName ?? "Admin")</div>
-                            <div class="tb-urole">@(ViewBag.UserRole ?? "Quản trị viên")</div>
+                            <div class="d-none d-sm-block">
+                                <div class="tb-uname">
+                                    @(Context.Session.GetString("HoTen") ?? "Người dùng")
+                                </div>
+                                <div class="tb-urole">
+                                    @{
+                                        var vaiTro = Context.Session.GetInt32("VaiTro");
+                                        if (vaiTro == 0)
+                                        {
+                                            <text>Quản trị viên</text>
+                                        }
+                                        else if (vaiTro == 1)
+                                        {
+                                            <text>Nhân viên Sale</text>
+                                        }
+                                        else if (vaiTro == 2)
+                                        {
+                                            <text>Giảng viên</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Thành viên</text>
+                                        }
+                                    }
+                                </div>
+                            </div>
                         </div>
                         <i class="fa-solid fa-chevron-down tb-chevron"></i>
                     </div>
